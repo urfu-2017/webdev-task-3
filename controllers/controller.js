@@ -1,17 +1,30 @@
 'use strict';
-// const LocModel = require('../models/locationModel');
+const LocModel = require('../models/locationModel');
 const frontPage = require('../mocks/index');
 
 module.exports = async (req, res) => {
-    // const news = new LocModel(req.query);
-    // const fetchedData = await Promise.all([news.get(), weather.get()]);
-    const place1 = { name: 'Place1', arrowUp: false, arrowDown: true, visited: true };
-    const place2 = { name: 'Place2', arrowUp: true, arrowDown: true, visited: false };
-    const place3 = { name: 'Place3', arrowUp: true, arrowDown: false, visited: true };
+    const wtf = new LocModel({ place: 'London' });
+    wtf.post();
+    const anotha = new LocModel({ place: 'Paris' });
+    anotha.post();
+    const betterName = new LocModel({ place: 'all' });
+    const response = await betterName.get();
+    const data = response.body;
     const arr = [];
-    arr.push(place1);
-    arr.push(place2);
-    arr.push(place3);
-    res.locals.places = arr;
-    res.render('index', frontPage);
+    if (data) {
+        data.forEach((elem, idx) => {
+            if (idx === 0) {
+                arr.push({ name: elem.name, arrowUp: false,
+                    arrowDown: true, visited: elem.visited });
+            } else if (idx === data.length - 1) {
+                arr.push({ name: elem.name, arrowUp: true,
+                    arrowDown: false, visited: elem.visited });
+            } else {
+                arr.push({ name: elem.name, arrowUp: true,
+                    arrowDown: true, visited: elem.visited });
+            }
+        });
+        res.locals.places = arr;
+        res.render('index', frontPage);
+    }
 };

@@ -133,6 +133,11 @@
     border-width: 2px;
 }
 
+.locations-list
+{
+    margin: 30px 0 40px;
+}
+
 .footer
 {
     justify-content: space-between;
