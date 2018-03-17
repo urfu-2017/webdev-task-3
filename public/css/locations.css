@@ -1,0 +1,60 @@
+.location-name
+{
+    width: 60%;
+    margin-left: 60px;
+}
+
+.arrows, .visited-flag
+{
+    margin-right: 40px;
+}
+
+.arrows
+{
+    width: 30px;
+}
+
+.arrow-up
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/arrow-up.png");
+    background-size: cover;    
+}
+
+.arrow-down
+{
+    position: relative;
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/arrow-down.png"); 
+    background-size: cover;       
+}
+
+.visited-flag
+{
+    border-radius: 10px;
+    border: 1px solid #e0e0f8;
+}
+
+.visited-flag:hover
+{
+    border-color: #3a3a87;
+    box-shadow: 1px 1px 3px #3a3a87; 
+}
+
+.visited-icon
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/visited.png"); 
+    background-size: cover; 
+}
+
+.not-visited-icon
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/not-visited.png"); 
+    background-size: cover; 
+}

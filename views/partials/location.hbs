@@ -1,0 +1,17 @@
+<div class="location-name">{{ this.name }}</div>
+
+<div class="arrows horizontal-flex">
+    {{#if this.arrowUp}}
+        <div class="arrow-up button"></div>
+    {{/if}}
+
+    {{#if this.arrowDown}}
+        <div class="arrow-down button"></div>
+    {{/if}}
+</div>
+
+{{#if this.visited}}
+    <div class="visited-icon visited-flag"></div>
+{{else}}
+    <div class="not-visited-icon visited-flag"></div>
+{{/if}}
