@@ -1,0 +1,32 @@
+switch-border = 1px solid black
+switch-border-radius = 10px
+
+.places
+    &__top
+        display flex
+        border-bottom 1px solid black
+        justify-content space-between
+        padding-bottom 5px
+        &__remove-button
+            cursor pointer
+            padding-left 10px
+        &__switch
+            & > div
+                width 100px
+                float left
+                border switch-border
+                text-align center
+                cursor pointer
+            & > div:hover
+                background red
+            & > div:first-child
+                border-right none
+                border-top-left-radius switch-border-radius
+                border-bottom-left-radius switch-border-radius
+            & > div:last-child
+                border-left none
+                border-top-right-radius switch-border-radius
+                border-bottom-right-radius switch-border-radius
+            & > div.active
+                background green
+
