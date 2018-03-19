@@ -71,7 +71,6 @@ for (let elem of display) {
 }
 
 // delete everything
-// тут надо рефреш сделать у данных
 var trashEverything = document.getElementsByClassName('location-menu__delete-button');
 var onDeleteHandler = () => {
     fetch(baseUrl, { method: 'DELETE' });
@@ -84,18 +83,17 @@ trashEverything[0].addEventListener('click', onDeleteHandler);
 
 var arrows = document.getElementsByClassName('arrow');
 var onArrowClick = event => {
-    // check what kind of arrow is it
-    // swap in the required direction
-    const locationName = event.target.parentElement.parentElement.firstChild.textContent;
-    let swapLocationName;
+    const node = event.target.parentElement.parentElement;
+    const locationName = node.firstChild.textContent;
+    let swapNode;
     if (event.target.classList.value.indexOf('down') !== -1) {
-        swapLocationName =
-            event.target.parentElement.parentElement.nextElementSibling.firstChild.textContent;
+        swapNode = node.nextElementSibling;
+        swapNode.parentElement.insertBefore(swapNode, node);
     } else {
-        swapLocationName =
-            event.target.parentElement.parentElement.previousElementSibling.firstChild.textContent;
+        swapNode = node.previousElementSibling;
+        swapNode.parentElement.insertBefore(node, swapNode);
     }
-    fetch(`${baseUrl}?place1=${locationName}&place2=${swapLocationName}`,
+    fetch(`${baseUrl}?place1=${locationName}&place2=${swapNode.firstChild.textContent}`,
         { method: 'PUT', crossDomain: true });
 };
 for (let elem of arrows) {
