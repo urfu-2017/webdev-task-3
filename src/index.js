@@ -1,3 +1,4 @@
 import App from './components/App';
+import PlacesList from './components/PlacesList';
 
-new App(document.getElementById('root'), { text: 'Hello world' }).render();
+document.getElementById('root').innerHTML = new PlacesList({ greeter: 'Hello' }).render();
