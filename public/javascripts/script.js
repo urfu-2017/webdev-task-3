@@ -1,24 +1,25 @@
 'use strict';
-const baseUrl = 'https://webdev-task-2-vufzqnzdnx.now.sh';
+const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
 const sendReq = async (url, options) => {
     const response = await fetch(url, options);
     const body = await response.json();
 
     return body;
 };
-const getData = () => {
-    sendReq(baseUrl, { method: 'GET' })
-        .then(function (res) {
-            console.info(res);
-        });
-};
+// const getData = () => {
+//     sendReq(baseUrl, { method: 'GET' })
+//         .then(function (res) {
+//             console.info(res);
+//         });
+// };
 
 // insert new place through form
+// тут тоже надо отобразить новые данные
 var addForm = document.getElementsByClassName('insertion-form');
 var onSubmitHandler = () => {
     var input = document.getElementsByClassName('insertion-form__input');
-    fetch(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
-    console.info(fetch(baseUrl));
+    console.info(`${baseUrl}?place=${input[0].value}`);
+    sendReq(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
 };
 addForm[0].addEventListener('submit', onSubmitHandler);
 
@@ -34,8 +35,6 @@ var onClickHandler = event => {
     }
     const url = `${baseUrl}?place=${locationName}&param=visited&value=${value}`;
     sendReq(url, { method: 'PUT' });
-    getData();
-
 };
 for (let elem of visited) {
     elem.addEventListener('click', onClickHandler);
@@ -46,7 +45,7 @@ var display = document.getElementsByClassName('location-menu__nav');
 var onClickHandlerDisplay = event => {
     const displayParam = event.target.textContent;
     var cc = document.getElementsByClassName('locations-list');
-    const children = Array.from(cc[0].children); // коллекция?
+    const children = Array.from(cc[0].children);
     if (displayParam === 'All') {
         children.forEach(element => {
             element.style.display = 'flex';
@@ -72,3 +71,32 @@ var onClickHandlerDisplay = event => {
 for (let elem of display) {
     elem.addEventListener('click', onClickHandlerDisplay);
 }
+
+// delete everything
+// тут надо рефреш сделать у данных
+var trashEverything = document.getElementsByClassName('location-menu__delete-button');
+var onDeleteHandler = () => {
+    fetch(baseUrl, { method: 'DELETE' });
+};
+trashEverything[0].addEventListener('click', onDeleteHandler);
+
+var arrows = document.getElementsByClassName('arrow');
+var onArrowClick = event => {
+    // check what kind of arrow is it
+    // swap in the required direction
+    const locationName = event.target.parentElement.parentElement.firstChild.textContent;
+    let swapLocationName;
+    if (event.target.classList.value.indexOf('down') !== -1) {
+        swapLocationName =
+            event.target.parentElement.parentElement.nextElementSibling.firstChild.textContent;
+    } else {
+        swapLocationName =
+            event.target.parentElement.parentElement.previousElementSibling.firstChild.textContent;
+    }
+    fetch(`${baseUrl}?place1=${locationName}&place2=${swapLocationName}`,
+        { method: 'PUT', crossDomain: true });
+};
+for (let elem of arrows) {
+    elem.addEventListener('click', onArrowClick);
+}
+

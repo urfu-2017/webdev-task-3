@@ -91,7 +91,7 @@
     justify-content: space-between;
 }
 
-.location-menu__button
+.location-menu__delete-button
 {
     position: relative;
     border: 2px solid #e0e0f8;

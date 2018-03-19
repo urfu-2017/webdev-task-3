@@ -2,7 +2,7 @@
 
 // const queryString = require('query-string');
 const fetch = require('node-fetch');
-const baseUrl = 'https://webdev-task-2-vufzqnzdnx.now.sh';
+const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
 // var URLSearchParams = require('url-search-params');
 
 const getApiResp = async (url, options) => {
