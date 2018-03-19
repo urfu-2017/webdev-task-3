@@ -6,11 +6,9 @@ const sendReq = async (url, options) => {
 
     return body;
 };
-// const getData = () => {
+// const getLocationList = () => {
 //     sendReq(baseUrl, { method: 'GET' })
-//         .then(function (res) {
-//             console.info(res);
-//         });
+//         .then(res => res);
 // };
 
 // insert new place through form
@@ -77,6 +75,10 @@ for (let elem of display) {
 var trashEverything = document.getElementsByClassName('location-menu__delete-button');
 var onDeleteHandler = () => {
     fetch(baseUrl, { method: 'DELETE' });
+    const node = document.getElementsByClassName('locations-list')[0];
+    while (node.firstChild) {
+        node.removeChild(node.firstChild);
+    }
 };
 trashEverything[0].addEventListener('click', onDeleteHandler);
 
