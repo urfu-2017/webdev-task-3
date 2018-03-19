@@ -6,24 +6,59 @@ const sendReq = async (url, options) => {
 
     return body;
 };
-// const getLocationList = () => {
-//     sendReq(baseUrl, { method: 'GET' })
-//         .then(res => res);
-// };
 
-// insert new place through form
-// тут тоже надо отобразить новые данные
-var addForm = document.getElementsByClassName('insertion-form');
-var onSubmitHandler = () => {
-    var input = document.getElementsByClassName('insertion-form__input');
-    console.info(`${baseUrl}?place=${input[0].value}`);
-    sendReq(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
+const createNameDiv = name => {
+    const locDiv = document.createElement('div');
+    locDiv.className = 'location-name';
+    locDiv.innerText = name;
+
+    return locDiv;
+};
+
+const createArrowDiv = () => {
+    const divArrows = document.createElement('div');
+    divArrows.className = 'arrows horizontal-flex';
+    const divUpArrow = document.createElement('div');
+    divUpArrow.className = 'arrow-up button arrow';
+    divArrows.appendChild(divUpArrow);
+
+    return divArrows;
+};
+
+const createNotVisitedDiv = () => {
+    const divNotVisited = document.createElement('div');
+    divNotVisited.className = 'not-visited-icon visited-flag';
+
+    return divNotVisited;
+};
+
+const createArticle = name => {
+    const article = document.createElement('article');
+    article.className = 'location horizontal-flex';
+    article.appendChild(createNameDiv(name));
+    article.appendChild(createArrowDiv());
+    article.appendChild(createNotVisitedDiv());
+
+    return article;
+};
+
+// insert new place by enter
+const addForm = document.getElementsByClassName('insertion-form');
+const onSubmitHandler = () => {
+    const input = document.getElementsByClassName('insertion-form__input');
+    try {
+        sendReq(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
+        const parent = document.getElementsByClassName('locations-list')[0];
+        parent.appendChild(createArticle(input[0].value));
+    } catch (e) {
+        console.error(e);
+    }
 };
 addForm[0].addEventListener('submit', onSubmitHandler);
 
 // toggling buttons for visited - not visited
-var visited = document.getElementsByClassName('visited-flag');
-var onClickHandler = event => {
+const visited = document.getElementsByClassName('visited-flag');
+const onClickHandler = event => {
     const locationName = event.target.parentElement.firstChild.textContent;
     let value = false;
     event.target.classList.toggle('visited-icon');
@@ -39,10 +74,10 @@ for (let elem of visited) {
 }
 
 // display for all, not visited, visited
-var display = document.getElementsByClassName('location-menu__nav');
-var onClickHandlerDisplay = event => {
+const display = document.getElementsByClassName('location-menu__nav');
+const onClickHandlerDisplay = event => {
     const displayParam = event.target.textContent;
-    var cc = document.getElementsByClassName('locations-list');
+    const cc = document.getElementsByClassName('locations-list');
     const children = Array.from(cc[0].children);
     if (displayParam === 'All') {
         children.forEach(element => {
@@ -71,8 +106,8 @@ for (let elem of display) {
 }
 
 // delete everything
-var trashEverything = document.getElementsByClassName('location-menu__delete-button');
-var onDeleteHandler = () => {
+const trashEverything = document.getElementsByClassName('location-menu__delete-button');
+const onDeleteHandler = () => {
     fetch(baseUrl, { method: 'DELETE' });
     const node = document.getElementsByClassName('locations-list')[0];
     while (node.firstChild) {
@@ -81,8 +116,9 @@ var onDeleteHandler = () => {
 };
 trashEverything[0].addEventListener('click', onDeleteHandler);
 
-var arrows = document.getElementsByClassName('arrow');
-var onArrowClick = event => {
+// swap
+const arrows = document.getElementsByClassName('arrow');
+const onArrowClick = event => {
     const node = event.target.parentElement.parentElement;
     const locationName = node.firstChild.textContent;
     let swapNode;
