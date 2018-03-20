@@ -1,7 +1,8 @@
 'use strict';
 const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
 
-// to do: delete 1 elem, add button listener for creating place, why do we need search
+// to do: add button listener for creating place, why do we need search
+// add more options for an article: delete single one, change location name
 
 const correctArrows = collection => {
     let idx = 0;
@@ -27,56 +28,6 @@ const sendReq = async (url, options) => {
     return body;
 };
 
-const createNameDiv = name => {
-    const locDiv = document.createElement('div');
-    locDiv.className = 'location-name';
-    locDiv.innerText = name;
-
-    return locDiv;
-};
-
-const createArrowDiv = () => {
-    const divArrows = document.createElement('div');
-    divArrows.className = 'arrows horizontal-flex';
-    const divUpArrow = document.createElement('div');
-    divUpArrow.className = 'arrow-up button arrow';
-    divArrows.appendChild(divUpArrow);
-
-    return divArrows;
-};
-
-const createNotVisitedDiv = () => {
-    const divNotVisited = document.createElement('div');
-    divNotVisited.className = 'not-visited-icon visited-flag';
-
-    return divNotVisited;
-};
-
-const createArticle = name => {
-    const article = document.createElement('article');
-    article.className = 'location horizontal-flex';
-    article.appendChild(createNameDiv(name));
-    article.appendChild(createArrowDiv());
-    article.appendChild(createNotVisitedDiv());
-
-    return article;
-};
-
-// insert new place by enter
-const addForm = document.getElementsByClassName('insertion-form');
-const onSubmitHandler = () => {
-    // event.preventDefault();
-    const input = document.getElementsByClassName('insertion-form__input');
-    try {
-        sendReq(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
-        const parent = document.getElementsByClassName('locations-list')[0];
-        parent.appendChild(createArticle(input[0].value));
-    } catch (e) {
-        console.error(e);
-    }
-};
-addForm[0].addEventListener('submit', onSubmitHandler);
-
 // toggling buttons for visited - not visited
 const visited = document.getElementsByClassName('visited-flag');
 const onClickHandler = event => {
@@ -93,6 +44,90 @@ const onClickHandler = event => {
 for (let elem of visited) {
     elem.addEventListener('click', onClickHandler);
 }
+
+// swap
+const arrows = document.getElementsByClassName('arrow');
+const onArrowClick = event => {
+    const node = event.target.parentElement.parentElement;
+    const locationName = node.firstChild.textContent;
+    let swapNode;
+    if (event.target.classList.value.indexOf('down') !== -1) {
+        swapNode = node.nextElementSibling;
+        swapNode.parentElement.insertBefore(swapNode, node);
+    } else {
+        swapNode = node.previousElementSibling;
+        swapNode.parentElement.insertBefore(node, swapNode);
+    }
+    const list = document.getElementsByClassName('locations-list');
+    correctArrows(list[0].children);
+    fetch(`${baseUrl}?place1=${locationName}&place2=${swapNode.firstChild.textContent}`,
+        { method: 'PUT', crossDomain: true });
+};
+for (let elem of arrows) {
+    elem.addEventListener('click', onArrowClick);
+}
+
+const createNameDiv = name => {
+    const locDiv = document.createElement('div');
+    locDiv.className = 'location-name';
+    locDiv.innerText = name;
+
+    return locDiv;
+};
+
+const createArrowDiv = () => {
+    const divArrows = document.createElement('div');
+    divArrows.className = 'arrows horizontal-flex';
+    const divUpArrow = document.createElement('div');
+    divUpArrow.className = 'arrow-up button arrow';
+    divUpArrow.setAttribute('style', 'visibility:visible;');
+    const divDownArrow = document.createElement('div');
+    divDownArrow.className = 'arrow-down button arrow';
+    divDownArrow.setAttribute('style', 'visibility:hidden;');
+    divArrows.appendChild(divUpArrow);
+    divArrows.appendChild(divDownArrow);
+    divUpArrow.addEventListener('click', onArrowClick);
+    divDownArrow.addEventListener('click', onArrowClick);
+
+    return divArrows;
+};
+
+const createNotVisitedDiv = () => {
+    const divNotVisited = document.createElement('div');
+    divNotVisited.className = 'not-visited-icon visited-flag';
+    divNotVisited.addEventListener('click', onClickHandler);
+
+    return divNotVisited;
+};
+
+const createArticle = name => {
+    const article = document.createElement('article');
+    article.className = 'location horizontal-flex';
+    article.appendChild(createNameDiv(name));
+    article.appendChild(createArrowDiv());
+    article.appendChild(createNotVisitedDiv());
+
+    return article;
+};
+
+// insert new place by enter
+const addForm = document.getElementsByClassName('insertion-form')[0];
+const addButton = document.getElementsByClassName('location-insertion__button')[0];
+const onLocationInsertion = () => {
+    event.preventDefault();
+    const input = document.getElementsByClassName('insertion-form__input');
+    try {
+        sendReq(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
+        const parent = document.getElementsByClassName('locations-list')[0];
+        const addedElement = createArticle(input[0].value);
+        parent.appendChild(addedElement);
+        correctArrows(parent.children);
+    } catch (e) {
+        console.error(e);
+    }
+};
+addForm.addEventListener('submit', onLocationInsertion);
+addButton.addEventListener('click', onLocationInsertion);
 
 // display for all, not visited, visited
 const display = document.getElementsByClassName('location-menu__nav');
@@ -142,26 +177,4 @@ const onDeleteHandler = () => {
     }
 };
 trashEverything[0].addEventListener('click', onDeleteHandler);
-
-// swap
-const arrows = document.getElementsByClassName('arrow');
-const onArrowClick = event => {
-    const node = event.target.parentElement.parentElement;
-    const locationName = node.firstChild.textContent;
-    let swapNode;
-    if (event.target.classList.value.indexOf('down') !== -1) {
-        swapNode = node.nextElementSibling;
-        swapNode.parentElement.insertBefore(swapNode, node);
-    } else {
-        swapNode = node.previousElementSibling;
-        swapNode.parentElement.insertBefore(node, swapNode);
-    }
-    const list = document.getElementsByClassName('locations-list');
-    correctArrows(list[0].children);
-    fetch(`${baseUrl}?place1=${locationName}&place2=${swapNode.firstChild.textContent}`,
-        { method: 'PUT', crossDomain: true });
-};
-for (let elem of arrows) {
-    elem.addEventListener('click', onArrowClick);
-}
 
