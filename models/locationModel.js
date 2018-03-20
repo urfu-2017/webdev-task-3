@@ -27,15 +27,7 @@ class LocModel {
 
     async get() {
         const url = `${baseUrl}`;
-        // ?place=${this.place}
         const resp = await getApiResp(url);
-
-        return resp;
-    }
-
-    async post() {
-        const url = `${baseUrl}?place=${this.place}`;
-        const resp = await getApiResp(url, { method: 'POST' });
 
         return resp;
     }
