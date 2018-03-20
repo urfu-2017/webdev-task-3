@@ -1,8 +1,8 @@
 'use strict';
 const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
+let oldName = '';
 
 // to do: why do we need search
-// add more options for an article: change location name
 
 const correctArrows = collection => {
     let idx = 0;
@@ -49,7 +49,7 @@ for (let elem of visited) {
 const arrows = document.getElementsByClassName('arrow');
 const onArrowClick = event => {
     const node = event.target.parentElement.parentElement;
-    const locationName = node.firstChild.textContent;
+    const locationName = node.firstChild.nextElementSibling.textContent;
     let swapNode;
     if (event.target.classList.value.indexOf('down') !== -1) {
         swapNode = node.nextElementSibling;
@@ -59,8 +59,9 @@ const onArrowClick = event => {
         swapNode.parentElement.insertBefore(node, swapNode);
     }
     const list = document.getElementsByClassName('locations-list');
+    const secondName = swapNode.firstChild.nextElementSibling.textContent;
     correctArrows(list[0].children);
-    fetch(`${baseUrl}?place1=${locationName}&place2=${swapNode.firstChild.textContent}`,
+    fetch(`${baseUrl}?place1=${locationName}&place2=${secondName}`,
         { method: 'PUT', crossDomain: true });
 };
 for (let elem of arrows) {
@@ -152,6 +153,35 @@ const checkNamesManually = name => {
     }
 };
 
+// on pencil click
+const updateName = event => {
+    event.preventDefault();
+    const node = document.getElementsByClassName('change-name-input')[0];
+    const newName = node.value;
+    const parent = node.parentElement.parentElement;
+    parent.replaceChild(createNameDiv(newName), node.parentElement);
+    const url = `${baseUrl}?place=${oldName}&param=name&value=${newName}`;
+    sendReq(url, { method: 'PUT' });
+};
+
+const renameLocation = document.getElementsByClassName('hidden-options__pencil');
+const onPencilClick = event => {
+    const node = event.target.parentElement.parentElement.firstChild.nextElementSibling;
+    oldName = node.textContent;
+    const input = document.createElement('input');
+    const form = document.createElement('form');
+    input.type = 'text';
+    input.value = oldName;
+    input.className = 'change-name-input';
+    form.className = 'location-name';
+    form.appendChild(input);
+    node.parentElement.replaceChild(form, node);
+    form.addEventListener('submit', updateName);
+};
+for (let elem of renameLocation) {
+    elem.addEventListener('click', onPencilClick);
+}
+
 // insert new place by enter and button click
 const addForm = document.getElementsByClassName('insertion-form')[0];
 const addButton = document.getElementsByClassName('location-insertion__button')[0];
@@ -224,3 +254,9 @@ const onDeleteHandler = () => {
 };
 trashEverything[0].addEventListener('click', onDeleteHandler);
 
+// when page is refreshed [without this it will load every location with two arrows]
+const onRefresh = () => {
+    const node = document.getElementsByClassName('locations-list')[0];
+    correctArrows(node.children);
+};
+document.addEventListener('DOMContentLoaded', onRefresh);
