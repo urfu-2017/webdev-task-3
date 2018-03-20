@@ -98,29 +98,35 @@ for (let elem of visited) {
 const display = document.getElementsByClassName('location-menu__nav');
 const onClickHandlerDisplay = event => {
     const displayParam = event.target.textContent;
-    const cc = document.getElementsByClassName('locations-list');
-    const children = Array.from(cc[0].children);
+    const parent = document.getElementsByClassName('locations-list');
+    const children = Array.from(parent[0].children);
     if (displayParam === 'All') {
         children.forEach(element => {
             element.style.display = 'flex';
+            element.className = 'location horizontal-flex visible';
         });
     } else if (displayParam === 'Not visited') {
         children.forEach(element => {
             if (element.lastElementChild.classList.value.indexOf('not') === -1) {
                 element.style.display = 'none';
+                element.className = 'location horizontal-flex hidden';
             } else {
                 element.style.display = 'flex';
+                element.className = 'location horizontal-flex visible';
             }
         });
     } else {
         children.forEach(element => {
             if (element.lastElementChild.classList.value.indexOf('not') === -1) {
                 element.style.display = 'flex';
+                element.className = 'location horizontal-flex visible';
             } else {
                 element.style.display = 'none';
+                element.className = 'location horizontal-flex hidden';
             }
         });
     }
+    correctArrows(document.getElementsByClassName('location horizontal-flex visible'));
 };
 for (let elem of display) {
     elem.addEventListener('click', onClickHandlerDisplay);
