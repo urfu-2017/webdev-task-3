@@ -1,5 +1,25 @@
 'use strict';
 const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
+
+// to do: delete 1 elem, add button listener for creating place, why do we need search
+
+const correctArrows = collection => {
+    let idx = 0;
+    for (let elem of collection) {
+        const arrowDown = elem.getElementsByClassName('arrow-down')[0];
+        const arrowUp = elem.getElementsByClassName('arrow-up')[0];
+        arrowDown.style.visibility = 'visible';
+        arrowUp.style.visibility = 'visible';
+        if (idx === 0) {
+            arrowUp.style.visibility = 'hidden';
+        }
+        if (idx === collection.length - 1) {
+            arrowDown.style.visibility = 'hidden';
+        }
+        idx++;
+    }
+};
+
 const sendReq = async (url, options) => {
     const response = await fetch(url, options);
     const body = await response.json();
@@ -45,6 +65,7 @@ const createArticle = name => {
 // insert new place by enter
 const addForm = document.getElementsByClassName('insertion-form');
 const onSubmitHandler = () => {
+    // event.preventDefault();
     const input = document.getElementsByClassName('insertion-form__input');
     try {
         sendReq(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
@@ -129,6 +150,8 @@ const onArrowClick = event => {
         swapNode = node.previousElementSibling;
         swapNode.parentElement.insertBefore(node, swapNode);
     }
+    const list = document.getElementsByClassName('locations-list');
+    correctArrows(list[0].children);
     fetch(`${baseUrl}?place1=${locationName}&place2=${swapNode.firstChild.textContent}`,
         { method: 'PUT', crossDomain: true });
 };
