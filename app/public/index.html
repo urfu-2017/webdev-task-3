@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Павел слишком занят</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <label for="search">
+                <input type="text" placeholder="Поиск по названию" id="search" />
+            </label>
+            <div class="createItem">
+                <div>
+                    <input type="text" placeholder="Название" id="title" />
+                    <label>
+                        <input name="radioType" type="radio" value="0">
+                        Город
+                    </label>
+                    <label>
+                        <input name="radioType" type="radio" value="1">
+                        Страна
+                    </label>
+                    <label>
+                        <input name="radioType" type="radio" value="2">
+                        Достопримечательность
+                    </label>
+                </div>
+                <input id="createButton" type="button" value="Создать">
+            </div>
+            <div class="caption">
+                <div>
+                    <h2>Список мест</h2>
+                    <label>
+                        <input name="radioVisit" type="radio" value="0" checked>
+                        Все
+                    </label>
+                    <label>
+                        <input name="radioVisit" type="radio" value="1">
+                        Посетить
+                    </label>
+                    <label>
+                        <input name="radioVisit" type="radio" value="2">
+                        Посещенные
+                    </label>
+                </div>
+                <input type="button" class="deleteAllButton" id="deleteAll" value="очистить">
+            </div>
+            <div class="content"></div>
+        </div>
+        <script type="text/javascript" src="bundle.js"></script>
+    </body>
+</html>
