@@ -138,6 +138,11 @@
     margin: 30px 0 40px;
 }
 
+.location
+{
+    justify-content: space-around;    
+}
+
 .footer
 {
     justify-content: space-between;

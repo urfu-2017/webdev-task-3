@@ -1,7 +1,7 @@
 'use strict';
 const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
 
-// to do: add button listener for creating place, why do we need search
+// to do: why do we need search
 // add more options for an article: delete single one, change location name
 
 const correctArrows = collection => {
@@ -110,7 +110,7 @@ const createArticle = name => {
     return article;
 };
 
-// insert new place by enter
+// insert new place by enter and button click
 const addForm = document.getElementsByClassName('insertion-form')[0];
 const addButton = document.getElementsByClassName('location-insertion__button')[0];
 const onLocationInsertion = () => {

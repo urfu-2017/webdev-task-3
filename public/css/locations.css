@@ -1,17 +1,37 @@
+.hidden-options
+{
+    visibility: hidden;
+}
+
+.location:hover .hidden-options
+{
+    visibility: visible;
+}
+
+.hidden-options__pencil
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/pencil.png");
+    background-size: cover;    
+}
+
+.hidden-options__trash
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/trash.png");
+    background-size: cover;  
+}
+
+.hidden-options__trash:hover
+{
+    visibility: visible;
+}
+
 .location-name
 {
-    width: 60%;
-    margin-left: 60px;
-}
-
-.arrows, .visited-flag
-{
-    margin-right: 40px;
-}
-
-.arrows
-{
-    width: 30px;
+    width: 30%;
 }
 
 .arrow-up
@@ -24,7 +44,6 @@
 
 .arrow-down
 {
-    position: relative;
     width: 15px;
     height: 15px;
     background-image: url("/static/arrow-down.png"); 
