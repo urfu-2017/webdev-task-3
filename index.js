@@ -14,7 +14,6 @@ const partialsDir = path.join(viewsDir, 'partials');
 app.set('view engine', 'hbs');
 app.set('views', viewsDir);
 
-// статик надо на что-то поменять, а надо ли?
 app.use(express.static(publicDir));
 
 app.get('/', controller);
