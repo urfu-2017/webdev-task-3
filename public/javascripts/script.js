@@ -2,7 +2,7 @@
 const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
 
 // to do: why do we need search
-// add more options for an article: delete single one, change location name
+// add more options for an article: change location name
 
 const correctArrows = collection => {
     let idx = 0;
@@ -31,7 +31,7 @@ const sendReq = async (url, options) => {
 // toggling buttons for visited - not visited
 const visited = document.getElementsByClassName('visited-flag');
 const onClickHandler = event => {
-    const locationName = event.target.parentElement.firstChild.textContent;
+    const locationName = event.target.parentElement.firstChild.nextElementSibling.textContent;
     let value = false;
     event.target.classList.toggle('visited-icon');
     event.target.classList.toggle('not-visited-icon');
@@ -66,6 +66,36 @@ const onArrowClick = event => {
 for (let elem of arrows) {
     elem.addEventListener('click', onArrowClick);
 }
+
+// delete single location
+const trashBins = document.getElementsByClassName('hidden-options__trash');
+const onTrashClick = event => {
+    const node = event.target.parentElement.parentElement;
+    const parent = node.parentElement;
+    const locationName = node.firstChild.nextElementSibling.textContent;
+    parent.removeChild(node);
+    correctArrows(parent.children);
+
+    fetch(`${baseUrl}?place=${locationName}`,
+        { method: 'DELETE', crossDomain: true });
+};
+for (let elem of trashBins) {
+    elem.addEventListener('click', onTrashClick);
+}
+
+const createHiddenOpsDiv = () => {
+    const container = document.createElement('div');
+    container.className = 'hidden-options horizontal-flex';
+    const pencilDiv = document.createElement('div');
+    pencilDiv.className = 'hidden-options__pencil button';
+    const trashDiv = document.createElement('div');
+    trashDiv.className = 'hidden-options__trash button';
+    trashDiv.addEventListener('click', onTrashClick);
+    container.appendChild(pencilDiv);
+    container.appendChild(trashDiv);
+
+    return container;
+};
 
 const createNameDiv = name => {
     const locDiv = document.createElement('div');
@@ -103,11 +133,23 @@ const createNotVisitedDiv = () => {
 const createArticle = name => {
     const article = document.createElement('article');
     article.className = 'location horizontal-flex';
+    article.appendChild(createHiddenOpsDiv());
     article.appendChild(createNameDiv(name));
     article.appendChild(createArrowDiv());
     article.appendChild(createNotVisitedDiv());
 
     return article;
+};
+
+// throw error if trying to add a place with the same name
+const checkNamesManually = name => {
+    const locationCollection = document.getElementsByClassName('locations-list')[0].children;
+    for (let elem of locationCollection) {
+        const elemName = elem.firstChild.nextElementSibling.textContent;
+        if (elemName === name) {
+            throw new Error('Trying to add existing element');
+        }
+    }
 };
 
 // insert new place by enter and button click
@@ -116,14 +158,18 @@ const addButton = document.getElementsByClassName('location-insertion__button')[
 const onLocationInsertion = () => {
     event.preventDefault();
     const input = document.getElementsByClassName('insertion-form__input');
+    let addedElement;
+    let parent;
     try {
         sendReq(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
-        const parent = document.getElementsByClassName('locations-list')[0];
-        const addedElement = createArticle(input[0].value);
+        checkNamesManually(input[0].value);
+        parent = document.getElementsByClassName('locations-list')[0];
+        addedElement = createArticle(input[0].value);
         parent.appendChild(addedElement);
-        correctArrows(parent.children);
     } catch (e) {
-        console.error(e);
+        parent.removeChild(addedElement);
+    } finally {
+        correctArrows(parent.children);
     }
 };
 addForm.addEventListener('submit', onLocationInsertion);
