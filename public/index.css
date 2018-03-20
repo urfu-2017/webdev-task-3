@@ -1,0 +1,121 @@
+.app {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 10px 20px;
+  border: 1px solid;
+  color: #2ea4ed;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.header__heading {
+  text-align: center;
+  margin: 0 0 10px;
+}
+.header__search {
+  padding: 5px 30px;
+  background: url("media/search.svg") 5px 50% no-repeat;
+  background-size: 20px;
+  border: none;
+  box-shadow: 0 1px 0 0 #ededed;
+  outline: none;
+  transition: 0.2s box-shadow;
+}
+.header__search:focus {
+  box-shadow: 0 2px 0 0 #2ea4ed;
+}
+.create {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.create__input {
+  width: 75%;
+  border: none;
+  box-shadow: 0 1px 0 0 #ededed;
+  outline: none;
+  transition: 0.2s box-shadow;
+}
+.create__input:focus {
+  box-shadow: 0 2px 0 0 #2ea4ed;
+}
+.create__btn {
+  width: 20%;
+  max-width: 100px;
+  padding: 5px 15px;
+  border: none;
+  border-radius: 50px;
+  outline: none;
+  color: #fff;
+  background: #2ea4ed;
+  cursor: pointer;
+  transition: background-color 0.5s;
+}
+.create__btn:hover {
+  background: #128bd6;
+}
+.places__header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid;
+}
+.places__wrapper {
+  display: flex;
+}
+.places__heading {
+  margin: 0 5px 0 0;
+}
+.places__delete {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  align-self: center;
+  outline: none;
+  background: none;
+  cursor: pointer;
+}
+.places__delete .st0 {
+  fill: #2ea4ed;
+  transition: fill 0.5s;
+}
+.places__delete :hover .st0 {
+  fill: #f00;
+}
+.places__sort-options {
+  display: flex;
+}
+.places__sort-option {
+  display: none;
+}
+.places__sort-option:checked + label {
+  background: #2ea4ed;
+  color: #fff;
+}
+.places__sort-option-label {
+  padding: 4px 10px;
+  border: 1px solid #2ea4ed;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.places__sort-option-label:not(:first-of-type):not(:last-of-type) {
+  border-right: none;
+  border-left: none;
+}
+.places__sort-option-label:first-of-type {
+  border-radius: 50px 0 0 50px;
+}
+.places__sort-option-label:last-of-type {
+  border-radius: 0 50px 50px 0;
+}
+.places__sort-option-label:hover {
+  background-color: #e7e7e7;
+}
+.main {
+  margin-bottom: 20px;
+}
