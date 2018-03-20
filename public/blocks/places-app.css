@@ -1,0 +1,32 @@
+.places-app
+{
+    display: grid;
+    grid-template-areas: "." "search" "add" "list" "footer";
+    align-items: stretch;
+    grid-template-rows: .5rem auto auto 1fr 2rem;
+    grid-row-gap: .5em;
+    height: 100vh;
+    padding: 0 1rem;
+    margin: 0;
+    width: 350px;
+}
+
+.places-app__search
+{
+    grid-area: search;
+}
+
+.places-app__add
+{
+    grid-area: add;
+}
+
+.places-app__list
+{
+    grid-area: list;
+}
+
+.places-app__footer
+{
+    grid-area: footer;
+}

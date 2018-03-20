@@ -1,0 +1,108 @@
+.list-item
+{
+    display: grid;
+    width: 250px;
+    grid-template-columns: 1fr 1fr 8fr 1fr 1fr 1fr;
+    grid-column-gap: .25em;
+}
+
+.list-item_state_hidden
+{
+    display: none;
+}
+
+.list-item_state_normal
+{
+    grid-template-areas: '. . input up down checkbox';
+}
+
+.list-item_state_editing
+{
+    grid-template-areas: '. . input cancel accept .';
+}
+
+.list-item_state_hovering
+{
+    grid-template-areas: 'edit remove input up down checkbox';
+}
+
+.list-item_state_normal .list-item__accept,
+.list-item_state_normal .list-item__cancel,
+.list-item_state_normal .list-item__remove,
+.list-item_state_normal .list-item__edit
+{
+    display: none;
+}
+
+.list-item_state_editing .list-item__checkbox,
+.list-item_state_editing .list-item__remove,
+.list-item_state_editing .list-item__edit,
+.list-item_state_editing .list-item__down,
+.list-item_state_editing .list-item__up
+{
+    display: none;
+}
+
+.list-item_state_editing .list-item__input
+{
+    border-color: #9e9e9e;
+}
+
+.list-item_state_hovering .list-item__accept,
+.list-item_state_hovering .list-item__cancel
+{
+    display: none;
+}
+
+.list-item__input
+{
+    outline: none;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+
+
+
+.list-item__input
+{
+    grid-area: input;
+}
+
+.list-item__edit
+{
+    grid-area: edit;
+}
+
+.list-item__remove
+{
+    grid-area: remove;
+}
+
+.list-item__up
+{
+    grid-area: up;
+}
+
+.list-item__down
+{
+    grid-area: down;
+}
+
+.list-item__checkbox
+{
+    grid-area: checkbox;
+}
+
+.list-item__accept
+{
+    grid-area: accept;
+}
+
+.list-item__cancel
+{
+    grid-area: cancel;
+}
+
+
+
+
+
