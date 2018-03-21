@@ -18,20 +18,21 @@
 				</div>
 				<header class="spots-header">
 					<span class="spots-header-text">Места</span>
-					<button class="remove-button" title="Очистить список"></button>
+					<button class="spots-clear-button remove-button" title="Очистить список"></button>
 					<div class="spots-pills pills">
-						<div class="pill-active">
+						<div class="pill-active pill-all">
 							Все
-						</div><div class="pill">
+						</div><div class="pill pill-not-visited">
 							Посетить
-						</div><div class="pill">
+						</div><div class="pill pill-visited">
 							Посещенные
 						</div>
 					</div>
 				</header>
-				<p class="spot-list-empty">Список пуст</p>
-				<ul class="spot-list">
-					<li class="spot-list-item">
+				<div class="spot-list-container">
+					<p class="spot-list-empty">Список пуст</p>
+					<ul class="spot-list">
+						<li class="spot-list-item">
 						<button class="edit-button" title="Изменить описание"></button>
 						<button class="remove-button" title="Удалить место"></button>
 						<input class="spot-desc-input" value="hasla" readonly>
@@ -42,8 +43,8 @@
 							<button class="down-button"></button>
 							<input type="checkbox" title="Пометить посещенным">
 						</div>
-					</li>
-					<li class="spot-list-item">
+						</li>
+						<li class="spot-list-item">
 							<button class="edit-button hidden" title="Изменить описание"></button>
 							<button class="remove-button hidden" title="Удалить место"></button>
 							<input class="spot-desc-input-active" value="hasla">
@@ -54,8 +55,9 @@
 								<button class="down-button"></button>
 								<input type="checkbox" title="Пометить посещенным">
 							</div>
-					</li>
-				</ul>
+						</li>
+					</ul>
+				</div>
 			</div>
 			<footer class="footer">
 				<div class="spots-padding">
