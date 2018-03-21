@@ -6,7 +6,7 @@
     <title>{{ title }}</title>
     <meta name="description" content="{{ meta.description }}">
     <link rel="stylesheet" href="/index.css" media="screen">
-    <script async src="script.js"></script>
+
 </head>
 
 <body class="body">
@@ -15,33 +15,22 @@
         <input type="text" class="create__input" placeholder="Название места">
         <input type="button" class="create__button" value="Создать">
     </div>
-    <div class="places-header">
-        <span>Места</span>
-        <input type="button" value="Очистить список мест">
-
-        <input type="radio" id="all" name="contact" value="Все" checked>
-        <label for="all">Все</label>
-
-        <input type="radio" id="toVisit" name="contact" value="Посетить">
-        <label for="toVisit">Посетить</label>
-
-        <input type="radio" id="visited" name="contact" value="Посещённые">
-        <label for="visited">Посещённые</label>
-
-    </div>
+    <span>Места</span>
+    <input type="button" class="clear-button" value="Очистить список мест">
+    <input type="radio" id="all" name="contact" value="Все" checked>
+    <label for="all">Все</label>
+    <input type="radio" id="toVisit" name="contact" value="Посетить">
+    <label for="toVisit">Посетить</label>
+    <input type="radio" id="visited" name="contact" value="Посещённые">
+    <label for="visited">Посещённые</label>
     <hr>
     <ul class="places-list">
-        <li class="places-item">
-            <input type="text" class="places-item__name" value="qwe" disabled>
-            <input type="button" class="places-item__up-button" value="up">
-            <input type="button" class="places-item__down-button" value="down">
-            <input type="checkbox" name="places-item__visited" id="">
-        </li>
     </ul>
     <hr>
     <footer class="footer">
         {{footer}}
     </footer>
+    <script src="script.js"></script>
 </body>
 
 </html>

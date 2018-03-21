@@ -6,3 +6,29 @@ li
 {
     list-style: none;
 }
+input[id="toVisit"]:checked ~ .places-list .places-item[visited="true"]
+{
+    display: none;
+}
+input[id="visited"]:checked ~ .places-list .places-item[visited="false"]
+{
+    display: none;
+}
+.places-item .places-item__edit-button,
+.places-item .places-item__delete-button
+{
+    visibility: hidden;
+}
+.places-item:hover .places-item__edit-button,
+.places-item:hover .places-item__delete-button
+{
+    visibility: visible;
+}
+.places-item:first-child .places-item__up-button
+{
+    visibility: hidden;
+}
+.places-item:last-child .places-item__down-button
+{
+    visibility: hidden;
+}
