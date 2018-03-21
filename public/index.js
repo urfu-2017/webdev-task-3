@@ -23,14 +23,24 @@ const renderSpots = spots => {
         return;
     }
     const spotList = createSpotList();
-    spots.forEach(spot => spotList.appendChild(createSpotListItem(spot)));
+    if (spots.length === 1) {
+        spotList.appendChild(createSpotListItem(spots[0]))
+    } else {
+        spotList.appendChild(createSpotListItem(spots[0], null, spots[1]))
+        for(let i = 1; i < (spots.length - 1); i++) {
+            spotList.appendChild(createSpotListItem(spots[i], spots[i - 1], spots[i + 1]));
+        }
+        spotList.appendChild(createSpotListItem(spots[spots.length - 1], spots[spots.length - 2], null));
+    }
 
     spotListContainer.appendChild(spotList);
 }
 
 const createSpotList = () => createElement({ name: 'ul', cls: 'spot-list' });
 
-const createSpotListItem = ({id, desc, visited}) => {
+const indexOfSpot = spot => renderedSpots.findIndex(x => x.id === spot.id);
+
+const createSpotListItem = ({id, desc, visited}, prev = null, next = null) => {
     // TODO
     const editButton = createElement({ name: 'button', classes: ['spot-edit', 'edit-button'], title: 'Изменить описание'  });
     const removeButton = createElement({ name: 'button', classes: ['spot-remove', 'remove-button'], title: 'Удалить место' });
@@ -40,7 +50,12 @@ const createSpotListItem = ({id, desc, visited}) => {
     const accept = createElement({ name: 'button', classes: ['spot-accept', 'accept-button', 'hidden'], title: 'Сохранить изменения' });
     const decline = createElement({ name: 'button', classes: ['spot-decline', 'decline-button', 'hidden'], title: 'Отменить изменения' });
     const up = createElement({ name: 'button', classes: ['spot-up', 'up-button'] });
+    
     const down = createElement({ name: 'button', classes: ['spot-down', 'down-button'] });
+    if (prev === null)
+        up.classList.add('hidden');
+    if (next === null)
+        down.classList.add('hidden');
     const checkbox = createElement({ name: 'input', title: 'Пометить посещенным', attrs: { type: 'checkbox', checked: visited } });
     let beforeValue = input.value;
     const onInputClick = () => {
@@ -61,6 +76,20 @@ const createSpotListItem = ({id, desc, visited}) => {
         decline.classList.add('hidden');
         editButton.classList.remove('hidden')
         input.onkeydown = nop;
+    }
+    up.onclick = () => {
+        const [i, j] = [indexOfSpot(prev), indexOfSpot({id})];
+        jetch(`/api/spots/${id}/swap-with?id=${prev.id}`, 'POST').then(x => {
+            swapSpots(i, j);
+            reRender();
+        }, console.error);
+    }
+    down.onclick = () => {
+        const [i, j] = [indexOfSpot(next), indexOfSpot({id})];
+        jetch(`/api/spots/${id}/swap-with?id=${next.id}`, 'POST').then(x => {
+            swapSpots(i, j);
+            reRender();
+        }, console.error);
     }
     checkbox.onchange = () => {
         const visited = checkbox.checked;
@@ -97,6 +126,12 @@ const createSpotListItem = ({id, desc, visited}) => {
         editButton, removeButton, input, accept, decline,
         createElement({ name: 'div', cls: 'spot-list-item-right', children: [up, down, checkbox] })
     ]});
+}
+
+const swapSpots = (i, j) => {
+    const tmp = renderedSpots[i];
+    renderedSpots[i] = renderedSpots[j];
+    renderedSpots[j] = tmp;
 }
 
 const getVisitedFilter = () => {
