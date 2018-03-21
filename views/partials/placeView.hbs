@@ -1,0 +1,36 @@
+<div class="place-view">
+    <div class="filter-box">
+        <div class="filter-box_title">
+            <span>Места </span>
+            <div class="filter-box_delete-all">🗑</div>
+        </div>
+        <div class="filter-box_tumbs">
+            <input id="f1" class="filter-box_tumb" type="radio" name="filter" checked/>
+            <label for="f1">Все</label>
+            <input id="f2" class="filter-box_tumb" type="radio" name="filter"/>
+            <label for="f2">Посетить</label>
+            <input id="f3" class="filter-box_tumb" type="radio" name="filter"/>
+            <label for="f3">Посещенные</label>
+        </div>
+    </div>
+    <div class="place-view_places">
+        {{#each places}}
+            <div id={{id}} class="place">
+                <div class="place_main">
+                    <div class="place_change-btn">🖋</div>
+                    <div class="place_delete-btn">❌</div>
+                    <div class="place_description" style="text-decoration: {{textDecoration}}">{{description}}</div>
+                </div>
+                <div class="place_controlls">
+                    <div class="place_dragdrop">🔀</div>
+                    <input class="place_checkbox" type="checkbox" {{visited}}/>
+                </div>
+                <div class="place_input-сhange">
+                    <input class="place_input" type="text" value="{{description}}"/>
+                    <div class="place_cancel-btn">❌</div>
+                    <div class="place_confirm-btn">✅</div>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+</div>
