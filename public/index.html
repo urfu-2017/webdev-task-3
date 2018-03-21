@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>webdev-task-3</title>
+		<link rel="stylesheet" href="public/index.css">
+	</head>
+	<body class="spots-container">
+		<main class="spots">
+			<div class="spots-padding">
+				<div class="search-input-container">
+					<input class="search-input" required>
+					<span class="search-input-placeholder">Поиск</span>
+				</div>
+				<div class="new-spot-input-container">
+					<input class="new-spot-input">
+					<button class="new-spot-input-button create-button">Создать</button>
+				</div>
+				<header class="spots-header">
+					<span class="spots-header-text">Места</span>
+					<button class="remove-button" title="Очистить список"></button>
+					<div class="spots-pills pills">
+						<div class="pill-active">
+							AAA
+						</div><div class="pill">
+							BBB
+						</div><div class="pill">
+							CCC
+						</div>
+					</div>
+				</header>
+				<p class="spot-list-empty">Список пуст</p>
+				<ul class="spot-list">
+					<li class="spot-list-item">
+						<button class="edit-button" title="Изменить описание"></button>
+						<button class="remove-button" title="Удалить место"></button>
+						<input class="spot-desc-input" value="hasla" readonly>
+						<button class="accept-button hidden" title="Сохранить"></button>
+						<button class="decline-button hidden" title="Отменить"></button>
+						<div style="float: right">
+							<button class="up-button"></button>
+							<button class="down-button"></button>
+							<input type="checkbox" title="Пометить посещенным">
+						</div>
+					</li>
+					<li class="spot-list-item">
+							<button class="edit-button hidden" title="Изменить описание"></button>
+							<button class="remove-button hidden" title="Удалить место"></button>
+							<input class="spot-desc-input-active" value="hasla">
+							<button class="accept-button" title="Сохранить"></button>
+							<button class="decline-button" title="Отменить"></button>
+							<div style="float: right">
+								<button class="up-button"></button>
+								<button class="down-button"></button>
+								<input type="checkbox" title="Пометить посещенным">
+							</div>
+					</li>
+				</ul>
+			</div>
+			<footer class="footer">
+				<div class="spots-padding">
+					<div class="footer-left-text">2018</div>
+					<div class="footer-right-text">@guy</div>
+				</div>
+			</footer>
+		</main>
+		
+		
+		<script src="public/index.js"></script>
+	</body>
+</html>
