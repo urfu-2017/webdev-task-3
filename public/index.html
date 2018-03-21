@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Павел слишком занят</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
+          integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css"
+          integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P"
+          crossorigin="anonymous">
+    <script rel="text/javascript" src="index.js"></script>
+</head>
+<body>
+<main>
+    <section class="search">
+        <input class="search__input" type="text" placeholder="Поиск"/>
+    </section>
+    <section class="add-place">
+        <input class="add-place__input" type="text" placeholder="Название места"/>
+        <button class="add-place__button">Создать</button>
+    </section>
+    <section class="places">
+        <div class="places__header">
+            <h2 class="places__header-text">Места</h2>
+            <button class="places__clear-all"><i class="fas fa-trash-alt"></i></button>
+            <div class="places__filter">
+                <button class="places__button places__label_checked" value="all">
+                    Все
+                </button>
+                <button class="places__button" value="vis">
+                    Посещенные
+                </button>
+                <button class="places__button" value="not-vis">
+                    Непосещенные
+                </button>
+            </div>
+        </div>
+        <article class="places__list"></article>
+    </section>
+    <footer class="footer main-page__footer">
+        <span class="footer__copyright">&copy; Someone</span>
+        <span class="footer__date">2018</span>
+    </footer>
+</main>
+</body>
+</html>
