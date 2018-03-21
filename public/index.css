@@ -10,8 +10,6 @@
 
 .hidden {
     visibility: hidden;
-    //display: none;
-    //opacity: .001;
 }
 
 .spots-container {
@@ -31,21 +29,23 @@
 .search-input-placeholder:before {
     content: "\ed60";
     margin-right: 3px;
-}
-
-.search-input:focus + .search-input-placeholder {
-    display: none;
+    margin-left: 1px;
 }
 
 .search-input:valid + .search-input-placeholder {
     display: none;
 }
 
+.search-input-placeholder, .new-spot-input::placeholder {
+    color: #777;
+    font-size: 16px;
+    
+}
+
 .search-input-placeholder {
     position: absolute;
-    top: 5px;
+    top: 4px;
     left: 5px;
-    color: #777;
 }
 
 .new-spot-input, .search-input, .spot-desc-input-active, .spot-desc-input {
@@ -136,7 +136,12 @@
     display: inline-block;
     padding: 5px;
     border: thin solid #000;
-    border-right: 90%;
+    border-right: 80%;
+    font-weight: bold;
+}
+
+.spot-list-item-right {
+    float: right;
 }
 
 .pills {
