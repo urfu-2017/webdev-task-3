@@ -62,20 +62,6 @@ for (const elem of arrows) {
     elem.addEventListener('click', onArrowClick);
 }
 
-// delete single location
-const trashBins = document.getElementsByClassName('hidden-options__trash');
-const onTrashClick = event => {
-    const node = event.target.parentElement.parentElement;
-    const locationName = getElemByClass('location-name', node).textContent;
-    node.parentElement.removeChild(node);
-    correctArrows();
-    fetch(`${baseUrl}?place=${locationName}`,
-        { method: 'DELETE' });
-};
-for (const elem of trashBins) {
-    elem.addEventListener('click', onTrashClick);
-}
-
 const createNameDiv = name => {
     const locDiv = document.createElement('div');
     locDiv.className = 'location-name';
@@ -114,59 +100,20 @@ const createNotVisitedDiv = () => {
     return divNotVisited;
 };
 
-// on pencil click
-const updateName = event => {
-    event.preventDefault();
-    const node = getElemByClass('change-name-input');
-    const newName = node.value;
-    const parent = node.parentElement.parentElement;
-    parent.replaceChild(createNameDiv(newName), node.parentElement);
-    fetch(`${baseUrl}?place=${oldName}&param=name&value=${newName}`, { method: 'PUT' });
+// delete single location
+const trashBins = document.getElementsByClassName('hidden-options__trash');
+const onTrashClick = event => {
+    const node = event.target.parentElement.parentElement;
+    const locationName = getElemByClass('location-name', node).textContent;
+    node.parentElement.removeChild(node);
+    correctArrows();
+    fetch(`${baseUrl}?place=${locationName}`,
+        { method: 'DELETE' });
 };
-
-const renameLocation = document.getElementsByClassName('hidden-options__pencil');
-const onPencilClick = event => {
-    const node = getElemByClass('location-name', event.target.parentElement.parentElement);
-    oldName = node.textContent;
-    const input = document.createElement('input');
-    const form = document.createElement('form');
-    input.type = 'text';
-    input.value = oldName;
-    input.className = 'change-name-input';
-    form.className = 'location-name';
-    form.appendChild(input);
-    node.parentElement.replaceChild(form, node);
-    form.addEventListener('submit', updateName);
-};
-for (const elem of renameLocation) {
-    elem.addEventListener('click', onPencilClick);
+for (const elem of trashBins) {
+    elem.addEventListener('click', onTrashClick);
 }
 
-const createHiddenOpsDiv = () => {
-    const container = document.createElement('div');
-    container.className = 'hidden-options horizontal-flex';
-    const pencilDiv = document.createElement('div');
-    pencilDiv.className = 'hidden-options__pencil button';
-    const trashDiv = document.createElement('div');
-    trashDiv.className = 'hidden-options__trash button';
-    trashDiv.addEventListener('click', onTrashClick);
-    pencilDiv.addEventListener('click', onPencilClick);
-    container.appendChild(pencilDiv);
-    container.appendChild(trashDiv);
-
-    return container;
-};
-
-const createArticle = name => {
-    const article = document.createElement('article');
-    article.className = 'location horizontal-flex visible';
-    article.appendChild(createHiddenOpsDiv());
-    article.appendChild(createNameDiv(name));
-    article.appendChild(createArrowDiv());
-    article.appendChild(createNotVisitedDiv());
-
-    return article;
-};
 
 // throw error if trying to add a place with the same name
 const checkNamesManually = name => {
@@ -177,6 +124,74 @@ const checkNamesManually = name => {
             throw new Error('Trying to add existing element');
         }
     }
+};
+
+// on pencil click
+const updateName = event => {
+    event.preventDefault();
+    let addedElement;
+    let parent;
+    try {
+        const node = getElemByClass('change-name-input');
+        const newName = node.value;
+        checkNamesManually(newName);
+        fetch(`${baseUrl}?place=${oldName}&param=name&value=${newName}`, { method: 'PUT' });
+        parent = node.parentElement.parentElement;
+        addedElement = createNameDiv(newName);
+        parent.replaceChild(addedElement, node.parentElement);
+    } catch (e) {
+        parent.removeChild(addedElement);
+    } finally {
+        correctArrows();
+    }
+};
+
+const renameLocation = document.getElementsByClassName('hidden-options__pencil');
+const onPencilClick = event => {
+    const node = getElemByClass('location-name', event.target.parentElement.parentElement);
+    oldName = node.textContent;
+    const input = document.createElement('input');
+    const form = document.createElement('form');
+    form.className = 'location-name';
+    input.type = 'text';
+    input.value = oldName;
+    input.className = 'change-name-input';
+    form.appendChild(input);
+    form.addEventListener('submit', updateName);
+    node.parentElement.replaceChild(form, node);
+};
+for (const elem of renameLocation) {
+    elem.addEventListener('click', onPencilClick);
+}
+
+const createHiddenOpsDiv = () => {
+    const container = document.createElement('div');
+    const pencilDiv = document.createElement('div');
+    const trashDiv = document.createElement('div');
+
+    container.className = 'hidden-options horizontal-flex';
+    pencilDiv.className = 'hidden-options__pencil button';
+    trashDiv.className = 'hidden-options__trash button';
+
+    pencilDiv.addEventListener('click', onPencilClick);
+    trashDiv.addEventListener('click', onTrashClick);
+
+    container.appendChild(pencilDiv);
+    container.appendChild(trashDiv);
+
+    return container;
+};
+
+// create location element in dom
+const createArticle = name => {
+    const article = document.createElement('article');
+    article.className = 'location horizontal-flex visible';
+    article.appendChild(createHiddenOpsDiv());
+    article.appendChild(createNameDiv(name));
+    article.appendChild(createArrowDiv());
+    article.appendChild(createNotVisitedDiv());
+
+    return article;
 };
 
 // insert new place by enter and button click
@@ -202,6 +217,7 @@ const onLocationInsertion = () => {
 addForm.addEventListener('submit', onLocationInsertion);
 addButton.addEventListener('click', onLocationInsertion);
 
+// displays elements containing required search string
 const checkSearch = () => {
     const children = getElemByClass('locations-list').children;
     for (const element of children) {
@@ -213,6 +229,7 @@ const checkSearch = () => {
     }
 };
 
+// visible/hidden
 const toggleVisibility = (element, isVisible) => {
     if (isVisible) {
         element.style.display = 'flex';
