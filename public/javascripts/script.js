@@ -3,7 +3,8 @@ const baseUrl = 'https://cors-anywhere.herokuapp.com/https://webdev-task-2-gguhu
 let oldName = '';
 let currentSearchResult = '';
 
-const correctArrows = collection => {
+const correctArrows = () => {
+    const collection = document.getElementsByClassName('location horizontal-flex visible');
     let idx = 0;
     for (const elem of collection) {
         const arrowDown = elem.getElementsByClassName('arrow-down')[0];
@@ -30,8 +31,7 @@ const onClickHandler = event => {
     if (event.target.classList.value.indexOf('not') === -1) {
         value = true;
     }
-    const url = `${baseUrl}?place=${locationName}&param=visited&value=${value}`;
-    fetch(url, { method: 'PUT' });
+    fetch(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, { method: 'PUT' });
 };
 for (const elem of visited) {
     elem.addEventListener('click', onClickHandler);
@@ -50,9 +50,8 @@ const onArrowClick = event => {
         swapNode = node.previousElementSibling;
         swapNode.parentElement.insertBefore(node, swapNode);
     }
-    const list = document.getElementsByClassName('locations-list');
     const secondName = swapNode.firstChild.nextElementSibling.textContent;
-    correctArrows(list[0].children);
+    correctArrows();
     fetch(`${baseUrl}?place1=${locationName}&place2=${secondName}`,
         { method: 'PUT' });
 };
@@ -67,8 +66,7 @@ const onTrashClick = event => {
     const parent = node.parentElement;
     const locationName = node.firstChild.nextElementSibling.textContent;
     parent.removeChild(node);
-    correctArrows(parent.children);
-
+    correctArrows();
     fetch(`${baseUrl}?place=${locationName}`,
         { method: 'DELETE' });
 };
@@ -84,19 +82,24 @@ const createNameDiv = name => {
     return locDiv;
 };
 
+const createSingleArrow = arrowType => {
+    const arrowDiv = document.createElement('div');
+    if (arrowType === 'arrow-up') {
+        arrowDiv.setAttribute('style', 'visibility:visible;');
+    } else {
+        arrowDiv.setAttribute('style', 'visibility:hidden;');
+    }
+    arrowDiv.className = `${arrowType} button arrow`;
+    arrowDiv.addEventListener('click', onArrowClick);
+
+    return arrowDiv;
+};
+
 const createArrowDiv = () => {
     const divArrows = document.createElement('div');
     divArrows.className = 'arrows horizontal-flex';
-    const divUpArrow = document.createElement('div');
-    divUpArrow.className = 'arrow-up button arrow';
-    divUpArrow.setAttribute('style', 'visibility:visible;');
-    const divDownArrow = document.createElement('div');
-    divDownArrow.className = 'arrow-down button arrow';
-    divDownArrow.setAttribute('style', 'visibility:hidden;');
-    divArrows.appendChild(divUpArrow);
-    divArrows.appendChild(divDownArrow);
-    divUpArrow.addEventListener('click', onArrowClick);
-    divDownArrow.addEventListener('click', onArrowClick);
+    divArrows.appendChild(createSingleArrow('arrow-up'));
+    divArrows.appendChild(createSingleArrow('arrow-down'));
 
     return divArrows;
 };
@@ -116,8 +119,7 @@ const updateName = event => {
     const newName = node.value;
     const parent = node.parentElement.parentElement;
     parent.replaceChild(createNameDiv(newName), node.parentElement);
-    const url = `${baseUrl}?place=${oldName}&param=name&value=${newName}`;
-    fetch(url, { method: 'PUT' });
+    fetch(`${baseUrl}?place=${oldName}&param=name&value=${newName}`, { method: 'PUT' });
 };
 
 const renameLocation = document.getElementsByClassName('hidden-options__pencil');
@@ -155,7 +157,7 @@ const createHiddenOpsDiv = () => {
 
 const createArticle = name => {
     const article = document.createElement('article');
-    article.className = 'location horizontal-flex';
+    article.className = 'location horizontal-flex visible';
     article.appendChild(createHiddenOpsDiv());
     article.appendChild(createNameDiv(name));
     article.appendChild(createArrowDiv());
@@ -167,7 +169,7 @@ const createArticle = name => {
 // throw error if trying to add a place with the same name
 const checkNamesManually = name => {
     const locationCollection = document.getElementsByClassName('locations-list')[0].children;
-    for (let elem of locationCollection) {
+    for (const elem of locationCollection) {
         const elemName = elem.firstChild.nextElementSibling.textContent;
         if (elemName === name) {
             throw new Error('Trying to add existing element');
@@ -192,7 +194,7 @@ const onLocationInsertion = () => {
     } catch (e) {
         parent.removeChild(addedElement);
     } finally {
-        correctArrows(parent.children);
+        correctArrows();
     }
 };
 addForm.addEventListener('submit', onLocationInsertion);
@@ -210,62 +212,60 @@ const checkSearch = () => {
     });
 };
 
+const toggleVisibility = (element, isVisible) => {
+    if (isVisible) {
+        element.style.display = 'flex';
+        element.className = 'location horizontal-flex visible';
+    } else {
+        element.style.display = 'none';
+        element.className = 'location horizontal-flex hidden';
+    }
+};
+
 // display for all, not visited, visited
 const display = document.getElementsByClassName('location-menu__nav');
 const onClickHandlerDisplay = event => {
     const displayParam = event.target.textContent;
-    const parent = document.getElementsByClassName('locations-list');
-    const children = Array.from(parent[0].children);
-    if (displayParam === 'All') {
-        children.forEach(element => {
-            element.style.display = 'flex';
-            element.className = 'location horizontal-flex visible';
-        });
-    } else if (displayParam === 'Not visited') {
-        children.forEach(element => {
-            if (element.lastElementChild.classList.value.indexOf('not') === -1) {
-                element.style.display = 'none';
-                element.className = 'location horizontal-flex hidden';
-            } else {
-                element.style.display = 'flex';
-                element.className = 'location horizontal-flex visible';
+    const list = document.getElementsByClassName('locations-list')[0].children;
+    switch (displayParam) {
+        case 'All':
+            for (const element of list) {
+                toggleVisibility(element, true);
             }
-        });
-    } else {
-        children.forEach(element => {
-            if (element.lastElementChild.classList.value.indexOf('not') === -1) {
-                element.style.display = 'flex';
-                element.className = 'location horizontal-flex visible';
-            } else {
-                element.style.display = 'none';
-                element.className = 'location horizontal-flex hidden';
+            break;
+        case 'Not visited':
+            for (const element of list) {
+                toggleVisibility(element,
+                    element.lastElementChild.classList.value.indexOf('not') !== -1);
             }
-        });
+            break;
+        default:
+            for (const element of list) {
+                toggleVisibility(element,
+                    element.lastElementChild.classList.value.indexOf('not') === -1);
+            }
+            break;
     }
     checkSearch();
-    correctArrows(document.getElementsByClassName('location horizontal-flex visible'));
+    correctArrows();
 };
 for (const elem of display) {
     elem.addEventListener('click', onClickHandlerDisplay);
 }
 
 // delete everything
-const trashEverything = document.getElementsByClassName('location-menu__delete-button');
+const deleteButton = document.getElementsByClassName('location-menu__delete-button')[0];
 const onDeleteHandler = () => {
     fetch(baseUrl, { method: 'DELETE' });
-    const node = document.getElementsByClassName('locations-list')[0];
-    while (node.firstChild) {
-        node.removeChild(node.firstChild);
+    const list = document.getElementsByClassName('locations-list')[0];
+    while (list.firstChild) {
+        list.removeChild(list.firstChild);
     }
 };
-trashEverything[0].addEventListener('click', onDeleteHandler);
+deleteButton.addEventListener('click', onDeleteHandler);
 
 // when page is refreshed [without this it will load every location with two arrows]
-const onRefresh = () => {
-    const node = document.getElementsByClassName('locations-list')[0];
-    correctArrows(node.children);
-};
-document.addEventListener('DOMContentLoaded', onRefresh);
+document.addEventListener('DOMContentLoaded', () => correctArrows());
 
 // search form
 const searchForm = document.getElementsByClassName('search-form')[0];
