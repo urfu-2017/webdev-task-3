@@ -1,0 +1,45 @@
+.filters {
+    margin: 0 auto;
+    width: 600px;
+    display: flex;
+}
+
+.filters__title {
+    width: 200px;
+}
+
+.filters__delete {
+    width: 50px;
+}
+
+.filters__visited {
+    
+}
+
+.search {
+    margin: 0 auto;
+    width: 600px;
+    padding: 20px;
+}
+
+.place {
+    display: flex;
+}
+
+.place__title {
+    flex-grow: 4;
+}
+
+.arrows {
+    flex-grow: 1;
+}
+
+.place__visited {
+    flex-grow: 1;
+}
+
+.places {
+    width: 600px;
+    margin: 0 auto;
+    padding: 10px;
+}

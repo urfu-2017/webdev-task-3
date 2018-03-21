@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title>Places</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="public/main.css" />
+</head>
+<body>
+    <div class="search">
+        <input class="search__input" type="text" />
+        <button class="search__submit">
+    </div>
+    <div class="filters">
+        <h2 class="filters__title">Места</h2>
+        <div class="filters__delete">
+            <button class="">Delete</button>
+        </div>
+        <div class="filters-visited">
+            <input type="radio" name="visited" class="filters-visited__all">All</input>
+            <input type="radio" name="visited" class="filters-visited__yes">Yes</input>
+            <input type="radio" name="visited" class="filters-visited__no">Not</input>
+        </div>
+    </div>
+    <main class="places">
+        <article class="place">
+            <div class="place__title">
+                Rome
+            </div>
+            <div class="arrows">
+                <span class="arrows__up">
+                </span>++
+                <span class="arrows__down">--
+                </span>
+            </div>
+            <input type="checkbox" class="place__visited" />
+        </article>
+    </main>
+    <footer>
+        <h2>Places</h2>
+    </footer>
+    <script src="public/main.js"></script>
+</body>
+</html>
