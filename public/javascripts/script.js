@@ -1,6 +1,5 @@
 'use strict';
 const baseUrl = 'https://cors-anywhere.herokuapp.com/https://webdev-task-2-gguhuxcnsd.now.sh';
-let oldName = '';
 let currentSearchResult = '';
 
 const getElemByClass = (className, root = document) => root.getElementsByClassName(className)[0];
@@ -127,8 +126,8 @@ const checkNamesManually = name => {
 };
 
 // on pencil click
-const updateName = event => {
-    event.preventDefault();
+const updateName = oldName => {
+    // event.preventDefault();
     let addedElement;
     let parent;
     try {
@@ -149,7 +148,7 @@ const updateName = event => {
 const renameLocation = document.getElementsByClassName('hidden-options__pencil');
 const onPencilClick = event => {
     const node = getElemByClass('location-name', event.target.parentElement.parentElement);
-    oldName = node.textContent;
+    const oldName = node.textContent;
     const input = document.createElement('input');
     const form = document.createElement('form');
     form.className = 'location-name';
@@ -157,7 +156,7 @@ const onPencilClick = event => {
     input.value = oldName;
     input.className = 'change-name-input';
     form.appendChild(input);
-    form.addEventListener('submit', updateName);
+    form.addEventListener('submit', updateName.bind(this, oldName)); // eslint-disable-line
     node.parentElement.replaceChild(form, node);
 };
 for (const elem of renameLocation) {
