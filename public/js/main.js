@@ -36,30 +36,68 @@ const requests = {
     put: fetchRequest('PUT')
 };
 
+const waitUntilElementHasId = (element, func) => {
+    if (element.id) {
+        func();
+    } else {
+        log('wait');
+        setTimeout(() => waitUntilElementHasId(element, func), 250);
+    }
+};
+
 let placesListNode;
+
+let places = [];
+
+const FILTERS = {
+    ALL: () => true,
+    VISITED: i => i.visited,
+    NOT_VISITED: i => !i.visited
+};
+
+let placesFilter = FILTERS.ALL;
 
 class Place {
     constructor(place) {
         this.place = place;
     }
 
-    createRenameImage() {
-        return createElement('img', 'place__rename-image', '', { src: '/static/img/pen.png' });
+    createCheckbox() {
+        const checkbox = createElement('input', 'place__rename-checkbox', '', {
+            type: 'checkbox', style: 'display:none'
+        });
+
+        return checkbox;
+    }
+
+    createRenameImage(nameElement) {
+        const renameImage = createElement('img', 'place__rename-image', '',
+            { src: '/static/img/pen.png' });
+        renameImage.onclick = () => {
+            if (nameElement.hasAttribute('disabled')) {
+                nameElement.removeAttribute('disabled');
+            } else {
+                nameElement.setAttribute('disabled', true);
+                Place.rename(nameElement.parentElement, nameElement.value);
+            }
+            log('rename clicked', nameElement.value, nameElement.hasAttribute('disabled'));
+        };
+
+        return renameImage;
     }
 
     createDeleteImage() {
         const deleteImage = createElement('img', 'place__delete-image', '',
             { src: '/static/img/trash.jpg' });
-        deleteImage.onclick = () => {
-            log('delete-id', deleteImage.parentElement.id);
-            Place.remove(deleteImage.parentElement);
-        };
+        deleteImage.onclick = () => Place.remove(deleteImage.parentElement);
 
         return deleteImage;
     }
 
     createPlaceName() {
-        return createElement('div', 'place__name', this.place.description);
+        return createElement('input', 'place__name', '', {
+            disabled: true, value: this.place.description
+        });
     }
 
     createSwapImage(src, up = true) {
@@ -67,14 +105,22 @@ class Place {
     }
 
     createVisitedRadio() {
-        return createElement('input', 'place__visited', '', { type: 'radio' });
+        const radio = createElement('input', 'place__visited', '',
+            { type: 'radio', checked: this.place.visited });
+        radio.onchange = () => {
+            log('change', radio.parentElement.id);
+            Place.visit(radio.parentElement);
+        };
+
+        return radio;
     }
 
     toHtmlElement() {
         const div = createElement('div', 'place', '', { id: this.place.id });
-        div.appendChild(this.createRenameImage());
+        const name = this.createPlaceName();
+        div.appendChild(this.createRenameImage(name));
         div.appendChild(this.createDeleteImage());
-        div.appendChild(this.createPlaceName());
+        div.appendChild(name);
         div.appendChild(this.createSwapImage('/static/img/swap-up.png'));
         div.appendChild(this.createSwapImage('/static/img/swap-down.png', false));
         div.appendChild(this.createVisitedRadio());
@@ -90,27 +136,57 @@ class Place {
     }
 
     static remove(placeElement) {
-        log(placeElement);
-        if (placeElement.id) {
-            placesListNode.removeChild(placeElement);
+        log('removing', placeElement);
+        placesListNode.removeChild(placeElement);
+        waitUntilElementHasId(placeElement, () => {
             requests.delete(`${BACK_URL}/places/${placeElement.id}`, {});
-        }
+        });
     }
 
     static removeAll() {
         placesListNode.innerHTML = '';
     }
+
+    static visit(placeElement) {
+        log('visiting', placeElement);
+        if (placesFilter === FILTERS.NOT_VISITED) {
+            placesListNode.removeChild(placeElement);
+        }
+        waitUntilElementHasId(placeElement, () => {
+            places.find(i => i.id === Number(placeElement.id)).visited = true;
+            requests.post(`${BACK_URL}/places/visited`, { id: Number(placeElement.id) });
+        });
+    }
+
+    static rename(placeElement, description) {
+        log('renaming', placeElement);
+        waitUntilElementHasId(placeElement, () => {
+            places.find(i => i.id === Number(placeElement)).description = description;
+            const body = { description, id: Number(placeElement.id) };
+            requests.put(`${BACK_URL}/places`, body);
+        });
+    }
 }
 
-const renderPlaces = places => {
+const renderPlaces = () => {
     Place.removeAll();
-    places.forEach(place => Place.add(place));
+    places.filter(placesFilter).forEach(place => Place.add(place));
+};
+
+const setFilter = (filter, button, buttons) => () => {
+    log('change filter', button);
+    buttons.forEach(i => {
+        i.className = 'places-list__filter';
+    });
+    button.className += ' places-list__filter__checked';
+    placesFilter = filter;
+    renderPlaces();
 };
 
 const searchPlaces = async (description = '') => {
     log('search places', description, `${BACK_URL}/places?description=${description}`);
-    const jsonData = await requests.get(`${BACK_URL}/places?description=${description}`);
-    renderPlaces(jsonData);
+    places = await requests.get(`${BACK_URL}/places?description=${description}`);
+    renderPlaces();
 };
 
 const createPlaceButtonOnClick = elem => async () => {
@@ -127,6 +203,18 @@ const deleteAllPlacesOnClick = () => {
     requests.delete(`${BACK_URL}/places`, {});
 };
 
+const initFilterButtons = () => {
+    const allButton = getById('places-list__filter-all');
+    const visitedButton = getById('places-list__filter-visited');
+    const notVisitedButton = getById('places-list__filter-not-visited');
+
+    const filterButtons = [allButton, visitedButton, notVisitedButton];
+
+    allButton.onclick = setFilter(FILTERS.ALL, allButton, filterButtons);
+    visitedButton.onclick = setFilter(FILTERS.VISITED, visitedButton, filterButtons);
+    notVisitedButton.onclick = setFilter(FILTERS.NOT_VISITED, notVisitedButton, filterButtons);
+};
+
 window.onload = async () => {
     placesListNode = getById('places-list__list');
     await searchPlaces();
@@ -140,6 +228,8 @@ window.onload = async () => {
 
     const deleteAllPlaces = getById('places-list__trash-image');
     deleteAllPlaces.onclick = deleteAllPlacesOnClick;
+
+    initFilterButtons();
 };
 
 

@@ -21,12 +21,18 @@ main
 input,
 button
 {
+    outline: none;
+    background: white;
+}
+
+.create-place__input,
+.create-place__button,
+.search-place__input
+{
     padding: 0 10px;
     border-radius: 15px;
     border: 1px solid black;
-    outline: none;
     height: 40px;
-    background: white;
 }
 
 .search-place__input
@@ -134,7 +140,7 @@ button
 
 .place__name
 {
-    text-align: left;
+    border: none;
 }
 
 .place:first-of-type > .place__swap-up,
