@@ -9,7 +9,7 @@
 }
 
 .hidden {
-    visibility: hidden;
+    visibility: hidden !important;
 }
 
 .spots-container {
@@ -78,6 +78,10 @@
     border: thin solid #000;
     font-weight: bold;
     padding: 5px; 
+}
+
+.line-thru {
+    text-decoration: line-through;
 }
 
 .new-spot-input-button.create-button:hover {

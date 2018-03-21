@@ -65,23 +65,63 @@ const createElement = ({ name, classes = [], title = null, text = null, cls = nu
     return result;
 }
 
+const setSubmitButton = (node, btn) => {
+    node.onkeydown = e => {
+        if (e.keyCode === 13)
+            btn.click();
+    }
+}
 
 const createSpotList = () => createElement({ name: 'ul', cls: 'spot-list' });
 
 const createSpotListItem = ({id, desc, visited}) => {
-    const li = createElement({ name: 'li', cls: 'spot-list-item' });
     const editButton = createElement({ name: 'button', classes: ['spot-edit', 'edit-button'], title: 'Изменить описание'  });
     const removeButton = createElement({ name: 'button', classes: ['spot-remove', 'remove-button'], title: 'Удалить место' });
     const input = createElement({ name: 'input', cls: 'spot-desc-input', text: desc, attrs: { readonly: true } });
+    if (visited)
+        input.classList.add('line-thru');
+    const accept = createElement({ name: 'button', classes: ['spot-accept', 'accept-button', 'hidden'], title: 'Сохранить изменения' });
+    const decline = createElement({ name: 'button', classes: ['spot-decline', 'decline-button', 'hidden'], title: 'Отменить изменения' });
     const up = createElement({ name: 'button', classes: ['spot-up', 'up-button'] });
     const down = createElement({ name: 'button', classes: ['spot-down', 'down-button'] });
     const checkbox = createElement({ name: 'input', title: 'Пометить посещенным', attrs: { type: 'checkbox', checked: visited } });
-    li.appendChild(editButton);
-    li.appendChild(removeButton);
-    li.appendChild(input);
-    li.appendChild(createElement({ name: 'div', cls: 'spot-list-item-right', children: [up, down, checkbox] }));
+    let beforeValue = input.value;
+    const onInputClick = () => {
+        beforeValue = input.value;
+        input.onclick = nop;
+        input.classList.replace('spot-desc-input', 'spot-desc-input-active');
+        input.removeAttribute('readonly');
+        accept.classList.remove('hidden');
+        decline.classList.remove('hidden');
+        editButton.classList.add('hidden');
+        setSubmitButton(input, accept);
+    }
+    const setReadonly = () => {
+        input.onclick = onInputClick;
+        input.classList.replace('spot-desc-input-active', 'spot-desc-input');
+        input.setAttribute('readonly', true);
+        accept.classList.add('hidden');
+        decline.classList.add('hidden');
+        editButton.classList.remove('hidden')
+        input.onkeydown = nop;
+    }
+    checkbox.onchange = () => {
+        input.classList.toggle('line-thru');
+    }
+    accept.onclick = () => {
+        setReadonly();
+    }
+    decline.onclick = () => {
+        setReadonly();
+        input.value = beforeValue;
+    }
+    input.onclick = onInputClick;
+    editButton.onclick = onInputClick;
 
-    return li;
+    return createElement({ name: 'li', cls: 'spot-list-item', children: [
+        editButton, removeButton, input, accept, decline,
+        createElement({ name: 'div', cls: 'spot-list-item-right', children: [up, down, checkbox] })
+    ] });
 }
 
 const clearChildren = node => {
@@ -90,10 +130,6 @@ const clearChildren = node => {
 }
 
 const [newSpotInput] = ofClass('new-spot-input'); 
-newSpotInput.onkeydown = e => {
-    if (e.keyCode === 13)
-        newSpotButton.click();
-}
 
 const [searchInput] = ofClass('search-input');
 searchInput.oninput = onSearchInputChange(searchInput);
@@ -101,8 +137,12 @@ searchInput.onpropertychange = onSearchInputChange(searchInput);
 
 const [newSpotButton] = ofClass('new-spot-input-button');
 newSpotButton.onclick = () => {
-    alert(newSpotInput.value);
-} 
+    renderSpots([{ id: 'asdasdasd', desc: newSpotInput.value, visited: false }])
+    //alert(newSpotInput.value);
+}
+
+setSubmitButton(newSpotInput, newSpotButton);
+
 const [spotList] = ofClass('spot-list');
 const [spotListContainer] = ofClass('spot-list-container');
 ofClass('pill').forEach(pill => pill.onclick = onPillClick(pill));
