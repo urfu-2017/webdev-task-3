@@ -72,7 +72,7 @@ const onClickDeleteAll = function () {
     }).then((res) => {
         if (res.status === 200) {
             const placesList = document.getElementsByClassName('place-view_places')[0];
-            let list = document.getElementsByClassName('place');
+            const list = document.getElementsByClassName('place');
             const howManyTimes = list.length;
             for (let i = 0; i < howManyTimes; i++) {
                 placesList.removeChild(list[0]);
