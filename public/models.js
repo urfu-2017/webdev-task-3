@@ -1,6 +1,6 @@
 'use strict';
 
-/* eslint no-unused-vars: false */
+/* eslint no-unused-vars: 0 */
 
 const onSearchChange = function () {
     // Ищу индекс вкл. тумблера

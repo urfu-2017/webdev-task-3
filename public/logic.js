@@ -1,6 +1,6 @@
 'use sctrict';
 
-/* eslint no-undef: false */
+/* eslint no-undef: 0 */
 
 const creations = function () {
     const createBtn = document.getElementsByClassName('create-form_btn')[0];
