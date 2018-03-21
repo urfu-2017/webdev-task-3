@@ -1,0 +1,149 @@
+body 
+{
+    margin: 0;
+}
+
+main 
+{
+    display: grid;
+    grid-template-rows: auto auto 1fr 50px;
+    margin: auto;
+    width: 700px;
+    height: 100vh;
+}
+
+.search-place
+{
+    text-align: center;
+    padding: 20px 0;
+}
+
+input,
+button
+{
+    padding: 0 10px;
+    border-radius: 15px;
+    border: 1px solid black;
+    outline: none;
+    height: 40px;
+    background: white;
+}
+
+.search-place__input
+{
+    height: 40px;
+    width: 90%;
+}
+
+.create-place
+{
+    text-align: center;
+    padding: 20px 0;
+}
+
+.create-place__button
+{
+    width: 15%;
+}
+
+.create-place__input
+{
+    width: 75%;
+}
+
+.places-list
+{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.places-list__header
+{
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-bottom: 1px solid black;
+}
+
+.places-list__list
+{
+    text-align: center;
+    padding: 10px 0;
+}
+
+.places-list__trash-image
+{
+    width: 32px;
+    cursor: pointer;
+}
+
+.places-list__filter
+{
+    display: inline-block;
+    padding: 5px 20px;
+    border: 1px solid black; 
+    cursor: pointer;
+}
+
+.places-list__delete
+{
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.places-list__filters
+{
+    display: flex;
+    align-items: center;
+}
+
+.places-list__filter__checked
+{
+    background: lightcoral;
+}
+
+.place
+{
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid black;
+    font-size: 1.5rem;
+    display: grid;
+    grid-template-columns: auto auto 1fr auto auto auto;
+    grid-template-rows: 32px;
+}
+
+.place__delete-image,
+.place__rename-image,
+.place__swap-up,
+.place__swap-down,
+.place__visited
+{
+    height: 32px;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.place:not(:hover) > .place__delete-image,
+.place:not(:hover) > .place__rename-image
+{
+    visibility: hidden;
+}
+
+.place__name
+{
+    text-align: left;
+}
+
+.place:first-of-type > .place__swap-up,
+.place:last-of-type > .place__swap-down
+{
+    display: none;
+}
+
+.place:last-of-type > .place__swap-up
+{
+    margin-right: calc(32px + 5px + 5px + 5px);
+}

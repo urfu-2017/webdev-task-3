@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>Павел занят</title>
+        <script src="/static/js/main.js" type="text/javascript"></script>
+        <link href="/static/css/main.css" rel="stylesheet"></style>
+    </head>
+    <body>
+        <main>
+            <header class="search-place">
+                <input placeholder="🔎 Поиск..." class="search-place__input" id="search-place__input">
+            </header>
+            <div class="create-place">
+                <input placeholder="Название Нового Места" class="create-place__input" id="create-place__input">
+                <button class="create-place__button" id="create-place__button">Создать</button>
+            </div>
+            <div class="places-list">
+                <div class="places-list__header">
+                    <div class="places-list__delete">
+                        <span>Места</span>
+                        <img src="/static/img/trash.jpg" id="places-list__trash-image" class="places-list__trash-image">
+                    </div>
+                    <div class="places-list__filters">
+                        <div class="places-list__filter places-list__filter__checked">Все</div>
+                        <div class="places-list__filter">Посетить</div>
+                        <div class="places-list__filter">Посещенные</div>
+                    </div>
+                </div>
+                <div class="places-list__list" id="places-list__list">
+                    Подождите, пока Места загрузятся с сервера
+                </div>
+            </div>
+            <footer class="footer">4</footer>
+        </main>
+    </body>
+</html>
