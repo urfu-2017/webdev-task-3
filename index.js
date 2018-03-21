@@ -1,6 +1,6 @@
 'use strict';
 
-const REST_API_URL = 'https://webdev-task-2-myfatnaaaq.now.sh/';
+const REST_API_URL = 'https://webdev-task-2-kirtnklirk.now.sh';
 
 const express = require('express');
 const proxy = require('express-http-proxy');

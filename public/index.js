@@ -1,15 +1,5 @@
 'use strict';
 
-const ofClass = classname => {
-    const elements = document.getElementsByClassName(classname);
-    const result = [];
-    for (let i = 0; i < elements.length; i++)
-        result.push(elements.item(i))
-    return result;
-}
-
-const nop = () => {};
-
 const onPillClick = pill => () => {
     ofClass('pill-active').forEach(pillActive => {
         pillActive.classList.replace('pill-active', 'pill');
@@ -17,17 +7,11 @@ const onPillClick = pill => () => {
     })
     pill.classList.replace('pill', 'pill-active');
     pill.onclick = nop;
-    if (pill.classList.contains('pill-all')) {
-        alert('all')
-    } else if (pill.classList.contains('pill-visited')) {
-        alert('visited')
-    } else if (pill.classList.contains('pill-not-visited')) {
-        alert('not visited')
-    }
+    reRender();
 }
 
 const onSearchInputChange = searchInput => () => {
-    alert(searchInput.value);
+    reRender();
 }
 
 const createEmptyListNode = () => createElement({ name: 'p', cls: 'spot-list-empty', text: 'Список пуст' });
@@ -44,37 +28,10 @@ const renderSpots = spots => {
     spotListContainer.appendChild(spotList);
 }
 
-const createElement = ({ name, classes = [], title = null, text = null, cls = null, attrs = {}, children = [] }) => {
-    const result = document.createElement(name);
-    if (cls !== null)
-        result.classList.add(cls);
-    else
-        classes.forEach(cls => result.classList.add(cls));
-    if (title !== null) 
-        result.setAttribute('title', title);
-    if (text !== null)
-        if (name === 'input')
-            result.value = text;
-        else
-            result.innerText = text;
-    for (let [attrName, attrValue] of Object.entries(attrs))
-        if (attrValue !== false)
-            result.setAttribute(attrName, attrValue);
-    children.forEach(child => result.appendChild(child));
-
-    return result;
-}
-
-const setSubmitButton = (node, btn) => {
-    node.onkeydown = e => {
-        if (e.keyCode === 13)
-            btn.click();
-    }
-}
-
 const createSpotList = () => createElement({ name: 'ul', cls: 'spot-list' });
 
 const createSpotListItem = ({id, desc, visited}) => {
+    // TODO
     const editButton = createElement({ name: 'button', classes: ['spot-edit', 'edit-button'], title: 'Изменить описание'  });
     const removeButton = createElement({ name: 'button', classes: ['spot-remove', 'remove-button'], title: 'Удалить место' });
     const input = createElement({ name: 'input', cls: 'spot-desc-input', text: desc, attrs: { readonly: true } });
@@ -94,7 +51,7 @@ const createSpotListItem = ({id, desc, visited}) => {
         accept.classList.remove('hidden');
         decline.classList.remove('hidden');
         editButton.classList.add('hidden');
-        setSubmitButton(input, accept);
+        setSubmitButton(input, accept, decline);
     }
     const setReadonly = () => {
         input.onclick = onInputClick;
@@ -106,28 +63,53 @@ const createSpotListItem = ({id, desc, visited}) => {
         input.onkeydown = nop;
     }
     checkbox.onchange = () => {
-        input.classList.toggle('line-thru');
+        const visited = checkbox.checked;
+        jetch(`/api/spots/${id}`, 'PATCH', { visited }).then(x => { 
+                renderedSpots.find(spot => spot.id === id).visited = visited;
+                reRender();
+            }, console.error);
     }
     accept.onclick = () => {
-        setReadonly();
+        const description = input.value;
+        jetch(`/api/spots/${id}`, 'PATCH', { description }).then(x => {
+            renderedSpots.find(spot => spot.id === id).desc = description;
+            setReadonly(); 
+        }, console.error);
     }
     decline.onclick = () => {
         setReadonly();
         input.value = beforeValue;
     }
     input.onclick = onInputClick;
-    editButton.onclick = onInputClick;
+    editButton.onclick = () => {
+        onInputClick();
+        input.focus();
+    }
+    removeButton.onclick = () => {
+        jetch(`/api/spots/${id}`, 'DELETE')
+            .then(y => {
+                renderedSpots = renderedSpots.filter(x => x.id !== id);
+                reRender();
+            }, console.error)
+    }
 
     return createElement({ name: 'li', cls: 'spot-list-item', children: [
         editButton, removeButton, input, accept, decline,
         createElement({ name: 'div', cls: 'spot-list-item-right', children: [up, down, checkbox] })
-    ] });
+    ]});
 }
 
-const clearChildren = node => {
-    while (node.firstChild) 
-        node.removeChild(node.firstChild)
+const getVisitedFilter = () => {
+    const [pill] = ofClass('pill-active');
+    return pill.classList.contains('pill-all') ? null :
+        pill.classList.contains('pill-visited'); 
 }
+
+const filter = (searchQuery, visitedFilter) => 
+    renderedSpots.filter(({ desc, visited }) => 
+        desc.includes(searchQuery) && [null, visited].includes(visitedFilter));
+
+const reRender = () => renderSpots(filter(searchInput.value, getVisitedFilter()));
 
 const [newSpotInput] = ofClass('new-spot-input'); 
 
@@ -137,8 +119,12 @@ searchInput.onpropertychange = onSearchInputChange(searchInput);
 
 const [newSpotButton] = ofClass('new-spot-input-button');
 newSpotButton.onclick = () => {
-    renderSpots([{ id: 'asdasdasd', desc: newSpotInput.value, visited: false }])
-    //alert(newSpotInput.value);
+    const description = newSpotInput.value;
+    jetch('/api/spots', 'POST', { description }).then(x => x.json())
+        .then(json => {
+            renderedSpots.push({ id: json.id, desc: description, visited: false });
+            renderSpots(renderedSpots);
+        }, console.error);
 }
 
 setSubmitButton(newSpotInput, newSpotButton);
@@ -147,11 +133,18 @@ const [spotList] = ofClass('spot-list');
 const [spotListContainer] = ofClass('spot-list-container');
 ofClass('pill').forEach(pill => pill.onclick = onPillClick(pill));
 ofClass('spots-clear-button')[0].onclick = () => {
-    renderSpots([]);
-    alert('clear all');
+    if (!confirm('Вы действительно хотите очистить весь список?'))
+        return;
+    jetch('/api/spots/all', 'DELETE')
+        .then(x => { 
+            renderedSpots = [];
+            renderSpots([])
+        }, console.error);
 } 
 
-renderSpots([
-    { id: 'asdasda', desc: 'adesccccc', visited: true }, 
-    { id: 'asdasda', desc: 'adesccccc', visited: false }, 
-])
+let renderedSpots = [];
+
+jetch('/api/spots').then(x => x.json()).then(json => {
+        renderedSpots = json.map(({id, description, visited}) => ({id, desc: description, visited: visited || false}));
+        renderSpots(renderedSpots);
+}, console.error);
