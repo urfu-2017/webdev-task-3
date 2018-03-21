@@ -24,8 +24,8 @@ app.get('/', (req, res) => {
 });
 
 hbs.registerPartials(partialsDir, () => {
-    app.listen(8081, () => {
-        console.info('Opened in localhost:8081');
+    app.listen(8080, () => {
+        console.info('Opened in localhost:8080');
     });
 });
 

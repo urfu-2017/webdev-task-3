@@ -1,6 +1,6 @@
 'use strict';
 /*  eslint-disable no-invalid-this  */
-const baseUrl = 'http://localhost:8080';
+const baseUrl = 'https://webdev-task-2-plbqdvszqj.now.sh';
 let storage = [];
 
 document.addEventListener('DOMContentLoaded', loadData);
