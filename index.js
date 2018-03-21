@@ -5,7 +5,7 @@ const express = require('express');
 const hbs = require('hbs');
 const app = express();
 
-const controller = require('./controllers/controller');
+const controller = require('./controllers/index');
 
 const publicDir = path.join(__dirname, 'public');
 const viewsDir = path.join(__dirname, 'views');

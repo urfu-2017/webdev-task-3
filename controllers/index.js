@@ -1,5 +1,5 @@
 'use strict';
-const LocModel = require('../models/locationModel');
+const LocModel = require('../models/location');
 const frontPage = require('../mocks/index');
 const formatData = require('../utils/locationFormatter');
 
