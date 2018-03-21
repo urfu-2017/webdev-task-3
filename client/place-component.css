@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    padding: 12px 24px;
+    background: #ffffff;
+    border-radius: 5px;
+}
+
+.action {
+    color: #0077c0;
+    border-bottom: 1px dashed #0077c0;
+}
+
+.action:not(:last-child) {
+    margin-right: 10px;
+}
+
+.actions {
+    margin-left: auto;
+}
