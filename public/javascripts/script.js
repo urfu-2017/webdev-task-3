@@ -3,12 +3,15 @@ const baseUrl = 'https://cors-anywhere.herokuapp.com/https://webdev-task-2-gguhu
 let oldName = '';
 let currentSearchResult = '';
 
+const getElemByClass = (className, root = document) => root.getElementsByClassName(className)[0];
+
 const correctArrows = () => {
-    const collection = document.getElementsByClassName('location horizontal-flex visible');
+    const collection = document.getElementsByClassName('location visible');
     let idx = 0;
     for (const elem of collection) {
-        const arrowDown = elem.getElementsByClassName('arrow-down')[0];
-        const arrowUp = elem.getElementsByClassName('arrow-up')[0];
+        const arrowDown = getElemByClass('arrow-down', elem);
+        const arrowUp = getElemByClass('arrow-up', elem);
+
         arrowDown.style.visibility = 'visible';
         arrowUp.style.visibility = 'visible';
         if (idx === 0) {
@@ -24,7 +27,7 @@ const correctArrows = () => {
 // toggling buttons for visited - not visited
 const visited = document.getElementsByClassName('visited-flag');
 const onClickHandler = event => {
-    const locationName = event.target.parentElement.firstChild.nextElementSibling.textContent;
+    const locationName = getElemByClass('location-name', event.target.parentElement).textContent;
     let value = false;
     event.target.classList.toggle('visited-icon');
     event.target.classList.toggle('not-visited-icon');
@@ -40,17 +43,17 @@ for (const elem of visited) {
 // swap
 const arrows = document.getElementsByClassName('arrow');
 const onArrowClick = event => {
-    const node = event.target.parentElement.parentElement;
-    const locationName = node.firstChild.nextElementSibling.textContent;
+    const article = event.target.parentElement.parentElement;
+    const locationName = getElemByClass('location-name', article).textContent;
     let swapNode;
     if (event.target.classList.value.indexOf('down') !== -1) {
-        swapNode = node.nextElementSibling;
-        swapNode.parentElement.insertBefore(swapNode, node);
+        swapNode = article.nextElementSibling;
+        swapNode.parentElement.insertBefore(swapNode, article);
     } else {
-        swapNode = node.previousElementSibling;
-        swapNode.parentElement.insertBefore(node, swapNode);
+        swapNode = article.previousElementSibling;
+        swapNode.parentElement.insertBefore(article, swapNode);
     }
-    const secondName = swapNode.firstChild.nextElementSibling.textContent;
+    const secondName = getElemByClass('location-name', swapNode).textContent;
     correctArrows();
     fetch(`${baseUrl}?place1=${locationName}&place2=${secondName}`,
         { method: 'PUT' });
@@ -63,9 +66,8 @@ for (const elem of arrows) {
 const trashBins = document.getElementsByClassName('hidden-options__trash');
 const onTrashClick = event => {
     const node = event.target.parentElement.parentElement;
-    const parent = node.parentElement;
-    const locationName = node.firstChild.nextElementSibling.textContent;
-    parent.removeChild(node);
+    const locationName = getElemByClass('location-name', node).textContent;
+    node.parentElement.removeChild(node);
     correctArrows();
     fetch(`${baseUrl}?place=${locationName}`,
         { method: 'DELETE' });
@@ -115,7 +117,7 @@ const createNotVisitedDiv = () => {
 // on pencil click
 const updateName = event => {
     event.preventDefault();
-    const node = document.getElementsByClassName('change-name-input')[0];
+    const node = getElemByClass('change-name-input');
     const newName = node.value;
     const parent = node.parentElement.parentElement;
     parent.replaceChild(createNameDiv(newName), node.parentElement);
@@ -124,7 +126,7 @@ const updateName = event => {
 
 const renameLocation = document.getElementsByClassName('hidden-options__pencil');
 const onPencilClick = event => {
-    const node = event.target.parentElement.parentElement.firstChild.nextElementSibling;
+    const node = getElemByClass('location-name', event.target.parentElement.parentElement);
     oldName = node.textContent;
     const input = document.createElement('input');
     const form = document.createElement('form');
@@ -168,9 +170,9 @@ const createArticle = name => {
 
 // throw error if trying to add a place with the same name
 const checkNamesManually = name => {
-    const locationCollection = document.getElementsByClassName('locations-list')[0].children;
+    const locationCollection = getElemByClass('locations-list').children;
     for (const elem of locationCollection) {
-        const elemName = elem.firstChild.nextElementSibling.textContent;
+        const elemName = getElemByClass('location-name', elem).textContent;
         if (elemName === name) {
             throw new Error('Trying to add existing element');
         }
@@ -178,8 +180,8 @@ const checkNamesManually = name => {
 };
 
 // insert new place by enter and button click
-const addForm = document.getElementsByClassName('insertion-form')[0];
-const addButton = document.getElementsByClassName('location-insertion__button')[0];
+const addForm = getElemByClass('insertion-form');
+const addButton = getElemByClass('location-insertion__button');
 const onLocationInsertion = () => {
     event.preventDefault();
     const input = document.getElementsByClassName('insertion-form__input');
@@ -188,7 +190,7 @@ const onLocationInsertion = () => {
     try {
         fetch(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
         checkNamesManually(input[0].value);
-        parent = document.getElementsByClassName('locations-list')[0];
+        parent = getElemByClass('locations-list');
         addedElement = createArticle(input[0].value);
         parent.appendChild(addedElement);
     } catch (e) {
@@ -201,15 +203,14 @@ addForm.addEventListener('submit', onLocationInsertion);
 addButton.addEventListener('click', onLocationInsertion);
 
 const checkSearch = () => {
-    const parent = document.getElementsByClassName('locations-list');
-    const children = Array.from(parent[0].children);
-    children.forEach(element => {
-        const content = element.firstElementChild.nextElementSibling.textContent;
+    const children = getElemByClass('locations-list').children;
+    for (const element of children) {
+        const content = getElemByClass('location-name', element).textContent;
         if (content.indexOf(currentSearchResult) === -1) {
             element.style.display = 'none';
             element.className = 'location horizontal-flex hidden';
         }
-    });
+    }
 };
 
 const toggleVisibility = (element, isVisible) => {
@@ -226,7 +227,7 @@ const toggleVisibility = (element, isVisible) => {
 const display = document.getElementsByClassName('location-menu__nav');
 const onClickHandlerDisplay = event => {
     const displayParam = event.target.textContent;
-    const list = document.getElementsByClassName('locations-list')[0].children;
+    const list = getElemByClass('locations-list').children;
     switch (displayParam) {
         case 'All':
             for (const element of list) {
@@ -254,10 +255,10 @@ for (const elem of display) {
 }
 
 // delete everything
-const deleteButton = document.getElementsByClassName('location-menu__delete-button')[0];
+const deleteButton = getElemByClass('location-menu__delete-button');
 const onDeleteHandler = () => {
     fetch(baseUrl, { method: 'DELETE' });
-    const list = document.getElementsByClassName('locations-list')[0];
+    const list = getElemByClass('locations-list');
     while (list.firstChild) {
         list.removeChild(list.firstChild);
     }
@@ -268,10 +269,10 @@ deleteButton.addEventListener('click', onDeleteHandler);
 document.addEventListener('DOMContentLoaded', () => correctArrows());
 
 // search form
-const searchForm = document.getElementsByClassName('search-form')[0];
+const searchForm = getElemByClass('search-form');
 const onSearchSumbit = () => {
     event.preventDefault();
-    const input = document.getElementsByClassName('search-form__input')[0].value;
+    const input = getElemByClass('search-form__input').value;
     currentSearchResult = input;
     checkSearch();
 };
