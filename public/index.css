@@ -22,6 +22,14 @@
     align-content: center;
 }
 
+.spot-edit, .spot-remove {
+    visibility: hidden;
+}
+
+.spot-list-item:hover > .spot-edit, .spot-list-item:hover > .spot-remove {
+    visibility: visible;
+}
+
 .search-input-container {
     position: relative;
 }

@@ -33,8 +33,8 @@ const onSearchInputChange = searchInput => () => {
 const createEmptyListNode = () => createElement({ name: 'p', cls: 'spot-list-empty', text: 'Список пуст' });
 
 const renderSpots = spots => {
+    clearChildren(spotListContainer);
     if (!spots.length) {
-        clearChildren(spotListContainer);
         spotListContainer.appendChild(createEmptyListNode());
         return;
     }
@@ -44,7 +44,7 @@ const renderSpots = spots => {
     spotListContainer.appendChild(spotList);
 }
 
-const createElement = ({ name, classes = [], title = null, text = null, cls = null }) => {
+const createElement = ({ name, classes = [], title = null, text = null, cls = null, attrs = {}, children = [] }) => {
     const result = document.createElement(name);
     if (cls !== null)
         result.classList.add(cls);
@@ -53,7 +53,14 @@ const createElement = ({ name, classes = [], title = null, text = null, cls = nu
     if (title !== null) 
         result.setAttribute('title', title);
     if (text !== null)
-        result.innerText = text;
+        if (name === 'input')
+            result.value = text;
+        else
+            result.innerText = text;
+    for (let [attrName, attrValue] of Object.entries(attrs))
+        if (attrValue !== false)
+            result.setAttribute(attrName, attrValue);
+    children.forEach(child => result.appendChild(child));
 
     return result;
 }
@@ -62,10 +69,17 @@ const createElement = ({ name, classes = [], title = null, text = null, cls = nu
 const createSpotList = () => createElement({ name: 'ul', cls: 'spot-list' });
 
 const createSpotListItem = ({id, desc, visited}) => {
-    const li = document.createElement('li');
-    li.classList.add('spot-list-item');
-
-    li.appendChild(document.createElement(''))
+    const li = createElement({ name: 'li', cls: 'spot-list-item' });
+    const editButton = createElement({ name: 'button', classes: ['spot-edit', 'edit-button'], title: 'Изменить описание'  });
+    const removeButton = createElement({ name: 'button', classes: ['spot-remove', 'remove-button'], title: 'Удалить место' });
+    const input = createElement({ name: 'input', cls: 'spot-desc-input', text: desc, attrs: { readonly: true } });
+    const up = createElement({ name: 'button', classes: ['spot-up', 'up-button'] });
+    const down = createElement({ name: 'button', classes: ['spot-down', 'down-button'] });
+    const checkbox = createElement({ name: 'input', title: 'Пометить посещенным', attrs: { type: 'checkbox', checked: visited } });
+    li.appendChild(editButton);
+    li.appendChild(removeButton);
+    li.appendChild(input);
+    li.appendChild(createElement({ name: 'div', cls: 'spot-list-item-right', children: [up, down, checkbox] }));
 
     return li;
 }
@@ -97,3 +111,7 @@ ofClass('spots-clear-button')[0].onclick = () => {
     alert('clear all');
 } 
 
+renderSpots([
+    { id: 'asdasda', desc: 'adesccccc', visited: true }, 
+    { id: 'asdasda', desc: 'adesccccc', visited: false }, 
+])
