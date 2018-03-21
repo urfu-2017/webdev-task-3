@@ -1,11 +1,11 @@
 'use strict';
-const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
+const baseUrl = 'https://cors-anywhere.herokuapp.com/https://webdev-task-2-gguhuxcnsd.now.sh';
 let oldName = '';
 let currentSearchResult = '';
 
 const correctArrows = collection => {
     let idx = 0;
-    for (let elem of collection) {
+    for (const elem of collection) {
         const arrowDown = elem.getElementsByClassName('arrow-down')[0];
         const arrowUp = elem.getElementsByClassName('arrow-up')[0];
         arrowDown.style.visibility = 'visible';
@@ -20,13 +20,6 @@ const correctArrows = collection => {
     }
 };
 
-const sendReq = async (url, options) => {
-    const response = await fetch(url, options);
-    const body = await response.json();
-
-    return body;
-};
-
 // toggling buttons for visited - not visited
 const visited = document.getElementsByClassName('visited-flag');
 const onClickHandler = event => {
@@ -38,9 +31,9 @@ const onClickHandler = event => {
         value = true;
     }
     const url = `${baseUrl}?place=${locationName}&param=visited&value=${value}`;
-    sendReq(url, { method: 'PUT' });
+    fetch(url, { method: 'PUT' });
 };
-for (let elem of visited) {
+for (const elem of visited) {
     elem.addEventListener('click', onClickHandler);
 }
 
@@ -61,9 +54,9 @@ const onArrowClick = event => {
     const secondName = swapNode.firstChild.nextElementSibling.textContent;
     correctArrows(list[0].children);
     fetch(`${baseUrl}?place1=${locationName}&place2=${secondName}`,
-        { method: 'PUT', crossDomain: true });
+        { method: 'PUT' });
 };
-for (let elem of arrows) {
+for (const elem of arrows) {
     elem.addEventListener('click', onArrowClick);
 }
 
@@ -77,9 +70,9 @@ const onTrashClick = event => {
     correctArrows(parent.children);
 
     fetch(`${baseUrl}?place=${locationName}`,
-        { method: 'DELETE', crossDomain: true });
+        { method: 'DELETE' });
 };
-for (let elem of trashBins) {
+for (const elem of trashBins) {
     elem.addEventListener('click', onTrashClick);
 }
 
@@ -124,7 +117,7 @@ const updateName = event => {
     const parent = node.parentElement.parentElement;
     parent.replaceChild(createNameDiv(newName), node.parentElement);
     const url = `${baseUrl}?place=${oldName}&param=name&value=${newName}`;
-    sendReq(url, { method: 'PUT' });
+    fetch(url, { method: 'PUT' });
 };
 
 const renameLocation = document.getElementsByClassName('hidden-options__pencil');
@@ -141,7 +134,7 @@ const onPencilClick = event => {
     node.parentElement.replaceChild(form, node);
     form.addEventListener('submit', updateName);
 };
-for (let elem of renameLocation) {
+for (const elem of renameLocation) {
     elem.addEventListener('click', onPencilClick);
 }
 
@@ -191,7 +184,7 @@ const onLocationInsertion = () => {
     let addedElement;
     let parent;
     try {
-        sendReq(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
+        fetch(`${baseUrl}?place=${input[0].value}`, { method: 'POST' });
         checkNamesManually(input[0].value);
         parent = document.getElementsByClassName('locations-list')[0];
         addedElement = createArticle(input[0].value);
@@ -252,7 +245,7 @@ const onClickHandlerDisplay = event => {
     checkSearch();
     correctArrows(document.getElementsByClassName('location horizontal-flex visible'));
 };
-for (let elem of display) {
+for (const elem of display) {
     elem.addEventListener('click', onClickHandlerDisplay);
 }
 
