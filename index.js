@@ -5,8 +5,6 @@ const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
 
-const locals = require('./locals');
-
 const app = express();
 
 const viewsDir = path.join(__dirname, 'views');
@@ -20,12 +18,6 @@ app.set('view engine', 'hbs');
 app.set('views', viewsDir);
 
 app.use(express.static(publicDir));
-
-app.use((req, res, next) => {
-    Object.assign(res.locals, locals);
-
-    next();
-});
 
 app.get('/', (req, res) => {
     res.render('index');

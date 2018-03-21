@@ -1,42 +1,43 @@
 'use strict';
-
+/*  eslint-disable no-invalid-this  */
 const baseUrl = 'http://localhost:8080';
 let storage = [];
 
-document.addEventListener('DOMContentLoaded', init);
-let searchInput = document.getElementsByClassName('search__input')[0];
+document.addEventListener('DOMContentLoaded', loadData);
+const searchInput = document.getElementsByClassName('search__input')[0];
 searchInput.addEventListener('input', searchEvent);
-let createButton = document.getElementsByClassName('create__button')[0];
+const createButton = document.getElementsByClassName('create__button')[0];
 createButton.addEventListener('click', createPlace);
-let clearButton = document.getElementsByClassName('clear-button')[0];
+const clearButton = document.getElementsByClassName('clear-button')[0];
 clearButton.addEventListener('click', clearPlaces);
 
-async function init() {
-    const response = await fetch('http://localhost:8080/places', {
+async function loadData() {
+    const response = await fetch(`${baseUrl}/places`, {
         method: 'get'
     });
     const placesJSON = await response.json();
-    console.info(placesJSON);
     placesJSON.forEach(place => addPlaceToPage(place));
 }
 
 function searchEvent() {
-    let els = document.getElementsByClassName('places-item');
-    [].forEach.call(els, function (elem) {
-        const elemName = elem.getElementsByClassName('places-item__name')[0];
+    const places = document.getElementsByClassName('places-item');
+    [].forEach.call(places, function (place) {
+        const elemName = place.getElementsByClassName('places-item__name')[0];
         const hidden = !elemName.value.includes(searchInput.value);
-        elem.hidden = hidden;
+        place.hidden = hidden;
     });
 }
 
 function addPlaceToPage(place) {
     storage.push(place);
-    let htmlPlace = document.createElement('li');
+    const htmlPlace = document.createElement('li');
     htmlPlace.classList.add('places-item');
     htmlPlace.setAttribute('visited', place.visited.toString());
-    htmlPlace.appendChild(getEditButton(place), htmlPlace.childNodes[0]);
+    htmlPlace.appendChild(getEditButton(), htmlPlace.childNodes[0]);
     htmlPlace.appendChild(getDeleteButton(place), htmlPlace.childNodes[0]);
-    htmlPlace.appendChild(getItemName(place.description));
+    htmlPlace.appendChild(getPlaceName(place.description));
+    htmlPlace.appendChild(getSaveButton(place));
+    htmlPlace.appendChild(getCancelButton());
     htmlPlace.appendChild(getUpButton(place));
     htmlPlace.appendChild(getDownButton(place));
     htmlPlace.appendChild(getVisitedCheckbox(place));
@@ -44,20 +45,30 @@ function addPlaceToPage(place) {
     searchEvent();
 }
 
-function getEditButton(place) {
-    let editButton = document.createElement('input');
+function getEditButton() {
+    const editButton = document.createElement('input');
     editButton.type = 'button';
     editButton.className = 'places-item__edit-button';
-    editButton.value = 'Ред.';
+    editButton.value = '✎';
+    editButton.addEventListener('click', function () {
+        const input = this.parentNode.getElementsByClassName('places-item__name')[0];
+        input.defaultValue = input.value;
+        input.disabled = false;
+        input.focus();
+        this.parentNode.getElementsByClassName('places-item__save-button')[0]
+            .style.visibility = 'visible';
+        this.parentNode.getElementsByClassName('places-item__cancel-button')[0]
+            .style.visibility = 'visible';
+    });
 
     return editButton;
 }
 
 function getDeleteButton(place) {
-    let deleteButton = document.createElement('input');
+    const deleteButton = document.createElement('input');
     deleteButton.type = 'button';
     deleteButton.className = 'places-item__delete-button';
-    deleteButton.value = 'Удалить';
+    deleteButton.value = '❌';
     deleteButton.addEventListener('click', async function () {
         const response = await fetch(`${baseUrl}/places/${place.id}`, {
             method: 'delete',
@@ -67,7 +78,7 @@ function getDeleteButton(place) {
             })
         });
         if (response.ok) {
-            const index = storage.findIndex(qwe => qwe.id === place.id);
+            const index = storage.findIndex(_place => _place.id === place.id);
             storage.splice(index, 1);
             deleteButton.parentElement.remove();
         }
@@ -76,23 +87,63 @@ function getDeleteButton(place) {
     return deleteButton;
 }
 
-function getItemName(description) {
-    let itemName = document.createElement('input');
-    itemName.type = 'text';
-    itemName.className = 'places-item__name';
-    itemName.value = description;
-    itemName.setAttribute('disabled', 'disabled');
+function getPlaceName(description) {
+    const placeName = document.createElement('input');
+    placeName.type = 'text';
+    placeName.className = 'places-item__name';
+    placeName.value = description;
+    placeName.disabled = true;
 
-    return itemName;
+    return placeName;
+}
+
+function getSaveButton(place) {
+    const saveButton = document.createElement('input');
+    saveButton.type = 'button';
+    saveButton.className = 'places-item__save-button';
+    saveButton.value = '✓';
+    saveButton.style.visibility = 'hidden';
+    saveButton.addEventListener('click', async function () {
+        const input = this.parentNode.getElementsByClassName('places-item__name')[0];
+        input.disabled = true;
+        input.defaultValue = input.value;
+        this.style.visibility = 'hidden';
+        this.nextSibling.style.visibility = 'hidden';
+        const response = await fetch(`${baseUrl}/places/${place.id}?description=${input.value}`, {
+            method: 'PATCH'
+        });
+        if (response.ok) {
+            place.description = input.value;
+        }
+    });
+
+    return saveButton;
+}
+
+function getCancelButton() {
+    const cancelButton = document.createElement('input');
+    cancelButton.type = 'button';
+    cancelButton.className = 'places-item__cancel-button';
+    cancelButton.value = '✗';
+    cancelButton.style.visibility = 'hidden';
+    cancelButton.addEventListener('click', function () {
+        const input = this.parentNode.getElementsByClassName('places-item__name')[0];
+        input.disabled = true;
+        input.value = input.defaultValue;
+        this.style.visibility = 'hidden';
+        this.previousSibling.style.visibility = 'hidden';
+    });
+
+    return cancelButton;
 }
 
 function getUpButton(place) {
-    let upButton = document.createElement('input');
+    const upButton = document.createElement('input');
     upButton.type = 'button';
     upButton.className = 'places-item__up-button';
-    upButton.value = 'up';
+    upButton.value = '↑';
     upButton.addEventListener('click', async function () {
-        const currentPosition = storage.findIndex(qwe => qwe.id === place.id);
+        const currentPosition = storage.findIndex(_place => _place.id === place.id);
         const nextPosition = currentPosition - 1;
         const response = await fetch(`${baseUrl}/order/${place.id}/${nextPosition}`, {
             method: 'put'
@@ -100,8 +151,8 @@ function getUpButton(place) {
         if (response.ok) {
             const elementToMove = storage.splice(currentPosition, 1)[0];
             storage.splice(nextPosition, 0, elementToMove);
-            let par = this.parentNode;
-            par.parentNode.insertBefore(par, par.previousSibling);
+            const parentNode = this.parentNode;
+            parentNode.parentNode.insertBefore(parentNode, parentNode.previousSibling);
         }
     });
 
@@ -109,12 +160,12 @@ function getUpButton(place) {
 }
 
 function getDownButton(place) {
-    let downButton = document.createElement('input');
+    const downButton = document.createElement('input');
     downButton.type = 'button';
     downButton.className = 'places-item__down-button';
-    downButton.value = 'down';
+    downButton.value = '↓';
     downButton.addEventListener('click', async function () {
-        const currentPosition = storage.findIndex(qwe => qwe.id === place.id);
+        const currentPosition = storage.findIndex(_place => _place.id === place.id);
         const nextPosition = currentPosition + 1;
         const response = await fetch(`${baseUrl}/order/${place.id}/${nextPosition}`, {
             method: 'put'
@@ -122,7 +173,7 @@ function getDownButton(place) {
         if (response.ok) {
             const elementToMove = storage.splice(currentPosition, 1)[0];
             storage.splice(nextPosition, 0, elementToMove);
-            let par = this.parentNode;
+            const par = this.parentNode;
             par.parentNode.insertBefore(par.nextSibling, par);
         }
     });
@@ -131,7 +182,7 @@ function getDownButton(place) {
 }
 
 function getVisitedCheckbox(place) {
-    let visitedCheckbox = document.createElement('input');
+    const visitedCheckbox = document.createElement('input');
     visitedCheckbox.type = 'checkbox';
     visitedCheckbox.className = 'places-item__visited';
     visitedCheckbox.checked = place.visited;
@@ -154,14 +205,13 @@ function getVisitedCheckbox(place) {
 }
 
 async function createPlace() {
-    let description = document.getElementsByClassName('create__input')[0].value;
+    const description = document.getElementsByClassName('create__input')[0].value;
     const response = await fetch(`${baseUrl}/places`, {
         method: 'post',
         headers: new Headers({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ description })
     });
     const createdPlace = await response.json();
-    console.info(createdPlace);
     addPlaceToPage(createdPlace);
 }
 
