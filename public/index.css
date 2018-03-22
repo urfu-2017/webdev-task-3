@@ -1,0 +1,50 @@
+@import 'css/1_search.css';
+@import 'css/2_new-place.css';
+@import 'css/3_control-panel.css';
+@import 'css/4_list.css';
+@import 'css/5_footer.css';
+
+@font-face
+{
+    font-family: Antipasto;
+    src: url('../Antipasto/Zetafonts - Antipasto Pro DemiBold.ttf');
+}
+
+html
+{
+    --body-width: 600px;
+    --margin-for-content: 25px;
+    --height-for-input-text: 35px;
+    --standard-margin-from-hr: 10px;
+    --global-font-size: 24px;
+    --border-color: #60a0ff;
+}
+
+body
+{
+    margin: 3px 0 auto calc((100% - var(--body-width)) / 2);
+    font-family: Antipasto;
+    font-size: var(--global-font-size);
+    width: var(--body-width);
+    border: 2px solid var(--border-color);
+    border-radius: 3px;
+    /* background: rgb(255, 211, 145); */
+}
+
+hr
+{
+    border: 1px solid var(--border-color);
+    width: calc(var(--body-width) - 2*var(--margin-for-content) + 10px);
+}
+
+.hr-main
+{
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.hr-small
+{
+    border: 1px dashed var(--border-color);
+    width: calc(var(--body-width) - 2*var(--margin-for-content));
+}

@@ -1,0 +1,61 @@
+.new-place
+{
+    display: grid;
+    grid-template-columns: 70% auto;
+    grid-template-rows: calc(var(--height-for-input-text) + 6px) auto;
+    margin: var(--standard-margin-from-hr) var(--margin-for-content);
+}
+
+.new-place__name
+{
+    grid-area: 1 / 1 / 2 / 2;
+    font-family: Antipasto;
+    font-size: 100%;
+    margin: 0 10px 0 0;
+    padding: 10px 0 0 10px;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-bottom: 1px solid var(--border-color);
+    outline: none;
+    background-color: transparent;
+}
+
+.new-place__name:focus
+{
+    border: 1px solid var(--border-color);
+}
+
+.new-place__description
+{
+    padding: 3px;
+    grid-area: 2 / 1 / 3 / 3;
+    font-family: Antipasto;
+    font-size: 80%;
+    margin-top: 20px;
+    height: calc(var(--height-for-input-text)*.8);
+    width: calc(var(--body-width) - 2*(var(--margin-for-content) + 4px));
+    max-width: calc(var(--body-width) - 2*(var(--margin-for-content) + 4px));
+    resize: both;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-bottom: 1px solid var(--border-color);
+    box-sizing: border-box;
+    outline: none;
+    background-color: transparent;
+}
+
+.new-place__description:focus
+{
+    border: 1px solid var(--border-color);
+}
+
+.new-place__create-button
+{
+    grid-area: 1 / 2 / 2 / 3;
+    font-family: Antipasto;
+    font-size: 100%;
+    width: 80%;
+    /* background-color: transparent;
+    border: none;
+    background-image: url(/pics/create.png); */
+    background-size: 100%;
+    margin: -3px 20px;
+}

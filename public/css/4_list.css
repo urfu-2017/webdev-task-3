@@ -1,0 +1,131 @@
+.list
+{
+    margin: var(--standard-margin-from-hr) var(--margin-for-content) var(--margin-for-content);
+}
+
+.place
+{
+    margin: var(--standard-margin-from-hr) 0;
+    display: grid;
+    grid-template-columns: 10fr 1fr 1fr;
+    grid-template-rows: 40px 55px auto;
+    grid-template-areas:    "🐷 🐷 🐼"
+                            "🐰 .. 🐼"
+                            "🐰 🐻 🐻";
+}
+
+.place__title
+{
+    grid-area: 🐷;
+    display: flex;
+    justify-content: flex-start;
+    height: 40px;
+    box-sizing: border-box;
+    --pic-size: 24px;
+}
+
+.place__name,
+.place__name_edit
+{
+    font-size: 130%;
+    /* width: 300px; */
+    height: var(--height-for-input-text);
+    box-sizing: border-box;
+    /* display: none; */
+}
+
+.place__name_edit
+{
+    display: none;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-bottom: 1px solid var(--border-color);
+    outline: none;
+    background-color: transparent;
+}
+
+.place__name_edit:focus
+{
+    border: 1px solid var(--border-color);
+}
+
+.place__name
+{
+    margin-top: 10px;
+}
+
+.place__edit,
+.place__delete,
+.place__edit_cancel,
+.place__edit_accept
+{
+    visibility: hidden;
+    width: var(--pic-size);
+    height: var(--pic-size);
+    margin: calc((40px - var(--pic-size))/2) 10px;
+}
+
+.place__title:hover > .place__edit,
+.place__title:hover > .place__delete
+{
+    visibility: visible;
+}
+
+.place__description
+{
+    grid-area: 🐰;
+    margin: 20px 20px 0;
+    font-size: 80%;
+    text-indent: 5%;
+    /* overflow: auto; */
+}
+
+.place__create-date
+{
+    grid-area: 🐻;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.place__create-date > div:first-child
+{
+    opacity: .9;
+    font-size: 70%;
+}
+
+.place__visited
+{
+    grid-area: 🐼;
+    width: 38px;
+    height: 38px;
+    box-sizing: border-box;
+    background-image: url(/pics/check-none.svg);
+    background-size: 42px 42px;
+    background-repeat: no-repeat;
+    background-position: -2px -2px;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.place__visited_checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    margin: 10px 0 0 20px;
+}
+
+.place__visited_checkbox:checked + .place__visited
+{
+    background-image: url(/pics/check.svg);
+}
+
+.place__visited_checkbox:hover + .place__visited
+{
+    box-shadow: 0 0 2px 1px var(--border-color);
+}
+
+.place__visited_checkbox:focus + .place__visited
+{
+    box-shadow: 0 0 4px 2px var(--border-color);
+}
