@@ -1,0 +1,95 @@
+.places {
+    display: flex;
+    flex-direction: column;
+}
+.place {
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+
+    &:hover &__rubbish, 
+    &:hover &__edit {
+        display: block;
+    }
+    &__wrapper {
+        flex: auto;
+        position: relative;
+    }
+
+    &__rubbish,
+    &__edit,
+    &__cancel,
+    &__apply {
+        width: 32px;
+        height: 32px;
+        top: 0;
+        position: absolute;
+        display: none;
+    }
+
+    &__rubbish {
+        background: url('../images/rubbish-bin.png') no-repeat;
+        left: 32px;
+    }
+
+    &__edit {
+        left: 0;
+        background: url('../images/edit.png') no-repeat;
+    }
+
+    &__name:not([disabled]) ~ &__cancel,
+    &__name:not([disabled]) ~ &__apply {
+        display: block;
+    }
+
+    &__cancel {
+        right: 32px;
+        background: url('../images/cancel.png') no-repeat;
+    }
+
+    &__apply {
+        right: 0;
+        background: url('../images/apply.png') no-repeat;
+    }
+
+    &__arrow {
+        width: 14px;
+        height: 32px;
+        background: url('../images/arrow.png') no-repeat -9px;
+
+        &_direction {
+            &_down {
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    &__name {
+        text-align: right;
+        line-height: 32px;
+        margin: 0 128px 0 64px;
+        width: calc(100% - 140px);
+
+        &:disabled {
+            border: 0;
+        }
+
+        &_visited {
+            text-decoration: line-through;
+        }
+    }
+
+    &__edit,
+    &__rubbish,
+    &__arrow,
+    &__cancel,
+    &__apply {
+        border: 0;
+        cursor: pointer;
+    }
+
+
+}
+    
+    

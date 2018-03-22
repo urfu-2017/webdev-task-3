@@ -1,0 +1,46 @@
+$buttonsHeight = 40px;
+
+.filter-places {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    margin: 30px 0;
+    padding-bottom: 7px;
+    
+    &__label {
+        font-size: 28px;
+    }
+    
+    &__control {
+        flex: auto;
+        display: flex;
+        margin: 0;
+    }
+
+    &__clear {
+        width: 32px;
+        height: 32px;
+        background: url('../images/rubbish-bin.png') no-repeat;
+        border: 0;
+        cursor: pointer;
+        align-self: baseline;
+    }
+
+    &__button {
+        flex: 1;
+        border: 1px solid #333;
+        list-style-type: none;
+        text-align: center;
+        cursor: pointer;
+        padding: 5px;
+
+        &_border-radius {
+            &_left {
+                border-radius: ($buttonsHeight / 2) 0 0 ($buttonsHeight / 2);
+            }
+            &_right {
+                border-radius: 0 ($buttonsHeight / 2) ($buttonsHeight / 2) 0;
+            }
+        }
+    }
+}
