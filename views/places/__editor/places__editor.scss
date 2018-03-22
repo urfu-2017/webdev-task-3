@@ -1,0 +1,15 @@
+.places {
+
+    &__place-editor {
+        position: relative;
+        left: 66px;
+    }
+
+    &__cancel-edit-control {
+        cursor: pointer;
+    }
+
+    &__accept-edit-control {
+        cursor: pointer;
+    }
+}

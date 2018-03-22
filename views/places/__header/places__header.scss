@@ -1,0 +1,66 @@
+.places {
+
+    &__header {
+        position: relative;
+        width: 450px;
+        margin:0 auto;
+        border-bottom: 1px solid black;
+        height: 50px;
+    }
+
+    &__header-text {
+        text-align: left;
+        display: inline-block;
+        font-weight: normal;
+        font-size: 24px;
+    }
+
+    &__radio {
+        display: none;
+    }
+
+    &__label-text {
+        font-size: 16px;
+    }
+
+    &__label {
+        display:inline-block;
+        text-align: center;
+        width: 100px;
+        border: 1px solid black;
+    }
+
+    &__label {
+        cursor: pointer;
+    }
+
+    &__header-delete-control {
+        cursor: pointer;
+    }
+
+    &__not-visited-label {
+        margin-right: -5px;
+    }
+
+    &__all-label {
+        margin-right: -5px;
+        border-bottom-left-radius: 10px;
+        border-top-left-radius: 10px;
+        border-right: none;
+    }
+
+    &__visited-label {
+        border-bottom-right-radius: 10px;
+        border-top-right-radius: 10px;
+        border-left: none;
+    }
+
+    &__radios-wrapper {
+        display: inline-block;
+        position: absolute;
+        right: 0;
+        bottom: 2px;
+    }
+
+
+}
