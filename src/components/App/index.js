@@ -1,13 +1,23 @@
-import './style.css';
+import './common.css';
+import './app.css';
 
-class App {
-    constructor(container, props) {
-        this.container = container;
-        this.props = props;
+import Main from '../Main';
+import Header from '../Header';
+import Footer from '../Footer';
+import Component from '../Component';
+
+class App extends Component {
+    constructor(props) {
+        super(props);
     }
 
     render() {
-        this.container.innerText = this.props.text;
+        const fragment = document.createDocumentFragment();
+        fragment.appendChild(new Header({ elemClass: 'page__header' }).render());
+        fragment.appendChild(new Main({ elemClass: 'page__main' }).render());
+        fragment.appendChild(new Footer({ elemClass: 'page__footer' }).render());
+
+        return fragment;
     }
 }
 

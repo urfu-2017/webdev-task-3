@@ -1,0 +1,17 @@
+.header {
+    display: flex;
+    align-items: center;
+}
+
+.header__search {
+    margin-left: 20px;
+}
+
+.header__title {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.header__title:first-letter {
+    color: #f00;
+}

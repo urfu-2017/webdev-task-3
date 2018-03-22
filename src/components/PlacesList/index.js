@@ -1,8 +1,10 @@
 import './styles.css';
 import template from './template';
+import Component from '../Component';
 
-class PlacesList {
+class PlacesList extends Component {
     constructor(props) {
+        super();
         this.props = props;
     }
 

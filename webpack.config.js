@@ -13,7 +13,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: ['style-loader', 'css-loader', 'postcss-loader']
             },
             {
                 test: /\.html$/,
@@ -26,7 +26,7 @@ module.exports = {
                 }
             },
             {
-                test: /\.(png|svg|jpg|gif|ico)$/,
+                test: /\.(png|svg|jpg|woff2)$/,
                 use: ['file-loader']
             }
         ]
