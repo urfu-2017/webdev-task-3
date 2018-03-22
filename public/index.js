@@ -36,6 +36,10 @@ function deletePlacesClick() {
 function addButtonClick() {
     let textField = document.querySelector('.add-place__name');
     let placeName = textField.value;
+    if (placeName === '') {
+        return;
+    }
+    textField.value = '';
     let placeObject = { name: placeName };
     sendRequest('/places', 'POST', placeObject);
 }
@@ -46,8 +50,9 @@ function drawPlaces() {
     contentDiv.innerHTML = '';
     let filteredPlaces = places.filter(place => place.name.includes(filterValue));
     filteredPlaces = filteredPlaces.filter(filterByVisitedSelector);
-    for (let place of filteredPlaces) {
-        let placeHtml = createPlaceHtml(place);
+    for (let i = 0; i < filteredPlaces.length; i++) {
+        let place = filteredPlaces[i];
+        let placeHtml = createPlaceHtml(place, i);
         contentDiv.appendChild(placeHtml);
     }
 }
@@ -65,11 +70,11 @@ function filterByVisitedSelector(place) {
     return !place.visited;
 }
 
-function createPlaceHtml(place) {
+function createPlaceHtml(place, index) {
     let block = createHtmlElement('article', 'place');
     let deleteIcon = createDeletePlaceIcon(place);
-    let name = createHtmlElement('span', 'place__name');
-    let editBlock = createEditBlock(place);
+    let name = createPlaceNameHtml(place);
+    let editBlock = createEditBlock(place, name);
     let editIcon = createEditIcon(place, name, editBlock);
     block.addEventListener('mouseover', () => {
         changeIconVisibility(deleteIcon);
@@ -79,22 +84,53 @@ function createPlaceHtml(place) {
         changeIconVisibility(deleteIcon);
         changeIconVisibility(editIcon);
     });
-    name.innerHTML = place.name;
     block.appendChild(editIcon);
     block.appendChild(deleteIcon);
     block.appendChild(name);
     block.appendChild(editBlock);
     block.appendChild(createVisitedIcon(place));
+    block.appendChild(createSwapArrows(place, index));
 
     return block;
 }
 
-function createEditBlock(place) {
+function createSwapArrows(place, index) {
+    const block = createHtmlElement('span', 'place__swap');
+    const upIcon = createIcon('fas fa-long-arrow-alt-up');
+    upIcon.addEventListener('click', () => {
+        sendRequest(`/places/${place.id}`, 'PATCH', { moveTo: index - 1 });
+    });
+    const downIcon = createIcon('fas fa-long-arrow-alt-down');
+    downIcon.addEventListener('click', () => {
+        sendRequest(`/places/${place.id}`, 'PATCH', { moveTo: index + 1 });
+    });
+    block.appendChild(upIcon);
+    block.appendChild(downIcon);
+
+    return block;
+}
+
+function createPlaceNameHtml(place) {
+    let name = createHtmlElement('span', 'place__name');
+    name.innerHTML = place.name;
+    if (place.visited) {
+        name.classList.add('place__name_visited');
+    }
+
+    return name;
+}
+
+function createEditBlock(place, nameBlock) {
     let block = createHtmlElement('span', 'place__edit');
     let input = createHtmlElement('input', 'place__edit__input');
     input.value = place.name;
     input.type = 'text';
     let cancelButton = createIcon('fas fa-times');
+    cancelButton.addEventListener('click', () => {
+        toggle(nameBlock);
+        toggle(block);
+    });
+    cancelButton.classList.add('place__edit__cancel');
     let okButton = createIcon('fas fa-check');
     okButton.addEventListener('click', () => {
         sendRequest(`/places/${place.id}`, 'PATCH', { name: input.value });
@@ -155,8 +191,7 @@ function sendRequest(relativeUrl, method, body) {
         method,
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' }
-    })
-        .then(updatePlaces);
+    }).then(updatePlaces);
 }
 
 function createVisitedIcon(place) {
