@@ -1,10 +1,8 @@
-'use strict';
-
-class PlacesAPI {
+export class PlacesAPI {
     makeURL(tail) {
         return `${this.apiURL}/${tail}`;
     }
-    
+
     makeRequest(url, method, body, options) {
         url = this.makeURL(url);
         if (body) {
@@ -18,6 +16,7 @@ class PlacesAPI {
             method: method,
             mode: 'cors'
         }, options);
+
         return fetch(url, fetchOptions);
     }
 
@@ -26,16 +25,16 @@ class PlacesAPI {
     }
 
     create(name) {
-        return this.makeRequest("places/", "post", {name: name});
+        return this.makeRequest('places/', 'post', { name: name });
     }
 
     list() {
-        return this.makeRequest("places/", "get").then(
+        return this.makeRequest('places/', 'get').then(
             response => response.json(), console.error
         );
     }
 
     clear() {
-        return this.makeRequest("places/", "delete");
+        return this.makeRequest('places/', 'delete');
     }
 }

@@ -1,8 +1,5 @@
-'use strict';
-
 import morgan from 'morgan';
 import express from 'express';
-import hbs from 'hbs';
 import lessMiddleware from 'less-middleware';
 import path from 'path';
 
