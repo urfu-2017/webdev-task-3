@@ -24,9 +24,9 @@ async function updatePlaceList() {
     search();
 }
 
-function createButton(title, func) {
+function createButton(content, func) {
     const button = document.createElement('button');
-    button.innerHTML = title;
+    button.innerHTML = content;
     button.onclick = func;
 
     return button;
@@ -48,8 +48,10 @@ function createLINode(place) {
     const checkbox = createVisitCheckbox(place);
     label.appendChild(checkbox);
     label.appendChild(textNode);
-    const deleteButton = createButton('удалить', () => deletePlace(place.id));
-    const editButton = createButton('редактировать', () => editPlaceMode(place));
+    const deleteButton =
+        createButton('<i class="fas fa-trash-alt"></i>', () => deletePlace(place.id));
+    const editButton =
+        createButton('<i class="fas fa-pencil-alt"></i>', () => editPlaceMode(place));
     node.appendChild(deleteButton);
     node.appendChild(editButton);
     node.appendChild(label);
@@ -74,8 +76,8 @@ function editPlaceMode(place) {
         }
     });
     input.value = place.description;
-    var ok = createButton('ок', async () => await editDescription(place));
-    var cancel = createButton('отмена', search);
+    var ok = createButton('<i class="fas fa-check"></i>', async () => await editDescription(place));
+    var cancel = createButton('<i class="fas fa-times"></i>', search);
     node.appendChild(input);
     node.appendChild(ok);
     node.appendChild(cancel);
