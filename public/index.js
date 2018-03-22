@@ -23,7 +23,9 @@ function selectVisitingState(event) {
 function updatePlaces() {
     fetch(apiUrl + '/places')
         .then(response => response.json())
-        .then(response => places = response)
+        .then(response => {
+            places = response;
+        })
         .then(drawPlaces);
 }
 
@@ -34,14 +36,14 @@ function deletePlacesClick() {
 function addButtonClick() {
     let textField = document.querySelector('.add-place__name');
     let placeName = textField.value;
-    let placeObject = {name: placeName};
+    let placeObject = { name: placeName };
     sendRequest('/places', 'POST', placeObject);
 }
 
 function drawPlaces() {
     const filterValue = document.querySelector('.search-field').value;
-    let contentDiv = document.getElementById("places__container");
-    contentDiv.innerHTML = "";
+    let contentDiv = document.getElementById('places__container');
+    contentDiv.innerHTML = '';
     let filteredPlaces = places.filter(place => place.name.includes(filterValue));
     filteredPlaces = filteredPlaces.filter(filterByVisitedSelector);
     for (let place of filteredPlaces) {
@@ -51,27 +53,29 @@ function drawPlaces() {
 }
 
 function filterByVisitedSelector(place) {
-    const selectedButtonText = document.querySelector('.visibility-selectors__button_selected').value;
+    const selectedClass = '.visibility-selectors__button_selected';
+    const selectedButtonText = document.querySelector(selectedClass).value;
     if (selectedButtonText === 'Все') {
         return true;
-    } else if (selectedButtonText === 'Посещенные') {
-        return place.visited;
-    } else {
-        return !place.visited;
     }
+    if (selectedButtonText === 'Посещенные') {
+        return place.visited;
+    }
+
+    return !place.visited;
 }
 
 function createPlaceHtml(place) {
-    let block = createHtmlElement("article", "place");
+    let block = createHtmlElement('article', 'place');
     let deleteIcon = createDeletePlaceIcon(place);
-    let name = createHtmlElement("span", "place__name");
+    let name = createHtmlElement('span', 'place__name');
     let editBlock = createEditBlock(place);
     let editIcon = createEditIcon(place, name, editBlock);
-    block.addEventListener("mouseover", () => {
+    block.addEventListener('mouseover', () => {
         changeIconVisibility(deleteIcon);
         changeIconVisibility(editIcon);
     });
-    block.addEventListener("mouseout", () => {
+    block.addEventListener('mouseout', () => {
         changeIconVisibility(deleteIcon);
         changeIconVisibility(editIcon);
     });
@@ -93,7 +97,7 @@ function createEditBlock(place) {
     let cancelButton = createIcon('fas fa-times');
     let okButton = createIcon('fas fa-check');
     okButton.addEventListener('click', () => {
-        sendRequest(`/places/${place.id}`, 'PATCH', {name: input.value});
+        sendRequest(`/places/${place.id}`, 'PATCH', { name: input.value });
     });
 
     block.appendChild(input);
@@ -106,7 +110,7 @@ function createEditBlock(place) {
 
 function createDeletePlaceIcon(place) {
     let icon = createTrashcanIcon();
-    icon.addEventListener("click", () => {
+    icon.addEventListener('click', () => {
         sendRequest(`/places/${place.id}`, 'DELETE');
     });
     icon.classList.add('place__delete');
@@ -116,7 +120,7 @@ function createDeletePlaceIcon(place) {
 }
 
 function createEditIcon(place, nameBlock, editBlock) {
-    let icon = createIcon("fas fa-pencil-alt");
+    let icon = createIcon('fas fa-pencil-alt');
     icon.classList.add('icon_hidden');
     icon.classList.add('place__edit');
     icon.addEventListener('click', () => {
@@ -148,31 +152,31 @@ function changeIconVisibility(icon) {
 
 function sendRequest(relativeUrl, method, body) {
     return fetch(apiUrl + relativeUrl, {
-            method,
-            body: JSON.stringify(body),
-            headers: {"Content-Type": "application/json"}
-        })
+        method,
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' }
+    })
         .then(updatePlaces);
 }
 
 function createVisitedIcon(place) {
-    let visitedIcon = createIcon("far fa-circle place__visited");
+    let visitedIcon = createIcon('far fa-circle place__visited');
     if (place.visited) {
-        visitedIcon = createIcon("far fa-check-circle place__visited");
+        visitedIcon = createIcon('far fa-check-circle place__visited');
     }
-    visitedIcon.addEventListener("click", () => {
-        sendRequest(`/places/${place.id}`, "PATCH", {visited:!place.visited});
+    visitedIcon.addEventListener('click', () => {
+        sendRequest(`/places/${place.id}`, 'PATCH', { visited: !place.visited });
     });
 
     return visitedIcon;
 }
 
 function createTrashcanIcon() {
-    return createIcon("fas fa-trash-alt");
+    return createIcon('fas fa-trash-alt');
 }
 
 function createIcon(classes) {
-    return createHtmlElement("i", classes);
+    return createHtmlElement('i', classes);
 }
 
 function createHtmlElement(tag, classes) {
