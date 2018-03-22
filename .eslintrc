@@ -1,3 +1,13 @@
 {
-    "extends": "hrundel/node"
+    "extends": "hrundel/node",
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "rules": {
+        "no-invalid-this": 0,
+        "no-alert": 0,
+        "no-undef": 0,
+        "max-nested-callbacks": 0
+    }
 }
