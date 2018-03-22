@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 var FILTER_ALL = 'ALL';
 var FILTER_VISITED = 'VISITED';
 var FILTER_NOT_VISITED = 'NOT_VISITED';
