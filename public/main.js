@@ -52,7 +52,6 @@ var onEditSave = function () {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onerror = function() {
         alert('Error!');
-		//target.parentNode.parentNode.replaceChild(renderPlace(idx), target.parentNode);
 		renderList();
     }
     xhr.onload = function() {
@@ -61,6 +60,16 @@ var onEditSave = function () {
     };
     var place = Object.assign(places[idx], { description: newDescription });
     xhr.send(JSON.stringify(place));
+};
+
+var onArrowUpClick = function () {
+    var idx = this.parentNode.parentNode.dataset.idx;
+    changeOrder(idx, parseInt(idx) - 1);
+};
+
+var onArrowDownClick = function () {
+    var idx = this.parentNode.parentNode.dataset.idx;
+    changeOrder(idx, parseInt(idx) + 1);
 };
 
 getAll(renderList);
@@ -109,6 +118,20 @@ function renderList(newFilter, newQuery) {
             newList.appendChild(renderPlace(place, idx));
         });
     document.getElementsByTagName('body')[0].replaceChild(newList, oldList);
+}
+
+function changeOrder(idx, order) {
+	var xhr = new XMLHttpRequest();
+    xhr.open('PUT', apiUrl + '/' + order, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onerror = function() {
+        alert('Error!');
+    }
+    xhr.onload = function() {
+        getData(renderList);
+    };
+    var place = Object.assign(places[idx]);
+    xhr.send(JSON.stringify(place));
 }
 
 function markVisited(placeIdx, visited) {
@@ -196,7 +219,18 @@ function renderPlace(place, idx) {
     }
     var arrowsElement = document.createElement('div');
     arrowsElement.className = 'arrows';
-    arrowsElement.innerHTML = '<span class="arrows__up">+</span>++<span class="arrows__down">-</span>';
+	var arrowUp = document.createElement('span');
+	arrowUp.className = 'arrows__up';
+	arrowUp.addEventListener('click', onArrowUpClick);
+	var arrowDown = document.createElement('span');
+	arrowDown.className = 'arrows__down';
+	arrowDown.addEventListener('click', onArrowDownClick);
+	if (idx > 0) {
+		arrowsElement.appendChild(arrowUp);
+	}
+    if (idx < places.length - 1) {
+		arrowsElement.appendChild(arrowDown);
+	}
     placeElement.appendChild(controlsElement);
     placeElement.appendChild(titleElement);
     placeElement.appendChild(arrowsElement);
