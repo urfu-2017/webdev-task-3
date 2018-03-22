@@ -12,7 +12,7 @@ var onVisitedCheckboxClick = function () {
 };
 
 var onDeleteClick = function () {
-    var idx = this.parentNode.dataset.idx;
+    var idx = this.parentNode.parentNode.dataset.idx;
     deletePlace(idx);
 };
 
@@ -34,8 +34,8 @@ var onAddNewPlace = function () {
 };
 
 var onEditClick = function () {
-    var idx = this.parentNode.dataset.idx;
-    this.parentNode.parentNode.replaceChild(renderPlaceEdit(idx), this.parentNode);
+    var idx = this.parentNode.parentNode.dataset.idx;
+    this.parentNode.parentNode.parentNode.replaceChild(renderPlaceEdit(idx), this.parentNode.parentNode);
 };
 
 var onEditCancel = function () {
@@ -44,6 +44,7 @@ var onEditCancel = function () {
 };
 
 var onEditSave = function () {
+	var target = this;
     var idx = this.parentNode.dataset.idx;
     var newDescription = this.parentNode.getElementsByClassName('place__edit')[0].value;
     var xhr = new XMLHttpRequest();
@@ -51,19 +52,20 @@ var onEditSave = function () {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onerror = function() {
         alert('Error!');
+		//target.parentNode.parentNode.replaceChild(renderPlace(idx), target.parentNode);
+		renderList();
     }
     xhr.onload = function() {
         places[idx].description = newDescription;
         renderList();
-        this.parentNode.parentNode.replaceChild(renderPlaceEdit(idx), this.parentNode);
     };
-    var place = Object.assign(places[placeIdx], { description: newDescription });
+    var place = Object.assign(places[idx], { description: newDescription });
     xhr.send(JSON.stringify(place));
 };
 
+getAll(renderList);
+
 document.getElementsByClassName('filters__delete-delete')[0].addEventListener('click', deleteAll);
-document.getElementsByClassName('controls__delete')[0].addEventListener('click', onDeleteClick);
-document.getElementsByClassName('controls__edit')[0].addEventListener('click', onEditClick);
 document.getElementsByClassName('new-place__submit')[0].addEventListener('click', onAddNewPlace);
 
 var searches = document.getElementsByClassName('search__input');
@@ -73,7 +75,7 @@ for (var i = 0; i < visitedFilters.length; i += 1){
     visitedFilters[i].addEventListener('change', onFilterChange);
 }
 
-function getAll() {
+function getAll(callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', apiUrl, true);
     xhr.onerror = function() {
@@ -82,6 +84,9 @@ function getAll() {
     }
     xhr.onload = function() {
         places = JSON.parse(this.responseText);
+		if (callback) {
+			callback();
+		}
     };
     xhr.send();
 }
@@ -172,7 +177,16 @@ function renderPlace(place, idx) {
     titleElement.innerHTML = place.description;
     var controlsElement = document.createElement('div');
     controlsElement.className = 'controls';
-    controlsElement.innerHTML = '<button class="controls__delete">Delete</button><button class="controls__edit">Edit</button>';
+	var editButton = document.createElement('button');
+	editButton.className = 'controls__edit';
+	editButton.innerHTML = 'Edit';
+	editButton.addEventListener('click', onEditClick);
+	var deleteButton = document.createElement('button');
+	deleteButton.className = 'controls__delete';
+	deleteButton.innerHTML = 'Delete';
+	deleteButton.addEventListener('click', onDeleteClick);
+    controlsElement.appendChild(editButton);
+    controlsElement.appendChild(deleteButton);
     var visitedElement = document.createElement('input');
     visitedElement.className = 'place__visited';
     visitedElement.setAttribute('type', 'checkbox');
