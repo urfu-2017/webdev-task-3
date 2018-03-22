@@ -1,0 +1,180 @@
+body
+{
+    text-align: center;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.page
+{
+    background-color: #eefbfd;
+    display: inline-block;
+    text-align: initial;
+    min-width: 600px;
+    box-shadow: 0 0 5px #000;
+}
+
+.main,
+.footer
+{
+    height: 100%;
+    border-style: solid;
+    border-width: 1px 1px 0 1px;
+    padding: 10px;
+}
+
+.search
+{
+    position: relative;
+}
+
+.search__field
+{
+    width: 100%;
+    box-sizing: border-box;
+    text-indent: 20px;
+    border-radius: 5px;
+}
+
+.search:before
+{
+    position: absolute;
+    content: "\f002";
+    font-family: 'Font Awesome 5 Free';
+    line-height: 20px;
+    top: 0;
+    bottom: 0;
+    padding: 0 3px;
+}
+
+.create-place
+{
+    display: flex;
+    margin: 20px 0 15px 0;
+}
+
+.create-place__name
+{
+    flex-grow: 1;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.create-place__btn-create
+{
+    border-radius: 5px;
+    background-color: rgb(247, 247, 247);
+    cursor: pointer;
+}
+
+.places__header
+{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 1px;
+    margin-bottom: 20px;
+}
+
+.places__heading
+{
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.places__heading-text
+{
+    display: inline-block;
+    margin: 0;
+}
+
+.places__btn-all,
+.places__btn-not-visited,
+.places__btn-visited
+{
+    cursor: pointer;
+    background: none;
+    border: solid black 1px;
+}
+
+.places__btn-all:hover,
+.places__btn-not-visited:hover,
+.places__btn-visited:hover {
+    box-shadow: 0 0 5px #5ab9e6;
+}
+
+.places__btn-all
+{
+    border-radius: 5px 0 0 5px;
+    border-right: none;
+}
+
+.places__btn-visited
+{
+    border-radius: 0 5px 5px 0;
+    border-left: none;
+}
+
+.places__inp-all:checked + .places__btn-all,
+.places__inp-visited:checked + .places__btn-visited,
+.places__inp-not-visited:checked + .places__btn-not-visited
+{
+    background: rgba(255, 0, 0, 0.3);
+}
+
+.places__place
+{
+    display: flex;
+    padding-right: 50px;
+}
+
+.places__place-name,
+.places .edit-field
+{
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.places__place-name
+{
+    padding: 3px;
+}
+
+.places__move-buttons
+{
+    margin-right: 10px;
+}
+
+.edit-field__buttons
+{
+    display: inline-block;
+}
+
+.places__place:not(:hover) .places__edit-buttons
+{
+    visibility: hidden;
+}
+
+.places__place:first-of-type .places__btn-move-up,
+.places__place:last-of-type .places__btn-move-down
+{
+    visibility: hidden;
+}
+
+.btn-float
+{
+    background: none;
+    border: solid rgba(255, 255, 255, 0) 1px;
+    border-radius: 2px;
+}
+
+.btn-float:hover
+{
+    border: solid grey 1px;
+}
+
+.footer
+{
+    display: flex;
+    justify-content: space-between;
+    border-bottom-width: 1px;
+}
