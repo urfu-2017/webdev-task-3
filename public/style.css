@@ -1,0 +1,213 @@
+body,
+html,
+main
+{
+    height: 100%;
+}
+
+main
+{
+    width: 500px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    border: 1px solid #000;
+    font: Arial, sans-serif;
+
+    margin: 0 auto;
+}
+
+.search
+{ 
+    width: 440px;
+    padding: 20px 0 5px 8px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.place-creater
+{
+    width: 444px;
+    display: flex;
+    align-items: center;
+
+    margin: 30px 0;
+}
+
+.place-creater__input
+{
+    width: 320px;
+    padding: 20px 0 5px 8px;
+    font-size: 14px;
+}
+
+.place-creater__button
+{
+    width: 68px;
+    height: 35px;
+    margin: 0px 26px;
+    outline: none;
+    font-size: 14px;
+    border-radius: 15px;
+    border: 1px solid #000;
+    background: rgba(255, 255, 255, 0);
+}
+
+.place-creater__button:active
+{
+     background: rgba(36, 29, 29, .1);
+}
+
+.place-editor
+{
+    display: flex;
+    width: 444px;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding:  0 0 10px 0;
+    border-bottom: 1px solid #000;
+}
+.basket
+{
+    display: flex;
+    align-items: flex-end;
+}
+
+.basket__text
+{
+    margin: 0;
+    font-size: 18px;
+}
+
+.basket__img
+{
+    width: 30px;
+}
+
+.tabs
+{
+    display: flex;
+    font-size: 10px;
+}
+
+.tabs__label
+{
+    width: 70px;
+    padding: 3px;
+
+    
+    text-align: center;
+
+    border: 1px solid #000;
+    background: rgba(255, 255, 255, 0);
+}
+
+.tabs__input_all-places:checked ~ .tabs__label[for="all-places"],
+.tabs__input_vizited-places:checked  ~ .tabs__label[for="visited-places"],
+.tabs__input_unvizited-places:checked  ~ .tabs__label[for="unvisited-places"]
+{
+    background: rgba(255, 0, 0, .2)
+}
+
+.tabs__label_all-places
+{
+    border-radius: 10px 0 0 10px;
+}
+
+.tabs__label_vizited-places
+{
+    border-left: none;
+    border-right: none;
+}
+
+.tabs__label_unvizited-places
+{
+    border-radius: 0 10px 10px 0;
+}
+
+.places
+{
+    width: 444px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+}
+
+.places__item
+{
+    height: 60px;
+    margin: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+}
+
+.places__control
+{
+    width: 160px;
+    margin: 0 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    border: 1px solid rgb(202, 196, 196);
+}
+
+.control__imgs
+{
+    display: none;
+}
+
+.places__control:hover .control__imgs
+{
+    display: flex;
+}
+
+.places__editing-control,
+.places__deleting-control
+{
+    height: 20px;
+}
+
+.places__checked-control,
+.places__moving-control
+{
+    font-size: 18px;
+    margin: 0 15px;
+}
+
+.control__text
+{
+    width: 90px;
+    margin: 10px;
+    font-size: 18px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.footer
+{
+    width: 500px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 0 auto;
+    border: 1px solid #000;
+    border-top: none;
+}
+
+.footer__time
+{
+    margin: 0 0 0 15px;
+}
+
+.footer__creator
+{
+    margin: 0 15px 0 0;
+}
+
