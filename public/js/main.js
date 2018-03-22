@@ -1,4 +1,4 @@
-const BACK_URL = 'https://webdev-task-2-mubmkeuyfk.now.sh';
+const BACK_URL = 'https://webdev-task-2-cgqldxeayf.now.sh';
 
 const getById = id => document.getElementById(id);
 
@@ -101,7 +101,10 @@ class Place {
     }
 
     createSwapImage(src, up = true) {
-        return createElement('img', `place__swap-${up ? 'up' : 'down'}`, '', { src });
+        const image = createElement('img', `place__swap-${up ? 'up' : 'down'}`, '', { src });
+        image.onclick = () => Place.swap(image.parentElement, up);
+
+        return image;
     }
 
     createVisitedRadio() {
@@ -135,16 +138,16 @@ class Place {
         return child;
     }
 
+    static clearAll() {
+        placesListNode.innerHTML = '';
+    }
+
     static remove(placeElement) {
         log('removing', placeElement);
         placesListNode.removeChild(placeElement);
         waitUntilElementHasId(placeElement, () => {
             requests.delete(`${BACK_URL}/places/${placeElement.id}`, {});
         });
-    }
-
-    static removeAll() {
-        placesListNode.innerHTML = '';
     }
 
     static visit(placeElement) {
@@ -161,16 +164,40 @@ class Place {
     static rename(placeElement, description) {
         log('renaming', placeElement);
         waitUntilElementHasId(placeElement, () => {
-            places.find(i => i.id === Number(placeElement)).description = description;
+            places.find(i => i.id === Number(placeElement.id)).description = description;
             const body = { description, id: Number(placeElement.id) };
             requests.put(`${BACK_URL}/places`, body);
+        });
+    }
+
+    static swap(element, up) {
+        log('swapping');
+        if (up) {
+            element.parentElement.insertBefore(element, element.previousSibling);
+        } else {
+            element.parentElement.insertBefore(element.nextSibling, element);
+        }
+        const neighbor = element[up ? 'nextSibling' : 'previousSibling'];
+        waitUntilElementHasId(neighbor, () => {
+            waitUntilElementHasId(element, () => {
+                const id1 = Number(element.id);
+                const id2 = Number(neighbor.id);
+                const place1 = places.find(i => i.id === id1);
+                const place2 = places.find(i => i.id === id2);
+                place1.id = id2;
+                place2.id = id1;
+                element.id = id2;
+                neighbor.id = id1;
+                requests.put(`${BACK_URL}/places/${id1}`, { id: id2 });
+            });
         });
     }
 }
 
 const renderPlaces = () => {
-    Place.removeAll();
-    places.filter(placesFilter).forEach(place => Place.add(place));
+    Place.clearAll();
+    places.filter(placesFilter).sort((i, j) => Number(i.id) - Number(j.id))
+        .forEach(place => Place.add(place));
 };
 
 const setFilter = (filter, button, buttons) => () => {
@@ -184,22 +211,25 @@ const setFilter = (filter, button, buttons) => () => {
 };
 
 const searchPlaces = async (description = '') => {
-    log('search places', description, `${BACK_URL}/places?description=${description}`);
-    places = await requests.get(`${BACK_URL}/places?description=${description}`);
+    places = await requests.get(`${BACK_URL}/places?description=${description}&sort=id`);
     renderPlaces();
 };
 
 const createPlaceButtonOnClick = elem => async () => {
-    const placeObj = { description: elem.value };
-    const placeElement = Place.add(placeObj);
-    const res = await requests.post(`${BACK_URL}/places`, placeObj);
-    placeElement.id = res.id;
+    if (elem.value) {
+        const placeObj = { description: elem.value, visited: false };
+        places.push(placeObj);
+        const placeElement = Place.add(placeObj);
+        const { id } = await requests.post(`${BACK_URL}/places`, placeObj);
+        placeElement.id = id;
+        placeObj.id = id;
+    }
 };
 
 const searchPlaceInputOnInput = elem => () => searchPlaces(elem.value);
 
 const deleteAllPlacesOnClick = () => {
-    Place.removeAll();
+    Place.clearAll();
     requests.delete(`${BACK_URL}/places`, {});
 };
 
