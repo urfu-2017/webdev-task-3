@@ -30,10 +30,25 @@
 
 .place {
     display: flex;
+    height: 50px;
 }
 
 .place__title {
+    margin-left: 110px;
     flex-grow: 4;
+}
+
+.controls {
+    width: 110px;
+    display: none;
+}
+
+.place:hover .place__title {
+    margin-left: 0px;
+}
+
+.place:hover .controls {
+    display: inline-block;
 }
 
 .arrows {

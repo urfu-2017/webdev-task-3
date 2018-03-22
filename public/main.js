@@ -11,6 +11,11 @@ var onVisitedCheckboxClick = function () {
     markVisited(idx, this.checked);
 };
 
+var onDeleteClick = function () {
+    var idx = this.parentNode.dataset.idx;
+    deletePlace(idx);
+};
+
 var onFilterChange = function () {
     var value = this.value;
     renderList(value);
@@ -28,7 +33,37 @@ var onAddNewPlace = function () {
     newPlaceInput.value = '';
 };
 
+var onEditClick = function () {
+    var idx = this.parentNode.dataset.idx;
+    this.parentNode.parentNode.replaceChild(renderPlaceEdit(idx), this.parentNode);
+};
+
+var onEditCancel = function () {
+    var idx = this.parentNode.dataset.idx;
+    this.parentNode.parentNode.replaceChild(renderPlace(places[idx], idx), this.parentNode);
+};
+
+var onEditSave = function () {
+    var idx = this.parentNode.dataset.idx;
+    var newDescription = this.parentNode.getElementsByClassName('place__edit')[0].value;
+    var xhr = new XMLHttpRequest();
+    xhr.open('PUT', apiUrl, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onerror = function() {
+        alert('Error!');
+    }
+    xhr.onload = function() {
+        places[idx].description = newDescription;
+        renderList();
+        this.parentNode.parentNode.replaceChild(renderPlaceEdit(idx), this.parentNode);
+    };
+    var place = Object.assign(places[placeIdx], { description: newDescription });
+    xhr.send(JSON.stringify(place));
+};
+
 document.getElementsByClassName('filters__delete-delete')[0].addEventListener('click', deleteAll);
+document.getElementsByClassName('controls__delete')[0].addEventListener('click', onDeleteClick);
+document.getElementsByClassName('controls__edit')[0].addEventListener('click', onEditClick);
 document.getElementsByClassName('new-place__submit')[0].addEventListener('click', onAddNewPlace);
 
 var searches = document.getElementsByClassName('search__input');
@@ -135,6 +170,9 @@ function renderPlace(place, idx) {
     var titleElement = document.createElement('div');
     titleElement.className = 'place__title';
     titleElement.innerHTML = place.description;
+    var controlsElement = document.createElement('div');
+    controlsElement.className = 'controls';
+    controlsElement.innerHTML = '<button class="controls__delete">Delete</button><button class="controls__edit">Edit</button>';
     var visitedElement = document.createElement('input');
     visitedElement.className = 'place__visited';
     visitedElement.setAttribute('type', 'checkbox');
@@ -145,8 +183,29 @@ function renderPlace(place, idx) {
     var arrowsElement = document.createElement('div');
     arrowsElement.className = 'arrows';
     arrowsElement.innerHTML = '<span class="arrows__up">+</span>++<span class="arrows__down">-</span>';
+    placeElement.appendChild(controlsElement);
     placeElement.appendChild(titleElement);
     placeElement.appendChild(arrowsElement);
     placeElement.appendChild(visitedElement);
+    return placeElement;
+}
+
+function renderPlaceEdit(idx) {
+    var place = places[idx];
+    var placeElement = document.createElement('article');
+    placeElement.className = 'place';
+    placeElement.dataset.idx = idx;
+    var titleElement = document.createElement('input');
+    titleElement.className = 'place__edit';
+    titleElement.value = place.description;
+    var saveButton = document.createElement('button');
+    saveButton.innerHTML = 'Save';
+    saveButton.addEventListener('click', onEditSave);
+    var cancelButton = document.createElement('button');
+    cancelButton.innerHTML = 'Cancel';
+    cancelButton.addEventListener('click', onEditCancel);
+    placeElement.appendChild(titleElement);
+    placeElement.appendChild(saveButton);
+    placeElement.appendChild(cancelButton);
     return placeElement;
 }
