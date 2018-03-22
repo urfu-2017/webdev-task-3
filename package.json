@@ -2,10 +2,21 @@
   "private": true,
   "scripts": {
     "lint": "eslint .",
+    "dev": "nodemon index.js",
     "test": "npm run lint"
   },
   "devDependencies": {
+    "babel-core": "6.26.0",
+    "babel-loader": "7.1.4",
+    "babel-preset-es2015": "6.24.1",
     "eslint": "4.8.0",
-    "eslint-config-hrundel": "1.3.0"
+    "eslint-config-hrundel": "1.3.0",
+    "nodemon": "1.17.2"
+  },
+  "dependencies": {
+    "express": "4.16.3",
+    "hbs": "4.0.1",
+    "less-middleware": "2.2.1",
+    "morgan": "1.9.0"
   }
 }

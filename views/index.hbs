@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script>
+        var API_URL = "{{ apiUrl }}";
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <input type="text" class="header__search-input" placeholder="Поиск">
+            <div class="header__create">
+                <input type="text" class="header__create__place-input" placeholder="Название места">
+                <button class="header__create__create-button">Создать</button>
+            </div>
+        </header>
+        <main class="main">
+            <nav class="main__nav">
+                <div class="main__nav__place">
+                    <div>Места</div>
+                    <button class="main__nav__recycle">[x]</button>
+                </div>
+                <div class="main__nav__filters">
+                    <div class="main__nav__filters__all">Все</div>
+                    <div class="main__nav__filters__visit">Посетить</div>
+                    <div class="main__nav__filters__visited">Посещенные</div>                    
+                </div>
+            </nav>
+            <div class="main__places">
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer__copyright">&copy;bnastya</div>
+            <date class="footer__date">2018</date>
+        </footer>
+    </div>
+    <script src="/js/api.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
