@@ -16,6 +16,12 @@
     
 }
 
+.new-place {
+    margin: 0 auto;
+    width: 600px;
+    padding: 20px;
+}
+
 .search {
     margin: 0 auto;
     width: 600px;

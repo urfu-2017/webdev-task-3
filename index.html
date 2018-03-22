@@ -7,17 +7,20 @@
 <body>
     <div class="search">
         <input class="search__input" type="text" />
-        <button class="search__submit">
+    </div>
+    <div class="new-place">
+        <input class="new-place__input" type="text" />
+        <button class="new-place__submit">Add</button>
     </div>
     <div class="filters">
         <h2 class="filters__title">Места</h2>
         <div class="filters__delete">
-            <button class="">Delete</button>
+            <button class="filters__delete-delete">Delete</button>
         </div>
         <div class="filters-visited">
-            <input type="radio" name="visited" class="filters-visited__all">All</input>
-            <input type="radio" name="visited" class="filters-visited__yes">Yes</input>
-            <input type="radio" name="visited" class="filters-visited__no">Not</input>
+            <input type="radio" name="visited" class="filters-visited__all" checked="checked" value="ALL">All</input>
+            <input type="radio" name="visited" class="filters-visited__yes" value="VISITED">Yes</input>
+            <input type="radio" name="visited" class="filters-visited__no" value="NOT_VISITED">Not</input>
         </div>
     </div>
     <main class="places">
