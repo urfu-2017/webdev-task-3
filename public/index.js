@@ -60,20 +60,43 @@ function createLabel(place) {
     return label;
 }
 
-function createLINode(place) {
+function createLINode(place, index, colSize) {
     const node = document.createElement('div');
     const label = createLabel(place);
-
+    const downButton =
+        createButton('<i class="fas fa-arrow-down"></i>', () => rearrange(index, index + 1));
+    const upButton =
+        createButton('<i class="fas fa-arrow-up"></i>', () => rearrange(index, index - 1));
     const deleteButton =
         createButton('<i class="fas fa-trash-alt"></i>', () => deletePlace(place.id));
     const editButton =
         createButton('<i class="fas fa-pencil-alt"></i>', () => editPlaceMode(place));
     node.appendChild(deleteButton);
     node.appendChild(editButton);
+    if (index !== colSize - 1) {
+        node.appendChild(downButton);
+    }
+    if (index !== 0) {
+        node.appendChild(upButton);
+    }
     node.appendChild(label);
     node.className = `place${place.id}`;
 
     return node;
+}
+
+async function rearrange(oldIndex, newIndex) {
+    const temp = places[oldIndex];
+    places[oldIndex] = places[newIndex];
+    places[newIndex] = temp;
+    search();
+    await fetch(apiUrl + places[newIndex].id, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ index: newIndex })
+    });
 }
 
 async function deletePlace(id) {
@@ -118,11 +141,10 @@ async function editDescription(place) {
 function setPlacesList(newPlaces) {
     const placesList = document.querySelector('.places__list');
     placesList.innerHTML = '';
-
-    for (var place of newPlaces) {
-        const node = createLINode(place);
+    newPlaces.forEach((place, index) => {
+        const node = createLINode(place, index, newPlaces.length);
         placesList.appendChild(node);
-    }
+    });
 }
 
 function visit(place) {
