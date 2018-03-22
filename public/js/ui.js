@@ -154,6 +154,10 @@ placesElement.addEventListener('click', placesClickHandler);
 
 function filterPlacesHandler(event) {
     let filterPlacesNode = event.target;
+    if (!Array.from(filterPlacesNode.classList)
+        .some(className => className === 'filter-places__button')) {
+        return;
+    }
     let filter = filterPlacesNode.dataset.filter;
     placesElement.className = 'places';
     placesElement.classList.add(`places_filter_${filter}`);
@@ -179,7 +183,7 @@ function searchHandler(event) {
         });
 }
 
-let filterPlacesElement = document.getElementsByClassName('filter-places')[0];
+let filterPlacesElement = document.getElementsByClassName('filter-places__control')[0];
 filterPlacesElement.addEventListener('click', filterPlacesHandler);
 
 let search = document.getElementsByClassName('search__input')[0];
