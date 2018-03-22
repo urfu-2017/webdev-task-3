@@ -1,4 +1,4 @@
-const apiUrl = 'https://webdev-task-2-vhbznmmjut.now.sh';
+const apiUrl = 'https://places.now.sh';
 // const apiUrl = 'http://localhost:10010';
 
 let places = [];
