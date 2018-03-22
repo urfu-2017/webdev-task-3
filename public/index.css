@@ -1,0 +1,43 @@
+.create-place__name,
+.create-place__button,
+.places__header-name,
+.places__delete-all
+{
+    display: inline-block;
+}
+
+.search,
+.create-place
+{
+    text-align: center;
+}
+
+.places__delete-all-img
+{
+    width: 50px;
+}
+
+.places__header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.places__list
+{
+    display: inline-block;
+    position: relative;
+}
+
+.places__list
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.places__list-one-place
+{
+    display: flex;
+    justify-content: center;
+}
