@@ -1,0 +1,61 @@
+main,
+footer
+{
+    width: 40%;
+    margin: auto;
+    border: 1px black solid;
+}
+
+footer
+{
+    display: flex;
+    justify-content: space-around;
+}
+
+.search
+{
+    display: flex;
+    justify-content: center;
+}
+
+.search__input
+{
+    width: 60%;
+    margin: 10px 0 30px 0;
+}
+
+.create
+{
+    display: flex;
+    justify-content: space-around;
+}
+
+.create__input
+{
+    width: 60%;
+}
+
+.filter
+{
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.filter__buttons
+{
+    display: flex;
+    height: 35px;
+}
+
+.places
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.place
+{
+    display: flex;
+    justify-content: space-around;
+}
