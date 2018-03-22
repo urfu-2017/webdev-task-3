@@ -77,11 +77,18 @@
     &__name {
         text-align: center;
         line-height: 32px;
+        padding: 0;
         margin: 0 128px 0 64px;
         width: calc(100% - 140px);
-
+        border: 1px solid #fff;
+        &:enabled {
+            border: 1px solid #366;
+        }
         &:disabled {
-            border: 0;
+            background-color: #fff;
+        }
+        &:focus {
+            border: 1px solid #333;
         }
     }
 

@@ -3,7 +3,8 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm run lint",
-    "stylus": "stylus -o public/css/ stylus/"
+    "stylus": "stylus -o public/css/ stylus/",
+    "start": "node index.js"
   },
   "devDependencies": {
     "eslint": "4.8.0",
