@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <link rel="stylesheet" href="styles.css" media="screen">
+    <script src="scripts.js"></script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <div class="search-panel">
+        <form class="search-panel__search-from">
+          <input class="search-panel__search-input" type="text" name="search"
+            placeholder="Поиск">
+        </form>
+      </div>
+      <div class="create-record-panel">
+        <form class="create-record-panel__create-form">
+          <input class="create-record-panel__name" type="text" name="record-name"
+            placeholder="Название места">
+          <input class="create-record-panel__create" type="button" name="create" value="Создать">
+        </form>
+      </div>
+      <div class="records-list-panel">
+        <div class="records-list-panel__head">
+          <span class="records-list-panel__title">Места</span>
+          <span class="records-list-panel__delete-all"></span>
+          <form class="records-list-panel__filters">
+            <input class="records-list-panel__filter first" type="button" name="all" value="Все">
+            <input class="records-list-panel__filter middle" type="button" name="toVisit"
+              value="Посетить">
+            <input class="records-list-panel__filter last" type="button" name="visited"
+              value="Посещенные">
+          </form>
+        </div>
+        <div class="records-list">
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
