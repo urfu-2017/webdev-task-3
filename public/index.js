@@ -41,13 +41,29 @@ function createVisitCheckbox(place) {
     return checkbox;
 }
 
-function createLINode(place) {
-    const node = document.createElement('div');
+function createLabel(place) {
     const label = document.createElement('label');
     const textNode = document.createTextNode(place.description);
+    const visitMark = document.createElement('i');
+    if (place.visited) {
+        visitMark.className += 'fas fa-lemon';
+        label.className += 'strikeout';
+    } else {
+        visitMark.className += 'far fa-lemon';
+    }
     const checkbox = createVisitCheckbox(place);
+    checkbox.className += 'hidden';
     label.appendChild(checkbox);
     label.appendChild(textNode);
+    label.appendChild(visitMark);
+
+    return label;
+}
+
+function createLINode(place) {
+    const node = document.createElement('div');
+    const label = createLabel(place);
+
     const deleteButton =
         createButton('<i class="fas fa-trash-alt"></i>', () => deletePlace(place.id));
     const editButton =
@@ -100,7 +116,7 @@ async function editDescription(place) {
 }
 
 function setPlacesList(newPlaces) {
-    const placesList = document.querySelector('.places_list');
+    const placesList = document.querySelector('.places__list');
     placesList.innerHTML = '';
 
     for (var place of newPlaces) {
@@ -114,6 +130,12 @@ function visit(place) {
 }
 
 async function setVisitValue(id, visited) {
+    const targetPlace = places.find(p => p.id === id);
+    if (targetPlace) {
+        targetPlace.visited = visited;
+    }
+    search();
+
     await fetch(apiUrl + id, {
         method: 'PATCH',
         headers: {
@@ -181,7 +203,6 @@ window.onload = async function () {
     });
 
     document.querySelector('.place__remover-submit').onclick = clearList;
-
 
 };
 

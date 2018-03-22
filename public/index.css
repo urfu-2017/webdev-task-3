@@ -5,6 +5,21 @@ body
     padding: 100px;
 }
 
+.hidden
+{
+    display: none;
+}
+
+.strikeout
+{
+    text-decoration: line-through;
+}
+
+.places__list div
+{
+    margin: 10px;
+}
+
 .footer
 {
     border-style: solid;
