@@ -36,15 +36,6 @@ const requests = {
     put: fetchRequest('PUT')
 };
 
-const waitUntilElementHasId = (element, func) => {
-    if (element.id) {
-        func();
-    } else {
-        log('wait');
-        setTimeout(() => waitUntilElementHasId(element, func), 250);
-    }
-};
-
 let placesListNode;
 
 let places = [];
@@ -56,6 +47,8 @@ const FILTERS = {
 };
 
 let placesFilter = FILTERS.ALL;
+
+let placesDescription = '';
 
 class Place {
     constructor(place) {
@@ -131,6 +124,22 @@ class Place {
         return div;
     }
 
+    static visit(placeElement) {
+        log('visiting', placeElement);
+        if (placesFilter === FILTERS.NOT_VISITED) {
+            placesListNode.removeChild(placeElement);
+        }
+        places.find(i => i.id === Number(placeElement.id)).visited = true;
+        requests.post(`${BACK_URL}/places/visited`, { id: Number(placeElement.id) });
+    }
+
+    static rename(placeElement, description) {
+        log('renaming', placeElement);
+        places.find(i => i.id === Number(placeElement.id)).description = description;
+        const body = { description, id: Number(placeElement.id) };
+        requests.put(`${BACK_URL}/places`, body);
+    }
+
     static add(place) {
         const child = new Place(place).toHtmlElement();
         placesListNode.appendChild(child);
@@ -145,29 +154,8 @@ class Place {
     static remove(placeElement) {
         log('removing', placeElement);
         placesListNode.removeChild(placeElement);
-        waitUntilElementHasId(placeElement, () => {
-            requests.delete(`${BACK_URL}/places/${placeElement.id}`, {});
-        });
-    }
-
-    static visit(placeElement) {
-        log('visiting', placeElement);
-        if (placesFilter === FILTERS.NOT_VISITED) {
-            placesListNode.removeChild(placeElement);
-        }
-        waitUntilElementHasId(placeElement, () => {
-            places.find(i => i.id === Number(placeElement.id)).visited = true;
-            requests.post(`${BACK_URL}/places/visited`, { id: Number(placeElement.id) });
-        });
-    }
-
-    static rename(placeElement, description) {
-        log('renaming', placeElement);
-        waitUntilElementHasId(placeElement, () => {
-            places.find(i => i.id === Number(placeElement.id)).description = description;
-            const body = { description, id: Number(placeElement.id) };
-            requests.put(`${BACK_URL}/places`, body);
-        });
+        places = places.filter(i => i.id !== Number(placeElement.id));
+        requests.delete(`${BACK_URL}/places/${placeElement.id}`, {});
     }
 
     static swap(element, up) {
@@ -178,27 +166,24 @@ class Place {
             element.parentElement.insertBefore(element.nextSibling, element);
         }
         const neighbor = element[up ? 'nextSibling' : 'previousSibling'];
-        waitUntilElementHasId(neighbor, () => {
-            waitUntilElementHasId(element, () => {
-                const id1 = Number(element.id);
-                const id2 = Number(neighbor.id);
-                const place1 = places.find(i => i.id === id1);
-                const place2 = places.find(i => i.id === id2);
-                place1.id = id2;
-                place2.id = id1;
-                element.id = id2;
-                neighbor.id = id1;
-                requests.put(`${BACK_URL}/places/${id1}`, { id: id2 });
-            });
-        });
+        const id1 = Number(element.id);
+        const id2 = Number(neighbor.id);
+        const place1 = places.find(i => i.id === id1);
+        const place2 = places.find(i => i.id === id2);
+        place1.id = id2;
+        place2.id = id1;
+        element.id = id2;
+        neighbor.id = id1;
+        requests.put(`${BACK_URL}/places/${id1}`, { id: id2 });
+    }
+
+    static renderAll() {
+        placesListNode.innerHTML = '';
+        places.filter(placesFilter).filter(i => i.description.includes(placesDescription))
+            .sort((i, j) => Number(i.id) - Number(j.id))
+            .forEach(place => Place.add(place));
     }
 }
-
-const renderPlaces = () => {
-    Place.clearAll();
-    places.filter(placesFilter).sort((i, j) => Number(i.id) - Number(j.id))
-        .forEach(place => Place.add(place));
-};
 
 const setFilter = (filter, button, buttons) => () => {
     log('change filter', button);
@@ -207,29 +192,28 @@ const setFilter = (filter, button, buttons) => () => {
     });
     button.className += ' places-list__filter__checked';
     placesFilter = filter;
-    renderPlaces();
-};
-
-const searchPlaces = async (description = '') => {
-    places = await requests.get(`${BACK_URL}/places?description=${description}&sort=id`);
-    renderPlaces();
+    Place.renderAll();
 };
 
 const createPlaceButtonOnClick = elem => async () => {
     if (elem.value) {
         const placeObj = { description: elem.value, visited: false };
         places.push(placeObj);
-        const placeElement = Place.add(placeObj);
         const { id } = await requests.post(`${BACK_URL}/places`, placeObj);
-        placeElement.id = id;
+        Place.add(new Place(placeObj).toHtmlElement()).id = id;
         placeObj.id = id;
+        Place.renderAll();
     }
 };
 
-const searchPlaceInputOnInput = elem => () => searchPlaces(elem.value);
+const searchPlaceInputOnInput = elem => () => {
+    placesDescription = elem.value;
+    Place.renderAll();
+};
 
 const deleteAllPlacesOnClick = () => {
-    Place.clearAll();
+    places = [];
+    placesListNode.innerHTML = '';
     requests.delete(`${BACK_URL}/places`, {});
 };
 
@@ -247,7 +231,9 @@ const initFilterButtons = () => {
 
 window.onload = async () => {
     placesListNode = getById('places-list__list');
-    await searchPlaces();
+
+    places = await requests.get(`${BACK_URL}/places?sort=id`);
+    Place.renderAll();
 
     const placeButton = getById('create-place__button');
     const createPlaceInput = getById('create-place__input');
