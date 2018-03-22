@@ -113,8 +113,8 @@
 
 .control-panel__view-filter_input:checked + .control-panel__view-filter_type
 {
-    /* background-image: url(/pics/button.png); */
-    background: linear-gradient(45deg, #EECFBA, #C5DDE8);
+    background-image: url(/pics/button.png);
+    /* background: linear-gradient(45deg, #EECFBA, #C5DDE8); */
     background-size: 100% 100%;
 }
 
