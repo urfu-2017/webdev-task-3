@@ -35,7 +35,8 @@ var onAddNewPlace = function () {
 
 var onEditClick = function () {
     var idx = this.parentNode.parentNode.dataset.idx;
-    this.parentNode.parentNode.parentNode.replaceChild(renderPlaceEdit(idx), this.parentNode.parentNode);
+    this.parentNode.parentNode.parentNode.replaceChild(renderPlaceEdit(idx),
+        this.parentNode.parentNode);
 };
 
 var onEditCancel = function () {
@@ -44,17 +45,16 @@ var onEditCancel = function () {
 };
 
 var onEditSave = function () {
-	var target = this;
     var idx = this.parentNode.dataset.idx;
     var newDescription = this.parentNode.getElementsByClassName('place__edit')[0].value;
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', apiUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onerror = function() {
-        alert('Error!');
-		renderList();
-    }
-    xhr.onload = function() {
+    xhr.onerror = function () {
+        console.error('Error!');
+        renderList();
+    };
+    xhr.onload = function () {
         places[idx].description = newDescription;
         renderList();
     };
@@ -80,22 +80,23 @@ document.getElementsByClassName('new-place__submit')[0].addEventListener('click'
 var searches = document.getElementsByClassName('search__input');
 searches[0].addEventListener('change', onQueryChange);
 var visitedFilters = document.querySelectorAll('.filters-visited input');
-for (var i = 0; i < visitedFilters.length; i += 1){
+for (var i = 0; i < visitedFilters.length; i += 1) {
     visitedFilters[i].addEventListener('change', onFilterChange);
 }
 
 function getAll(callback) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', apiUrl, true);
-    xhr.onerror = function() {
-        alert('Error!');
+    xhr.onerror = function () {
+        console.error('Error!');
+
         return [];
-    }
-    xhr.onload = function() {
+    };
+    xhr.onload = function () {
         places = JSON.parse(this.responseText);
-		if (callback) {
-			callback();
-		}
+        if (callback) {
+            callback();
+        }
     };
     xhr.send();
 }
@@ -108,11 +109,14 @@ function renderList(newFilter, newQuery) {
     newList.className = 'places';
     places
         .filter(function (place) {
-            return (filter === FILTER_VISITED
-                ? place.visited
-                : filter === FILTER_NOT_VISITED
-                    ? !place.visited
-                    : true) && place.description.toLowerCase().includes(query);
+            switch (filter) {
+                case FILTER_VISITED:
+                    return place.visited && place.description.toLowerCase().includes(query);
+                case FILTER_NOT_VISITED:
+                    return !place.visited && place.description.toLowerCase().includes(query);
+                default:
+                    return place.description.toLowerCase().includes(query);
+            }
         })
         .forEach(function (place, idx) {
             newList.appendChild(renderPlace(place, idx));
@@ -121,14 +125,14 @@ function renderList(newFilter, newQuery) {
 }
 
 function changeOrder(idx, order) {
-	var xhr = new XMLHttpRequest();
+    var xhr = new XMLHttpRequest();
     xhr.open('PUT', apiUrl + '/' + order, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onerror = function() {
-        alert('Error!');
-    }
-    xhr.onload = function() {
-        getData(renderList);
+    xhr.onerror = function () {
+        console.error('Error!');
+    };
+    xhr.onload = function () {
+        getAll(renderList);
     };
     var place = Object.assign(places[idx]);
     xhr.send(JSON.stringify(place));
@@ -138,10 +142,10 @@ function markVisited(placeIdx, visited) {
     var xhr = new XMLHttpRequest();
     xhr.open('PUT', apiUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onerror = function() {
-        alert('Error!');
-    }
-    xhr.onload = function() {
+    xhr.onerror = function () {
+        console.error('Error!');
+    };
+    xhr.onload = function () {
         places[placeIdx].visited = visited;
         renderList();
     };
@@ -153,11 +157,11 @@ function createPlace(description) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', apiUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onerror = function() {
-        alert('Error!');
+    xhr.onerror = function () {
+        console.error('Error!');
     };
     var place = { description: description, visited: false, id: -1 };
-    xhr.onload = function() {
+    xhr.onload = function () {
         place.id = JSON.parse(this.responseText).id;
         places.push(place);
         renderList();
@@ -168,10 +172,10 @@ function createPlace(description) {
 function deletePlace(placeIdx) {
     var xhr = new XMLHttpRequest();
     xhr.open('DELETE', apiUrl + places[placeIdx].id, true);
-    xhr.onerror = function() {
-        alert('Error!');
-    }
-    xhr.onload = function() {
+    xhr.onerror = function () {
+        console.error('Error!');
+    };
+    xhr.onload = function () {
         places.splice(placeIdx, 1);
         renderList();
     };
@@ -181,10 +185,10 @@ function deletePlace(placeIdx) {
 function deleteAll() {
     var xhr = new XMLHttpRequest();
     xhr.open('DELETE', apiUrl, true);
-    xhr.onerror = function() {
-        alert('Error!');
-    }
-    xhr.onload = function() {
+    xhr.onerror = function () {
+        console.error('Error!');
+    };
+    xhr.onload = function () {
         places = [];
         renderList();
     };
@@ -198,18 +202,15 @@ function renderPlace(place, idx) {
     var titleElement = document.createElement('div');
     titleElement.className = 'place__title';
     titleElement.innerHTML = place.description;
-    var controlsElement = document.createElement('div');
-    controlsElement.className = 'controls';
-	var editButton = document.createElement('button');
-	editButton.className = 'controls__edit';
-	editButton.innerHTML = 'Edit';
-	editButton.addEventListener('click', onEditClick);
-	var deleteButton = document.createElement('button');
-	deleteButton.className = 'controls__delete';
-	deleteButton.innerHTML = 'Delete';
-	deleteButton.addEventListener('click', onDeleteClick);
-    controlsElement.appendChild(editButton);
-    controlsElement.appendChild(deleteButton);
+    placeElement.appendChild(createControlsElement());
+    placeElement.appendChild(titleElement);
+    placeElement.appendChild(createArrowsElement(place, idx));
+    placeElement.appendChild(createVisitedElement(place));
+
+    return placeElement;
+}
+
+function createVisitedElement(place) {
     var visitedElement = document.createElement('input');
     visitedElement.className = 'place__visited';
     visitedElement.setAttribute('type', 'checkbox');
@@ -217,25 +218,44 @@ function renderPlace(place, idx) {
     if (place.visited) {
         visitedElement.setAttribute('checked', 'checked');
     }
+
+    return visitedElement;
+}
+
+function createArrowsElement(place, idx) {
     var arrowsElement = document.createElement('div');
     arrowsElement.className = 'arrows';
-	var arrowUp = document.createElement('span');
-	arrowUp.className = 'arrows__up';
-	arrowUp.addEventListener('click', onArrowUpClick);
-	var arrowDown = document.createElement('span');
-	arrowDown.className = 'arrows__down';
-	arrowDown.addEventListener('click', onArrowDownClick);
-	if (idx > 0) {
-		arrowsElement.appendChild(arrowUp);
-	}
+    var arrowUp = document.createElement('span');
+    arrowUp.className = 'arrows__up';
+    arrowUp.addEventListener('click', onArrowUpClick);
+    var arrowDown = document.createElement('span');
+    arrowDown.className = 'arrows__down';
+    arrowDown.addEventListener('click', onArrowDownClick);
+    if (idx > 0) {
+        arrowsElement.appendChild(arrowUp);
+    }
     if (idx < places.length - 1) {
-		arrowsElement.appendChild(arrowDown);
-	}
-    placeElement.appendChild(controlsElement);
-    placeElement.appendChild(titleElement);
-    placeElement.appendChild(arrowsElement);
-    placeElement.appendChild(visitedElement);
-    return placeElement;
+        arrowsElement.appendChild(arrowDown);
+    }
+
+    return arrowsElement;
+}
+
+function createControlsElement() {
+    var controlsElement = document.createElement('div');
+    controlsElement.className = 'controls';
+    var editButton = document.createElement('button');
+    editButton.className = 'controls__edit';
+    editButton.innerHTML = 'Edit';
+    editButton.addEventListener('click', onEditClick);
+    var deleteButton = document.createElement('button');
+    deleteButton.className = 'controls__delete';
+    deleteButton.innerHTML = 'Delete';
+    deleteButton.addEventListener('click', onDeleteClick);
+    controlsElement.appendChild(editButton);
+    controlsElement.appendChild(deleteButton);
+
+    return controlsElement;
 }
 
 function renderPlaceEdit(idx) {
@@ -246,14 +266,25 @@ function renderPlaceEdit(idx) {
     var titleElement = document.createElement('input');
     titleElement.className = 'place__edit';
     titleElement.value = place.description;
+    placeElement.appendChild(titleElement);
+    placeElement.appendChild(createSaveEditButton());
+    placeElement.appendChild(createCancelEditButton());
+
+    return placeElement;
+}
+
+function createSaveEditButton() {
     var saveButton = document.createElement('button');
     saveButton.innerHTML = 'Save';
     saveButton.addEventListener('click', onEditSave);
+
+    return saveButton;
+}
+
+function createCancelEditButton() {
     var cancelButton = document.createElement('button');
     cancelButton.innerHTML = 'Cancel';
     cancelButton.addEventListener('click', onEditCancel);
-    placeElement.appendChild(titleElement);
-    placeElement.appendChild(saveButton);
-    placeElement.appendChild(cancelButton);
-    return placeElement;
+
+    return cancelButton;
 }
