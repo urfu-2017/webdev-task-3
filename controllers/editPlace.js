@@ -8,7 +8,7 @@ let editNameButtons = document.getElementsByClassName('place__delete');
 Array.prototype.slice.call(editNameButtons, 0);
 
 const editPlace = async (values) => {
-    return await fetch('https://webdev-task-2-dylksngchm.now.sh/edit', {
+    return await fetch('webdev-task-2-envjxiafqo.now.sh/edit', {
         method: 'PUT',
         headers: { 'Content-Type': 'plain/text' },
         body: values

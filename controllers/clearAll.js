@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 let deleteAllButton = document.getElementsByClassName('control-panel__delete')[0];
 
 const deleteAll = async () => {
-    return await fetch('https://webdev-task-2-dylksngchm.now.sh/deleteAll', {
+    return await fetch('webdev-task-2-envjxiafqo.now.sh/deleteAll', {
         method: 'DELETE'
     });
 };

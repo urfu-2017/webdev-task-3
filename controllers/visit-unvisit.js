@@ -8,7 +8,7 @@ const visitButton = document.getElementsByClassName('place__visited_checkbox');
 Array.prototype.slice.call(visitButton, 0);
 
 const visit = async (values) => {
-    return await fetch('https://webdev-task-2-dylksngchm.now.sh/edit', {
+    return await fetch('webdev-task-2-envjxiafqo.now.sh/edit', {
         method: 'PATCH',
         headers: { 'Content-Type': 'plain/text' },
         body: values

@@ -9,7 +9,7 @@ const dateSortButton = document.getElementById('dateSort');
 let newList = [];
 
 const getList = (values) => {
-    return fetch('http://localhost:3000/list', {
+    return fetch('webdev-task-2-envjxiafqo.now.sh/list', {
         method: 'GET',
         headers: { 'Content-Type': 'plain/text' },
         body: values

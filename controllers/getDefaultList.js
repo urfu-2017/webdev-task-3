@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 // const generate = require('./listCreator');
 
 const getList = async (values) => {
-    return await fetch('http://localhost:3000/edit', {
+    return await fetch('webdev-task-2-envjxiafqo.now.sh/edit', {
         method: 'GET',
         headers: { 'Content-Type': 'plain/text' },
         body: values,

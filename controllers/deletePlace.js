@@ -8,7 +8,7 @@ let deletePlaceButtons = document.getElementsByClassName('place__delete');
 Array.prototype.slice.call(deletePlaceButtons, 0);
 
 const deletePlace = async (values) => {
-    return await fetch('https://webdev-task-2-dylksngchm.now.sh/deletePlace', {
+    return await fetch('webdev-task-2-envjxiafqo.now.sh/deletePlace', {
         method: 'DELETE',
         headers: { 'Content-Type': 'plain/text' },
         body: values

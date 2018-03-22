@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 let searchButton = document.getElementsByClassName('search__button')[0];
 
 const searchElement = async (values) => {
-    return await fetch('https://webdev-task-2-dylksngchm.now.sh/findPlace', {
+    return await fetch('webdev-task-2-envjxiafqo.now.sh/findPlace', {
         method: 'GET',
         headers: { 'Content-Type': 'plain/text' },
         body: values

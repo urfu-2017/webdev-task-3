@@ -7,7 +7,7 @@ const fetch = require('node-fetch');
 let createButton = document.getElementsByClassName('new-place__create-button')[0];
 
 const create = async ({ name, description }) => {
-    return await fetch(`http://localhost:3000/create/${name}/${description}`, {
+    return await fetch(`webdev-task-2-envjxiafqo.now.sh/create/${name}/${description}`, {
         method: 'POST',
         headers: { 'Content-Type': 'plain/text' },
         mode: 'cors'
