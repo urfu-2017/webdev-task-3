@@ -2,6 +2,7 @@
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
+/* eslint-disable no-empty-function */
 
 const PLACES_ADDRESS = 'https://webdev-task-2-clzvgkakug.now.sh/places';
 const idButtonToFilter = {
