@@ -1,0 +1,265 @@
+.service-name
+{
+    font-size: 36px;
+    text-align: center;
+    font-style: italic;
+}
+
+.service-name::first-letter
+{
+    color: #f00;
+}
+
+main
+{
+    margin: 0 60px;
+}
+
+main input
+{
+    border: solid #000 1px;
+    height: 30px;
+}
+
+main input[type="text"]
+{
+    padding: 0 5px;
+}
+
+.creating-place__button,
+.handlers__filter label,
+.handlers__clear
+{
+    cursor: pointer;
+}
+
+.hidden
+{
+    display: none;
+}
+
+.search-notes
+{
+    width: 250px;
+}
+
+.creating-place
+{
+    margin-top: 30px;
+    width: 262px;
+}
+
+.creating-place__text-area,
+.creating-place__button
+{
+    vertical-align: middle;
+}
+
+.creating-place__text-area
+{
+    width: 160px;
+}
+
+
+.creating-place__button
+{
+    margin-left: 20px;
+    width: 66px;
+    border-radius: 12px;
+}
+
+.creating-place__button:focus
+{
+    outline: none;
+}
+
+.handlers
+{
+    margin-top: 30px;
+    display: inline-block;
+}
+
+.handlers__title
+{
+    font-size: 32px;
+}
+
+.handlers__clear
+{
+    margin-left: 10px;
+    height: 25px;
+}
+
+.handlers__filter
+{
+    margin-left: 25px;
+    display: inline-block;
+    border-radius: 10px;
+    border: 1px solid #000;
+    border-collapse: collapse;
+}
+
+.handlers__filter td
+{
+    width: 100px;
+    text-align: center;
+    padding: 0;
+}
+
+.handlers__filter label
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.handlers__filter td:nth-child(n + 2)
+{
+    border-left: 1px solid #000;
+}
+
+input[id="all"]:checked ~ .content label[for="all"]
+{
+    background: #98FB98;
+    border-radius: 10px 0 0 10px;
+}
+
+input[id="visit"]:checked ~ .content label[for="visit"]
+{
+    background: #98FB98;
+}
+
+input[id="visited"]:checked ~ .content label[for="visited"]
+{
+    background: #98FB98;
+    border-radius: 0 10px 10px 0;
+}
+
+
+.handlers__filter-underline
+{
+    margin: 0 -10px;
+}
+
+/* footer */
+html,
+body {
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.content {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex: 0 0 auto;
+}
+
+.footer__about-service
+{
+    display: inline-block;
+    font-size: 20px;
+}
+
+.footer__about-service-left-part
+{
+    padding-left: 15px;
+    float: left;
+}
+
+.footer__about-service-right-part
+{
+    padding-right: 15px;
+    float: right;
+}
+
+.places
+{
+    margin: 20px 0 100px 10px;
+}
+
+.places__element
+{
+    position: relative;
+    width: 450px;
+    height: 100px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.places__element-button
+{
+    position: absolute;
+    cursor: pointer;
+}
+
+.places__icon
+{
+    height: 25px;
+}
+
+.places__element-title
+{
+    position: absolute;
+    left: 100px;
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    outline: none;
+    background: #fff;
+}
+
+.places__element-visit-state
+{
+    left: 420px;
+}
+
+.places__element-arrow-up
+{
+    left: 345px;
+}
+
+.places__element-arrow-down
+{
+    left: 375px;
+}
+
+.places__element-change-button
+{
+    left: 10px;
+    display: none;
+}
+
+.places__element-delete-button
+{
+    left: 45px;
+    display: none;
+}
+
+.places__element-cancel-button
+{
+    left: 275px;
+    display: none;
+}
+
+.places__element-ok-button
+{
+    left: 300px;
+    display: none;
+}
+
+
+.places__element:hover > .places__element-change-button,
+.places__element:hover > .places__element-delete-button
+{
+    display: block;
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Павел слишком занят</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+    <div class="wrapper">
+        <input class="hidden" type="radio" name="visitFilter" id="all" onchange="changeVisitFilter()" checked>
+        <input class="hidden" type="radio" name="visitFilter" id="visit" onchange="changeVisitFilter()">
+        <input class="hidden" type="radio" name="visitFilter" id="visited" onchange="changeVisitFilter()">
+        <div class="content">
+            <header><h1 class="service-name">Сервис &laquo;Павел слишком занят&raquo;</h1></header>
+            <main>
+                <input id="search-string" class="search-notes" type="text" placeholder="Поиск">
+                <div class="creating-place">
+                    <input id="place-name" class="creating-place__text-area" type="text" placeholder="Название места">
+                    <input class="creating-place__button" type="button" value="Создать" onclick="addNote()">
+                </div>
+                <div class="handlers">
+                    <span class="handlers__title">Места</span>
+                    <img class="handlers__clear" src="pictures/can.ico" alt="Удалить всё" onclick="clearNotes()">
+                    <table class="handlers__filter">
+                        <tr>
+                            <td><label for="all">Все</label></td>
+                            <td><label for="visit">Посетить</label></td>
+                            <td><label for="visited">Посещённые</label></td>
+                        </tr>
+                    </table>
+                    <hr class="handlers__filter-underline">
+                </div>
+                <div class="places" id="places"></div>
+            </main>
+        </div>
+        <footer>
+            <div class="footer__about-service footer__about-service-left-part">© graf-m-96</div>
+            <div class="footer__about-service footer__about-service-right-part">2018</div>
+        </footer>
+    </div>
+    <script src="dom.js"></script>
+</body>
+</html>
