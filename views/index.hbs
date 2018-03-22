@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="{{ meta.charset }}">
+        <title>{{ title }}</title>
+        <meta name="description" content="Задача «Павел слишком занят»">
+        <link rel="stylesheet" href="index.css" media="screen">
+    </head>
+    <body>
+        <form>
+            <div class="header">Don’t forget your tooth brush!</div>
+            <hr>
+            <input class="search-input" id="search-input" type="search" placeholder="Search"/>
+            <input type="button" id="search" value="Search"/>
+            <div id="foundedPlace"></div>
+            <br>
+            <input id="create-input"  class="create-input" placeholder="New place"/>
+            <input type="button" id="create" value="Create"/>
+            <div class="selector">
+                <div class="selectorName">Places</div>
+                <input type="button" class="trash" id="delete" title="Delete all"/>
+                <div class="fieldset">
+                    <input type="radio" name="radVisited" id="all" checked/>{{!-- 
+                     --}}<label class="labelAll" for="all">All</label>{{!-- 
+                     --}}<input type="radio" name="radVisited" id="visited"/>{{!-- 
+                     --}}<label for="visited">Visited</label>{{!-- 
+                     --}}<input type="radio" name="radVisited" id="planned">{{!-- 
+                     --}}<label class="labelVisited" for="planned">Planned</label>
+                </div>    
+            </div>
+            <div id="places"></div>
+            <hr>
+            <div class="footer">
+                <div class="year">2018</div>
+                <div class="author">&copy;chrighter</div>
+            </div>
+        </form>
+        <script src="app.js"></script>
+    </body>
+</html>

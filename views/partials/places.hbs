@@ -1,0 +1,9 @@
+{{#if places.length}}
+    <ul>
+        {{#each places}}
+            <li>{{ place }}</li>
+        {{/each}}
+    </ul>
+{{^}}
+    <p>Places not found!</p>
+{{/if}}

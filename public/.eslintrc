@@ -1,3 +1,10 @@
 {
-    "extends": "hrundel/browser"
+    "extends": "hrundel/browser",
+    "rules": {
+        "no-invalid-this": 0,
+        "no-alert": 0,
+        "max-nested-callbacks": 0,
+        "max-statements": 0,
+        "no-loop-func": 0
+    }
 }
