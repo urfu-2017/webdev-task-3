@@ -59,6 +59,8 @@ exports.PlacesHeader = class {
         this.notVisitedRadio.onclick = () => {
             this.placesBlock.filterCondition = (place) => place.isVisited === false;
             this.placesBlock.rebuild();
+
+            this.placesBlock.hideMoveControls();
         };
     }
 
@@ -66,6 +68,8 @@ exports.PlacesHeader = class {
         this.visitedRadio.onclick = () => {
             this.placesBlock.filterCondition = (place) => place.isVisited === true;
             this.placesBlock.rebuild();
+
+            this.placesBlock.hideMoveControls();
         };
     }
 };

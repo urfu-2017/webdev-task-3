@@ -22,12 +22,13 @@ places.afterDeleteHandler = afterDeleteHandler;
 places.moveUpHandler = moveHandler.bind(null, -1);
 places.moveDownHandler = moveHandler.bind(null, 1);
 
-
 document.addEventListener('DOMContentLoaded', async () => {
     const body = document.querySelector('body');
 
     const allPlaces = await fetch(apiUrl)
         .then(response => response.json());
+
+    body.innerHTML = '';
 
     searchForm.allPlaces = allPlaces;
 

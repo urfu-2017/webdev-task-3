@@ -53,4 +53,11 @@ exports.Places = class {
     rebuild() {
         this.placesList.rebuild();
     }
+
+    hideMoveControls() {
+        const moveControls = document.getElementsByClassName('places__move-controls');
+        for (let i = 0; i < moveControls.length; i++) {
+            moveControls[i].hidden = true;
+        }
+    }
 };
