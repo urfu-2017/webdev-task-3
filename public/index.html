@@ -12,15 +12,15 @@
         <input type="search" class="header__search" placeholder="Поиск...">
     </header>
     <main class="main">
-        <section class="create">
+        <form class="create">
             <input type="text" class="create__input" placeholder="Название места...">
-            <button class="create__btn">Создать</button>
-        </section>
+            <button type="submit" class="create__btn">Создать</button>
+        </form>
         <section class="places">
             <header class="places__header">
                 <div class="places__wrapper">
                     <h2 class="places__heading">Места</h2>
-                    <button class="places__delete">
+                    <button class="places__delete" title="Удалить все...">
                         <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                             <g>
                                 <rect x="-1" y="-1" width="582" height="402" fill="none"/>
@@ -37,16 +37,18 @@
                     </button>
                 </div>
                 <div class="places__sort-options">
-                    <input type="radio" name="sort" id="opt-1" class="places__sort-option" checked>
+                    <input type="radio" name="sort" value="all" id="opt-1" class="places__sort-option" checked>
                     <label for="opt-1" class="places__sort-option-label">Все</label>
-                    <input type="radio" name="sort" id="opt-2" class="places__sort-option">
+                    <input type="radio" name="sort" value="unvisited" id="opt-2" class="places__sort-option">
                     <label for="opt-2" class="places__sort-option-label">Посетить</label>
-                    <input type="radio" name="sort" id="opt-3" class="places__sort-option">
+                    <input type="radio" name="sort" value="visited" id="opt-3" class="places__sort-option">
                     <label for="opt-3" class="places__sort-option-label">Посещено</label>
                 </div>
             </header>
             <section id="container" class="places__container">
-                Пока не добавлено ни одного места...
+                <div id="loading">
+
+                </div>
             </section>
         </section>
     </main>
@@ -55,5 +57,6 @@
         <span class="footer__copy">&copy; kvas</span>
     </footer>
 </section>
+<script src="index.js"></script>
 </body>
 </html>
