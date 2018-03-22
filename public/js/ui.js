@@ -33,12 +33,14 @@ function deleteNotes() {
 
 document.getElementsByClassName('filter-places__clear')[0].addEventListener('click', deleteNotes);
 
+let placesList = null;
 function loadNotes() {
     shortFetch('GET', '/list')
         .then(res => res.json())
         .then(places => {
+            placesList = Array.from(places);
             console.info(places);
-            Array.from(places).forEach(place => {
+            placesList.forEach(place => {
                 if (!place) {
                     return;
                 }
@@ -51,7 +53,8 @@ function loadNotes() {
 
 function createPlaceDiv(place) {
     let div = document.createElement('div');
-    div.className = 'place';
+    div.className = 'place place_search_matched';
+    div.className += place.visited ? ' place_visited' : '';
     div.innerHTML = `
         <label class="place__wrapper">
             <button class="place__edit"></button>
@@ -63,14 +66,14 @@ function createPlaceDiv(place) {
         </label>
         <button class="place__arrow place__arrow_direction_up"></button>
         <button class="place__arrow place__arrow_direction_down"></button>
-        <input class="place__state" type="checkbox">
+        <input class="place__state" type="checkbox" ${place.visited ? 'checked' : ''}>
     `;
 
     return div;
 }
 
 loadNotes();
-let placesElement = document.getElementsByClassName('places')[0];
+
 let placesHandlers = {
     'place__edit': (event) => editPlace(event),
     'place__rubbish': (event) => deletePlace(event),
@@ -134,17 +137,72 @@ function changeStatePlace(event) {
         .firstElementChild
         .children[2];
     let name = nameNode.dataset.old || nameNode.value;
+    let placeNode = nameNode.parentElement.parentElement;
     if (stateNode.checked) {
-        nameNode.classList.add('place__name_visited');
+        placeNode.classList.add('place_visited');
         shortFetch('PATCH', `/${name}/visit`)
             .then(res => console.info(res));
     } else {
-        nameNode.classList.remove('place__name_visited');
+        placeNode.classList.remove('place_visited');
         shortFetch('PATCH', `/${name}/unvisit`)
             .then(res => console.info(res));
     }
 }
 
+let placesElement = document.getElementsByClassName('places')[0];
 placesElement.addEventListener('click', placesClickHandler);
 
+function filterPlacesHandler(event) {
+    let filterPlacesNode = event.target;
+    let filter = filterPlacesNode.dataset.filter;
+    placesElement.className = 'places';
+    placesElement.classList.add(`places_filter_${filter}`);
+    Array.from(filterPlacesNode.parentElement.children).forEach(button => {
+        button.classList.remove('filter-places__button_selected');
+    });
+    filterPlacesNode.classList.add('filter-places__button_selected');
+}
 
+function searchHandler(event) {
+    let searchNode = event.target;
+    let placeNameNodes = Array.from(document.getElementsByClassName('place__name'));
+    placeNameNodes
+        .forEach(placeNameNode => {
+            let placeNode = placeNameNode.parentElement.parentElement;
+            placeNode.classList.remove('place_search_matched');
+        });
+    placeNameNodes
+        .filter(placeNameNode => placeNameNode.value.indexOf(searchNode.value) !== -1)
+        .forEach(placeNameNode => {
+            let placeNode = placeNameNode.parentElement.parentElement;
+            placeNode.classList.add('place_search_matched');
+        });
+}
+
+let filterPlacesElement = document.getElementsByClassName('filter-places')[0];
+filterPlacesElement.addEventListener('click', filterPlacesHandler);
+
+let search = document.getElementsByClassName('search__input')[0];
+search.addEventListener('keyup', debounce(searchHandler, 100));
+
+function debounce(func, wait, immediate) {
+    var timeout;
+
+    return function () {
+        /* eslint-disable no-invalid-this*/
+        let context = this;
+        let args = arguments;
+        let later = function () {
+            timeout = null;
+            if (!immediate) {
+                func.apply(context, args);
+            }
+        };
+        let callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) {
+            func.apply(context, args);
+        }
+    };
+}

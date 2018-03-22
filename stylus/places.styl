@@ -4,7 +4,16 @@
 }
 .place {
     line-height: 32px;
-    display: flex;
+    display: none;
+    .places_filter_visited &_visited&_search_matched,
+    .places_filter_unvisited &_search_matched,
+    .places_filter_all &_search_matched {
+        display: flex;
+    }
+    .places_filter_unvisited &_visited&_search_matched {
+        display: none;
+    }
+
     align-items: center;
 
     &:hover &__rubbish, 
@@ -66,17 +75,13 @@
     }
 
     &__name {
-        text-align: right;
+        text-align: center;
         line-height: 32px;
         margin: 0 128px 0 64px;
         width: calc(100% - 140px);
 
         &:disabled {
             border: 0;
-        }
-
-        &_visited {
-            text-decoration: line-through;
         }
     }
 
@@ -89,6 +94,14 @@
         cursor: pointer;
     }
 
+    &:first-child &__arrow_direction_up,
+    &:last-child &__arrow_direction_down {
+        background-image: none;
+    }
+
+    &_visited &__name {
+        text-decoration: line-through;
+    }
 
 }
     

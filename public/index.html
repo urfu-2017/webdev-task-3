@@ -26,13 +26,13 @@
                 <span class="filter-places__label">Места</span>
                 <button class="filter-places__clear"></button>
                 <ul class="filter-places__control">
-                    <li class="filter-places__button filter-places__button_border-radius_left">Все</li>
-                    <li class="filter-places__button">Посетить</li>
-                    <li class="filter-places__button filter-places__button_border-radius_right">Непосещенные</li>
+                    <li data-filter="all" class="filter-places__button filter-places__button_border-radius_left filter-places__button_selected">Все</li>
+                    <li data-filter="unvisited" class="filter-places__button">Посетить</li>
+                    <li data-filter="visited" class="filter-places__button filter-places__button_border-radius_right">Посещенные</li>
                 </ul>
             </div>
 
-            <div class="places">
+            <div class="places places_filter_all">
 
             </div>
 
