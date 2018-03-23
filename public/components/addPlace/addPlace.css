@@ -1,0 +1,28 @@
+.add-place {
+    grid-area: a;
+    padding: 0.5em;
+    text-align: center;
+    vertical-align: middle;
+    background: #e1e2e1;
+}
+
+.add-place__input {
+    width: 450px;
+    height: 40px;
+    font-size: 20px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 20px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.add-place__button {
+    width: 90px;
+    height: 40px;
+    font-size: 20px;
+    border: none;
+    background: #66bb6a;
+    border-radius: 20px;
+}

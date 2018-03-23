@@ -1,0 +1,14 @@
+{
+    "title": "Travel",
+    "meta": {
+        "charset": "utf-8",
+        "description": "Travel"
+    },
+    "main": {
+        "footer": {
+            "author": "Albina",
+            "year": "2018"
+        }
+    },
+    "url": "http://localhost:3000/api"
+}

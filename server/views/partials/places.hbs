@@ -1,0 +1,14 @@
+<div class="places">
+    <div class="places__header">
+        <div class="places__name-header" onclick="deleteAll()">
+            Места
+            <img src="/places/delete.png" alt="Удалить" class="places__delete">
+        </div>
+        <div class="places__button-sort">
+            <button class="button-sort__button_all ripple button-sort__button-active" onclick="getAllPlace('all')">Все</button>
+            <button class="button-sort__button_visit_true ripple" onclick="getAllPlace(false)">Посетить</button>
+            <button class="button-sort__button_visit_false ripple" onclick="getAllPlace(true)">Посещённые</button>
+        </div>
+    </div>
+    <div class="places__list"></div>
+</div>
