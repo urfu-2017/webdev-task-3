@@ -1,0 +1,85 @@
+.list-item {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px 0;
+}
+
+.list-item:hover > .list-item__edit,
+.list-item:hover > .list-item__delete {
+    visibility: visible;
+}
+
+.list-item__edit,
+.list-item__delete {
+    visibility: hidden;
+}
+
+.list-item__edit,
+.list-item__delete,
+.list-item__arrow-down,
+.list-item__arrow-up {
+    color: #ddd;
+}
+
+
+.list-item__edit:active,
+.list-item__delete:active,
+.list-item__arrow-down:active,
+.list-item__arrow-up:active {
+    color: #333;
+}
+
+.list-item__edit {
+    margin: 0 8px 0 0;
+}
+
+.list-item__delete {
+    margin: 0 16px 0 0;
+}
+
+.list-item__name {
+    flex-grow: 2;
+    margin: 0 8px 0 0;
+
+    font-size: 24px;
+
+    border: none;
+}
+
+.list-item__name:disabled {
+    color: #000;
+}
+
+.list-item__confirm-edit,
+.list-item__cancel-edit {
+    display: none;
+
+    margin: 0 8px 0 0;
+}
+
+.list-item__confirm-edit {
+    color: #44d183;
+}
+
+.list-item__cancel-edit {
+    color: #e95555;
+}
+
+.list-item__icon {
+    width: 24px;
+    height: 24px;
+}
+
+.list-item__arrow-down,
+.list-item__arrow-up {
+    margin: 0 8px 0 0;
+
+    color: #ddd;
+}
+
+.list-item__checkbox {
+    margin: 8px;
+}

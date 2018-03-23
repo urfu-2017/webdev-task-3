@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ pageTitle }}</title>
+    <link rel="stylesheet" href="{{ staticBasePath }}common.css">
+    <link rel="stylesheet" href="{{ staticBasePath }}list-item.css">
+    <link rel="stylesheet" href="{{ staticBasePath }}footer.css">
+    <link rel="stylesheet" href="{{ staticBasePath }}index.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <script defer src="{{ staticBasePath }}scripts/script.js"></script>
+</head>
+
+<body>
+    <main class="main-layout">
+        <div class="search-box">
+            <span class="search-box__title section-header">Поиск</span>
+            <input type="text" class="search-box__input">
+        </div>
+        <div class="create-box">
+            <input type="text" class="create-box__input">
+            <button class="create-box__button">Создать</button>
+        </div>
+        <div class="list">
+            <header class="list__header">
+                <span class="list__title section-header">Места</span>
+                <i class="fas fa-trash-alt fa-2x list__clear"></i>
+                <div class="list__header-blank-space"></div>
+                <div class="list__tabs">
+                    <label class="list__radio-label">
+                        <input type="radio" name="list-mode" value="all" class="list__radio" checked>
+                        <span>Все</span>
+                    </label>
+                    <label class="list__radio-label">
+                        <input type="radio" name="list-mode" value="unvisited" class="list__radio">
+                        <span>Посетить</span>
+                    </label>
+                    <label class="list__radio-label">
+                        <input type="radio" name="list-mode" value="visited" class="list__radio">
+                        <span>Посещенные</span>
+                    </label>
+                </div>
+            </header>
+        </div>
+    </main>
+    {{> footer }}
+</body>
+
+</html>

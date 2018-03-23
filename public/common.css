@@ -1,0 +1,12 @@
+input {
+    outline: none;
+
+    box-sizing: border-box;
+
+    border: 1px solid #aaa;
+}
+
+.section-header {
+    font-weight: 600;
+    font-size: 28px;
+}
