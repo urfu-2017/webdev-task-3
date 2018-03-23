@@ -125,11 +125,11 @@ class EventListeners {
 
 class Article {
     constructor(name) {
-        this.name = name;
+        this._name = name;
     }
 
     initialize() {
-        fetch(`${baseUrl}?place=${this.name}`, { method: 'POST' });
+        fetch(`${baseUrl}?place=${this._name}`, { method: 'POST' });
         const article = document.createElement('article');
         article.className = 'location horizontal-flex visible';
         article.appendChild(this._createHiddenOpsDiv());
@@ -153,7 +153,7 @@ class Article {
     _createNameDiv() {
         const locDiv = document.createElement('div');
         locDiv.className = 'location-name';
-        locDiv.innerText = this.name;
+        locDiv.innerText = this._name;
 
         return locDiv;
     }
