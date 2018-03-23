@@ -1,3 +1,4 @@
+// Глобальные переменные
 var baseUrl = 'https://webdev-task-2-mezpktevsh.now.sh/api/';
 
 var recordsToDisplay = [];
@@ -10,6 +11,8 @@ var filters = {
     notVisited: (a) => a.isVisited === false
 };
 
+
+// Шаблоны для отрисовки динамичных частей страницы
 var recordTemplate = '<div class="record"><form' +
   ' class="record__controllers record__element">' +
   '<span class="record__arrow record__up-arrow record__element">' +
@@ -28,12 +31,30 @@ var editInputBlockTemplate = '<div class="record__edit-wrapper">' +
   '<span class="record__cancel-edit"></span><span' +
   ' class="record__accept-edit"></span></div>';
 
+
+// Инфрастуктурные методы
 function htmlToElement(html) {
     var template = document.createElement('template');
     html = html.trim();
     template.innerHTML = html;
 
     return template.content.firstChild;
+}
+
+function repaintRecords(customRecords = false) {
+    var recordList = document.getElementsByClassName('records-list')[0];
+    recordList.innerHTML = '';
+    if (filter === 'all') {
+        recordsToDisplay = records;
+    } else {
+        recordsToDisplay = records.filter(filters[filter]);
+    }
+    if (customRecords) {
+        recordsToDisplay = customRecords;
+    }
+    for (var i = 0; i < recordsToDisplay.length; i++) {
+        recordList.appendChild(buildRecord(i));
+    }
 }
 
 function loadRecords() {
@@ -44,17 +65,18 @@ function loadRecords() {
         });
 }
 
-function toggleVisited() {
-    var number = this.getAttribute('number');
-    var record = document.getElementsByClassName(`record-number-${number}`)[0];
-    var title = record.getElementsByClassName('record__title')[0];
-    if (title.classList.contains('crossed')) {
-        recordsToDisplay[number].isVisited = false;
-        title.classList.remove('crossed');
-    } else {
-        recordsToDisplay[number].isVisited = true;
-        title.classList.add('crossed');
-    }
+
+// Методы-сборщики, методы-инициализаторы,
+function buildRecord(i) {
+    var record = htmlToElement(recordTemplate);
+    record.classList.add(`record-number-${i}`);
+
+    initVisited(record, i);
+    initArrowControllers(record, i);
+    record.insertBefore(createTitleWrapper(i), record.firstChild);
+    record.insertBefore(createEditInputBlock(), record.firstChild);
+
+    return record;
 }
 
 function createTitleWrapper(i) {
@@ -121,34 +143,42 @@ function initVisited(record, i) {
     }
 }
 
-function buildRecord(i) {
-    var record = htmlToElement(recordTemplate);
-    record.classList.add(`record-number-${i}`);
+/**
+ * Инициализирует все кнопки на странице, кроме кнопок записи.
+ * Записи и их все их кнопки инициализируются самостоятельно при построении.
+ */
+function initListeners() {
+    var deleteAll = document.getElementsByClassName('records-list-panel__delete-all')[0];
+    deleteAll.addEventListener('click', deleteAllRecords);
 
-    var titleWrapper = createTitleWrapper(i);
-    var editInputBlock = createEditInputBlock();
+    var all = document.getElementsByClassName('first')[0];
+    all.addEventListener('click', allFilter);
 
-    initVisited(record, i);
-    initArrowControllers(record, i);
-    record.insertBefore(titleWrapper, record.firstChild);
-    record.insertBefore(editInputBlock, record.firstChild);
+    var visited = document.getElementsByClassName('last')[0];
+    visited.addEventListener('click', visitedFilter);
 
-    return record;
+    var notVisited = document.getElementsByClassName('middle')[0];
+    notVisited.addEventListener('click', notVisitedFilter);
+
+    var create = document.getElementsByClassName('create-record-panel__create')[0];
+    create.addEventListener('click', createRecord);
+
+    var search = document.getElementsByClassName('search-panel__search-input')[0];
+    search.addEventListener('input', searchRecords);
 }
 
-function repaintRecords(customRecords = false) {
-    var recordList = document.getElementsByClassName('records-list')[0];
-    recordList.innerHTML = '';
-    if (filter === 'all') {
-        recordsToDisplay = records;
+
+// Методы, входящие в логику работы кнопок записи
+function toggleVisited() {
+    var number = this.getAttribute('number');
+    var record = document.getElementsByClassName(`record-number-${number}`)[0];
+    var title = record.getElementsByClassName('record__title')[0];
+    if (title.classList.contains('crossed')) {
+        recordsToDisplay[number].isVisited = false;
+        title.classList.remove('crossed');
     } else {
-        recordsToDisplay = records.filter(filters[filter]);
-    }
-    if (customRecords) {
-        recordsToDisplay = customRecords;
-    }
-    for (var i = 0; i < recordsToDisplay.length; i++) {
-        recordList.appendChild(buildRecord(i));
+        recordsToDisplay[number].isVisited = true;
+        title.classList.add('crossed');
     }
 }
 
@@ -190,21 +220,6 @@ function deleteRecord() {
     repaintRecords();
 }
 
-function deleteAllRecords() {
-    if (filter === 'all') {
-        recordsToDisplay.length = 0;
-
-        fetch(`${baseUrl}record/?all=1`, {
-            method: 'DELETE'
-        });
-    } else {
-        recordsToDisplay.forEach((record) => {
-            records.splice(records.indexOf(record), 1);
-        });
-    }
-    repaintRecords();
-}
-
 function editTitle() {
     this.parentNode.parentNode.firstChild.classList.remove('hidden');
     this.parentNode.classList.add('hidden');
@@ -221,17 +236,34 @@ function cancelEdit() {
     this.parentNode.nextElementSibling.classList.remove('hidden');
 }
 
-function filterVisited() {
+
+// Методы для остальных кнопок страницы (все, кроме записей)
+function deleteAllRecords() {
+    if (filter === 'all') {
+        recordsToDisplay.length = 0;
+
+        fetch(`${baseUrl}record/?all=1`, {
+            method: 'DELETE'
+        });
+    } else {
+        recordsToDisplay.forEach((record) => {
+            records.splice(records.indexOf(record), 1);
+        });
+    }
+    repaintRecords();
+}
+
+function visitedFilter() {
     filter = 'visited';
     repaintRecords();
 }
 
-function filterNotVisited() {
+function notVisitedFilter() {
     filter = 'notVisited';
     repaintRecords();
 }
 
-function defaultFilter() {
+function allFilter() {
     filter = 'all';
     repaintRecords();
 }
@@ -275,27 +307,7 @@ function searchRecords() {
     }
 }
 
-function initListeners() {
-    var deleteAll = document.getElementsByClassName('records-list-panel__delete-all')[0];
-    deleteAll.addEventListener('click', deleteAllRecords);
-
-    var all = document.getElementsByClassName('first')[0];
-    all.addEventListener('click', defaultFilter);
-
-    var visited = document.getElementsByClassName('last')[0];
-    visited.addEventListener('click', filterVisited);
-
-    var notVisited = document.getElementsByClassName('middle')[0];
-    notVisited.addEventListener('click', filterNotVisited);
-
-    var create = document.getElementsByClassName('create-record-panel__create')[0];
-    create.addEventListener('click', createRecord);
-
-    var search = document.getElementsByClassName('search-panel__search-input')[0];
-    search.addEventListener('input', searchRecords);
-}
-
-
+// Ининциализация страницы, первичная отрисовка динамических записей
 var loaded = loadRecords();
 
 window.onload = () => {
