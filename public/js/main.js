@@ -40,10 +40,16 @@ let placesListNode;
 
 let places = [];
 
+let requestQueue = new Promise(resolve => resolve());
+
+const addRequestToQueue = func => {
+    requestQueue = requestQueue.then(func);
+};
+
 const FILTERS = {
-    ALL: () => true,
-    VISITED: i => i.visited,
-    NOT_VISITED: i => !i.visited
+    ALL: 0,
+    VISITED: 1,
+    NOT_VISITED: 2
 };
 
 let placesFilter = FILTERS.ALL;
@@ -126,36 +132,41 @@ class Place {
 
     static visit(placeElement) {
         log('visiting', placeElement);
-        if (placesFilter === FILTERS.NOT_VISITED) {
-            placesListNode.removeChild(placeElement);
-        }
-        places.find(i => i.id === Number(placeElement.id)).visited = true;
-        requests.post(`${BACK_URL}/places/visited`, { id: Number(placeElement.id) });
+        Place.filter();
+        addRequestToQueue(() => {
+            log('visiting 2', placeElement);
+            places.find(i => i.id === Number(placeElement.id)).visited = true;
+
+            return requests.post(`${BACK_URL}/places/visited`, { id: Number(placeElement.id) });
+        });
     }
 
     static rename(placeElement, description) {
         log('renaming', placeElement);
-        places.find(i => i.id === Number(placeElement.id)).description = description;
-        const body = { description, id: Number(placeElement.id) };
-        requests.put(`${BACK_URL}/places`, body);
+        addRequestToQueue(() => {
+            places.find(i => i.id === Number(placeElement.id)).description = description;
+
+            return requests.put(`${BACK_URL}/places`, { description, id: Number(placeElement.id) });
+        });
     }
 
     static add(place) {
         const child = new Place(place).toHtmlElement();
         placesListNode.appendChild(child);
+        Place.filter();
 
         return child;
-    }
-
-    static clearAll() {
-        placesListNode.innerHTML = '';
     }
 
     static remove(placeElement) {
         log('removing', placeElement);
         placesListNode.removeChild(placeElement);
-        places = places.filter(i => i.id !== Number(placeElement.id));
-        requests.delete(`${BACK_URL}/places/${placeElement.id}`, {});
+        addRequestToQueue(() => {
+            log('removing 2', placeElement);
+            places = places.filter(i => i.id !== Number(placeElement.id));
+
+            return requests.delete(`${BACK_URL}/places/${placeElement.id}`, {});
+        });
     }
 
     static swap(element, up) {
@@ -166,22 +177,38 @@ class Place {
             element.parentElement.insertBefore(element.nextSibling, element);
         }
         const neighbor = element[up ? 'nextSibling' : 'previousSibling'];
-        const id1 = Number(element.id);
-        const id2 = Number(neighbor.id);
-        const place1 = places.find(i => i.id === id1);
-        const place2 = places.find(i => i.id === id2);
-        place1.id = id2;
-        place2.id = id1;
-        element.id = id2;
-        neighbor.id = id1;
-        requests.put(`${BACK_URL}/places/${id1}`, { id: id2 });
+        addRequestToQueue(() => {
+            const id1 = Number(element.id);
+            const id2 = Number(neighbor.id);
+            const place1 = places.find(i => i.id === id1);
+            const place2 = places.find(i => i.id === id2);
+            place1.id = id2;
+            place2.id = id1;
+            element.id = id2;
+            neighbor.id = id1;
+
+            return requests.put(`${BACK_URL}/places/${id1}`, { id: id2 });
+        });
     }
 
-    static renderAll() {
-        placesListNode.innerHTML = '';
-        places.filter(placesFilter).filter(i => i.description.includes(placesDescription))
-            .sort((i, j) => Number(i.id) - Number(j.id))
-            .forEach(place => Place.add(place));
+    static hide(element, condition) {
+        if (condition) {
+            element.style.display = 'none';
+        }
+    }
+
+    static filter() {
+        const childrens = placesListNode.children;
+        for (let i = 0; i < childrens.length; i++) {
+            childrens[i].style.display = 'grid';
+        }
+        for (let i = 0; i < childrens.length; i++) {
+            const visited = childrens[i].children[5].checked;
+            const description = childrens[i].children[2].value;
+            Place.hide(childrens[i], !visited && placesFilter === FILTERS.VISITED);
+            Place.hide(childrens[i], visited && placesFilter === FILTERS.NOT_VISITED);
+            Place.hide(childrens[i], !description.includes(placesDescription));
+        }
     }
 }
 
@@ -192,29 +219,33 @@ const setFilter = (filter, button, buttons) => () => {
     });
     button.className += ' places-list__filter__checked';
     placesFilter = filter;
-    Place.renderAll();
+    Place.filter();
 };
 
 const createPlaceButtonOnClick = elem => async () => {
     if (elem.value) {
         const placeObj = { description: elem.value, visited: false };
         places.push(placeObj);
-        const { id } = await requests.post(`${BACK_URL}/places`, placeObj);
-        Place.add(new Place(placeObj).toHtmlElement()).id = id;
-        placeObj.id = id;
-        Place.renderAll();
+        const placeElement = Place.add(placeObj);
+
+        addRequestToQueue(() => {
+            return requests.post(`${BACK_URL}/places`, placeObj).then(data => {
+                placeElement.setAttribute('id', data.id);
+                placeObj.id = data.id;
+            });
+        });
     }
 };
 
 const searchPlaceInputOnInput = elem => () => {
     placesDescription = elem.value;
-    Place.renderAll();
+    Place.filter();
 };
 
 const deleteAllPlacesOnClick = () => {
     places = [];
     placesListNode.innerHTML = '';
-    requests.delete(`${BACK_URL}/places`, {});
+    addRequestToQueue(() => requests.delete(`${BACK_URL}/places`, {}));
 };
 
 const initFilterButtons = () => {
@@ -233,14 +264,16 @@ window.onload = async () => {
     placesListNode = getById('places-list__list');
 
     places = await requests.get(`${BACK_URL}/places?sort=id`);
-    Place.renderAll();
+    placesListNode.innerHTML = '';
+    places.sort((i, j) => Number(i.id) - Number(j.id))
+        .forEach(place => Place.add(place));
 
     const placeButton = getById('create-place__button');
     const createPlaceInput = getById('create-place__input');
     placeButton.onclick = createPlaceButtonOnClick(createPlaceInput);
 
     const searchInput = getById('search-place__input');
-    searchInput.oninput = searchPlaceInputOnInput(searchInput); // сюда debounce нужен
+    searchInput.oninput = searchPlaceInputOnInput(searchInput);
 
     const deleteAllPlaces = getById('places-list__trash-image');
     deleteAllPlaces.onclick = deleteAllPlacesOnClick;
