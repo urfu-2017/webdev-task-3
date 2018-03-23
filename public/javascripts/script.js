@@ -25,7 +25,7 @@ const correctArrows = () => {
 
 
 const validateName = name => {
-    const locationCollection = getElemByClass('locations-list').children;
+    const locationCollection = parentElement.children;
     for (const elem of locationCollection) {
         const elemName = getElemByClass('location-name', elem).textContent;
         if (elemName === name) {
@@ -222,7 +222,8 @@ class Locations {
     }
 
     _checkSearch() {
-        const children = getElemByClass('locations-list').children;
+        this.currentSearchResult = this.currentSearchResult || '';
+        const children = parentElement.children;
         for (const element of children) {
             const content = getElemByClass('location-name', element).textContent;
             if (content.indexOf(this.currentSearchResult) === -1) {
@@ -234,7 +235,7 @@ class Locations {
     }
 
     _displayElemsByParam(displayParam) {
-        const list = getElemByClass('locations-list').children;
+        const list = parentElement.children;
         switch (displayParam) {
             case 'All':
                 for (const element of list) {
@@ -271,9 +272,8 @@ class Locations {
 
     delete() {
         fetch(baseUrl, { method: 'DELETE' });
-        const list = getElemByClass('locations-list');
-        while (list.firstChild) {
-            list.removeChild(list.firstChild);
+        while (parentElement.firstChild) {
+            parentElement.removeChild(parentElement.firstChild);
         }
     }
 
@@ -281,15 +281,13 @@ class Locations {
         event.preventDefault();
         const input = document.getElementsByClassName('insertion-form__input')[0].value;
         let addedElement;
-        let parent;
         try {
             validateName(input);
-            parent = getElemByClass('locations-list');
             addedElement = new Article(input).initialize();
             Article.addEventListeners(addedElement);
-            parent.appendChild(addedElement);
+            parentElement.appendChild(addedElement);
         } catch (e) {
-            parent.removeChild(addedElement);
+            parentElement.removeChild(addedElement);
         } finally {
             correctArrows();
         }
