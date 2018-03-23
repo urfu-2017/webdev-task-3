@@ -30,7 +30,7 @@ const onClickDeleteItem = function (e) {
     const parent = e.target.closest('.place');
     const id = parent.getAttribute('id');
     const placesList = document.getElementsByClassName('place-view_places')[0];
-    fetch(`https://webdev-task-2-dlcyypfzwd.now.sh/places/${id}`, {
+    fetch(`https://webdev-task-2-dtwehsnlmw.now.sh/places/${id}`, {
         method: 'delete'
     }).then((res) => {
         if (res.status === 200) {
@@ -45,7 +45,7 @@ const onChangeCheckbox = function (e) {
     const id = parent.getAttribute('id');
     const now = e.target.checked;
     e.target.checked = !now;
-    fetch(`https://webdev-task-2-dlcyypfzwd.now.sh/places/${id}`, {
+    fetch(`https://webdev-task-2-dtwehsnlmw.now.sh/places/${id}`, {
         method: 'PATCH',
         headers: {
             'Accept': 'application/json',
@@ -67,7 +67,7 @@ const onChangeCheckbox = function (e) {
 };
 
 const onClickDeleteAll = function () {
-    fetch('https://webdev-task-2-dlcyypfzwd.now.sh/places', {
+    fetch('https://webdev-task-2-dtwehsnlmw.now.sh/places', {
         method: 'DELETE'
     }).then((res) => {
         if (res.status === 200) {
@@ -108,7 +108,7 @@ const onClickChangeItem = function (e) {
     const textInput = parent.getElementsByClassName('place_input')[0];
     const id = parent.getAttribute('id');
     const description = textInput.value;
-    fetch(`https://webdev-task-2-dlcyypfzwd.now.sh/places/${id}`, {
+    fetch(`https://webdev-task-2-dtwehsnlmw.now.sh/places/${id}`, {
         method: 'PATCH',
         headers: {
             'Accept': 'application/json',
@@ -128,7 +128,7 @@ const onClickChangeItem = function (e) {
 const onClickCreateBtn = function () {
     const descriptionText = document.getElementsByClassName('create-form_input')[0].value;
     console.info(descriptionText);
-    fetch('https://webdev-task-2-dlcyypfzwd.now.sh/places', {
+    fetch('https://webdev-task-2-dtwehsnlmw.now.sh/places', {
         method: 'post',
         headers: {
             'Accept': 'application/json',
