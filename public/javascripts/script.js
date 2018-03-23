@@ -23,7 +23,6 @@ const correctArrows = () => {
     }
 };
 
-
 const validateName = name => {
     const locationCollection = parentElement.children;
     for (const elem of locationCollection) {
@@ -209,6 +208,72 @@ class Locations {
         this.submitSearch = this.submitSearch.bind(this);
     }
 
+    submitSearch() {
+        event.preventDefault();
+        this.currentSearchResult = getElemByClass('search-form__input').value;
+        this._checkSearch();
+    }
+
+    filterLocations() {
+        const displayParam = event.target.textContent;
+        this._displayElemsByParam(displayParam);
+        this._checkSearch();
+        correctArrows();
+    }
+
+    delete() {
+        fetch(baseUrl, { method: 'DELETE' });
+        while (parentElement.firstChild) {
+            parentElement.removeChild(parentElement.firstChild);
+        }
+    }
+
+    insert() {
+        event.preventDefault();
+        const input = document.getElementsByClassName('insertion-form__input')[0].value;
+        let addedElement;
+        try {
+            validateName(input);
+            addedElement = new Article(input).initialize();
+            Article.addEventListeners(addedElement);
+            parentElement.appendChild(addedElement);
+        } catch (e) {
+            parentElement.removeChild(addedElement);
+        } finally {
+            correctArrows();
+        }
+    }
+
+    addEventListeners() {
+        // insert new place by enter and button click
+        const onLocationInsertion = () => this.insert();
+        getElemByClass('insertion-form').addEventListener('submit', onLocationInsertion);
+        getElemByClass('location-insertion__button').addEventListener('click', onLocationInsertion);
+
+        this._addOnRealoadListener();
+
+        // visible invisible
+        const display = document.getElementsByClassName('location-menu__nav');
+        for (const elem of display) {
+            elem.addEventListener('click', this.filterLocations);
+        }
+
+        getElemByClass('search-form').addEventListener('submit', this.submitSearch);
+        getElemByClass('location-menu__delete-button').addEventListener('click', this.delete);
+    }
+
+    _addOnRealoadListener() {
+        // adding event listeners on reaload for existing elements
+        const refreshEventListeners = () => {
+            const collection = parentElement.getElementsByClassName('location');
+            for (const elem of collection) {
+                Article.addEventListeners(elem);
+            }
+            correctArrows();
+        };
+        document.addEventListener('DOMContentLoaded', () => refreshEventListeners());
+    }
+
     _toggleVisibility(element, isVisible) {
         if (isVisible) {
             element.style.display = 'flex';
@@ -256,68 +321,7 @@ class Locations {
                 break;
         }
     }
-
-    submitSearch() {
-        event.preventDefault();
-        this.currentSearchResult = getElemByClass('search-form__input').value;
-        this._checkSearch();
-    }
-
-    filterLocations() {
-        const displayParam = event.target.textContent;
-        this._displayElemsByParam(displayParam);
-        this._checkSearch();
-        correctArrows();
-    }
-
-    delete() {
-        fetch(baseUrl, { method: 'DELETE' });
-        while (parentElement.firstChild) {
-            parentElement.removeChild(parentElement.firstChild);
-        }
-    }
-
-    insert() {
-        event.preventDefault();
-        const input = document.getElementsByClassName('insertion-form__input')[0].value;
-        let addedElement;
-        try {
-            validateName(input);
-            addedElement = new Article(input).initialize();
-            Article.addEventListeners(addedElement);
-            parentElement.appendChild(addedElement);
-        } catch (e) {
-            parentElement.removeChild(addedElement);
-        } finally {
-            correctArrows();
-        }
-    }
 }
 
 const List = new Locations();
-
-// insert new place by enter and button click
-const onLocationInsertion = () => List.insert();
-const addForm = getElemByClass('insertion-form');
-const addButton = getElemByClass('location-insertion__button');
-addForm.addEventListener('submit', onLocationInsertion);
-addButton.addEventListener('click', onLocationInsertion);
-
-// adding event listeners on reaload for existing elements
-const refreshEventListeners = () => {
-    const collection = parentElement.getElementsByClassName('location');
-    for (const elem of collection) {
-        Article.addEventListeners(elem);
-    }
-    correctArrows();
-};
-document.addEventListener('DOMContentLoaded', () => refreshEventListeners());
-
-// visible invisible
-const display = document.getElementsByClassName('location-menu__nav');
-for (const elem of display) {
-    elem.addEventListener('click', List.filterLocations);
-}
-
-getElemByClass('search-form').addEventListener('submit', List.submitSearch);
-getElemByClass('location-menu__delete-button').addEventListener('click', List.delete);
+List.addEventListeners();
