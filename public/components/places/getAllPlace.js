@@ -8,8 +8,8 @@ function getAllPlace(filter) {
     buttonActiveOld.classList.remove('button-sort__button-active');
     switch (filter) {
         case 'all':
-            var button = document.querySelector('.button-sort__button_all');
-            button.classList.add('button-sort__button-active');
+            var buttonAll = document.querySelector('.button-sort__button_all');
+            buttonAll.classList.add('button-sort__button-active');
             break;
         case true:
         case false:
