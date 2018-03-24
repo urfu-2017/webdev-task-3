@@ -22,15 +22,20 @@ const list = {
             .filter(element => element.style.display !== 'none');
     }
 };
-const getListItem = (wrapper) => {
+const getListItem = wrapper => {
     return {
         id: wrapper.getAttribute('id'),
         wrapper,
         getEditIcon: () => wrapper.querySelector('.list-item__edit'),
         getDeleteIcon: () => wrapper.querySelector('.list-item__delete'),
-        input: wrapper.querySelector('.list-item__name')
+        input: wrapper.querySelector('.list-item__name'),
+        getConfirmEdit: () => wrapper.querySelector('.list-item__confirm-edit'),
+        getCancelEdit: () => wrapper.querySelector('.list-item__cancel-edit'),
+        getArrowDownIcon: () => wrapper.querySelector('.list-item__arrow-down'),
+        getArrowUpIcon: () => wrapper.querySelector('.list-item__arrow-up'),
+        checkbox: wrapper.querySelector('.list-item__checkbox')
     };
-}
+};
 
 // Main
 
@@ -67,8 +72,13 @@ function bindListControls() {
 function bindListItemControls(wrapper) {
     const item = getListItem(wrapper);
     setTimeout(() => {
-        // item.getEditIcon().addEventListener('click', onEditItem(item));
+        item.getEditIcon().addEventListener('click', onEditItem(item));
         item.getDeleteIcon().addEventListener('click', onDeleteItem(item));
+        item.getConfirmEdit().addEventListener('click', onConfirmEdit(item));
+        item.getCancelEdit().addEventListener('click', onCancelEdit(item));
+        item.getArrowDownIcon().addEventListener('click', onMoveDownItem(item));
+        item.getArrowUpIcon().addEventListener('click', onMoveUpItem(item));
+        item.checkbox.addEventListener('change', onChangeVisited(item));
     }, FONT_AWESOME_TIMEOUT);
 }
 
@@ -88,7 +98,7 @@ async function onCreateElement() {
 
     createBox.input.value = '';
 
-    const response = await requestCreate(name);
+    const response = await requestCreate({ name });
     const place = await response.json();
 
     const newItem = makeListItemElement(place);
@@ -112,11 +122,60 @@ function onListModeChange() {
     refreshArrows();
 }
 
-function onDeleteItem(item) {
-    return async () => {
-        await requestDelete(item.id);
+function onEditItem(item) {
+    return () => {
+        enterEditMode({ item });
+    };
+}
 
-        item.wrapper.remove();
+function onDeleteItem({ wrapper, id }) {
+    return async () => {
+        await requestDelete({ id });
+
+        wrapper.remove();
+    };
+}
+
+function onConfirmEdit(item) {
+    return async () => {
+        await requestEdit({ id: item.id, name: item.input.value });
+        exitEditMode({ item, edited: true });
+    };
+}
+
+function onCancelEdit(item) {
+    return () => {
+        exitEditMode({ item });
+    };
+}
+
+function onMoveUpItem({ wrapper, id }) {
+    return async () => {
+        const neigbour = getListItem(wrapper.previousElementSibling);
+        await requestSwap({ id1: id, id2: neigbour.id });
+
+        wrapper.parentNode.insertBefore(wrapper, neigbour.wrapper);
+
+        refreshArrows();
+    };
+}
+
+function onMoveDownItem({ wrapper, id }) {
+    return async () => {
+        const neigbour = getListItem(wrapper.nextElementSibling);
+        await requestSwap({ id1: id, id2: neigbour.id });
+
+        wrapper.parentNode.insertBefore(neigbour.wrapper, wrapper);
+
+        refreshArrows();
+    };
+}
+
+function onChangeVisited({ id, input, checkbox }) {
+    return async () => {
+        input.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
+        await requestEdit({ id, visited: checkbox.checked });
+        filterList();
     };
 }
 
@@ -129,11 +188,12 @@ function makeListItemElement({ id, name, visited }) {
     element.innerHTML = `
         <i class="fas fa-edit fa-2x list-item__icon list-item__edit"></i>
         <i class="fas fa-trash-alt fa-2x list-item__icon list-item__delete"></i>
-        <input type="text" class="list-item__name" value="${name}" disabled>
+        <input type="text" class="list-item__name" value="${name}"
+            style="text-decoration: ${visited ? 'line-through' : 'none'}" disabled>
         <i class="fas fa-check fa-2x list-item__icon list-item__confirm-edit"></i>
         <i class="fas fa-times fa-2x list-item__icon list-item__cancel-edit"></i>
-        <i class="fas fa-arrow-down fa-2x list-item__icon list-item__arrow-down"></i>
         <i class="fas fa-arrow-up fa-2x list-item__icon list-item__arrow-up"></i>
+        <i class="fas fa-arrow-down fa-2x list-item__icon list-item__arrow-down"></i>
         <input type="checkbox" class="list-item__checkbox" ${visited ? 'checked' : ''}>
     `;
 
@@ -152,12 +212,12 @@ function refreshArrows() {
     const listItems = list.getVisibleItems();
 
     for (let i = 0; i < listItems.length; i++) {
-        listItems[i].querySelector('.fa-arrow-up').style.display = i === 0
-            ? 'none'
-            : 'block';
-        listItems[i].querySelector('.fa-arrow-down').style.display = i === listItems.length - 1
-            ? 'none'
-            : 'block';
+        listItems[i].querySelector('.fa-arrow-up').style.visibility = i === 0
+            ? 'hidden'
+            : 'visible';
+        listItems[i].querySelector('.fa-arrow-down').style.visibility = i === listItems.length - 1
+            ? 'hidden'
+            : 'visible';
     }
 }
 
@@ -180,6 +240,28 @@ function filterList(query = '') {
     });
 }
 
+const previousValues = {};
+
+function enterEditMode({ item }) {
+    previousValues[item.id] = item.input.value;
+
+    item.input.disabled = false;
+    item.input.style.border = '1px solid #aaa';
+    item.getConfirmEdit().style.display = 'block';
+    item.getCancelEdit().style.display = 'block';
+}
+
+function exitEditMode({ item, edited }) {
+    item.input.disabled = true;
+    item.input.style.border = '1px solid #ffffff00';
+    item.getConfirmEdit().style.display = 'none';
+    item.getCancelEdit().style.display = 'none';
+
+    if (!edited) {
+        item.input.value = previousValues[item.id];
+    }
+}
+
 // Requests
 
 async function requestFetch() {
@@ -189,7 +271,7 @@ async function requestFetch() {
     });
 }
 
-async function requestCreate(name) {
+async function requestCreate({ name }) {
     return await fetch(`${BASE_API_URL}/`, {
         mode: 'cors',
         method: 'POST',
@@ -198,7 +280,7 @@ async function requestCreate(name) {
     });
 }
 
-async function requestDelete(id) {
+async function requestDelete({ id }) {
     return await fetch(`${BASE_API_URL}/?id=${id}`, {
         mode: 'cors',
         method: 'DELETE'
@@ -212,8 +294,8 @@ async function requestDeleteAll() {
     });
 }
 
-async function requestSwap(id1, id2) {
-    return await fetch(`${BASE_API_URL}/?id1=${id1}&id2=${id2}`, {
+async function requestSwap({ id1, id2 }) {
+    return await fetch(`${BASE_API_URL}/swapped?id1=${id1}&id2=${id2}`, {
         mode: 'cors',
         method: 'PATCH'
     });
