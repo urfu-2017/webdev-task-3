@@ -1,7 +1,7 @@
 'use strict';
 
 const fetch = require('node-fetch');
-const baseUrl = 'https://webdev-task-2-gguhuxcnsd.now.sh';
+const baseUrl = 'https://webdev-task-2-imdqrzyysn.now.sh';
 
 const getApiResp = async (url, options) => {
     const response = await fetch(url, options);

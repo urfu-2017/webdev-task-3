@@ -1,8 +1,9 @@
 'use strict';
 
-const baseUrl = 'https://cors-anywhere.herokuapp.com/https://webdev-task-2-gguhuxcnsd.now.sh';
+const baseUrl = 'https://webdev-task-2-imdqrzyysn.now.sh';
 const getElemByClass = (className, root = document) => root.getElementsByClassName(className)[0];
 const parentElement = getElemByClass('locations-list');
+const fetchReq = (url, method) => fetch(url, { method }).then(data => data.json());
 
 const correctArrows = () => {
     const collection = document.getElementsByClassName('location visible');
@@ -59,7 +60,7 @@ class EventListeners {
         if (event.target.classList.value.indexOf('not') === -1) {
             value = true;
         }
-        fetch(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, { method: 'PUT' });
+        fetchReq(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, 'PUT');
     }
 
     _onArrowClick(event) {
@@ -75,8 +76,7 @@ class EventListeners {
         }
         const secondName = getElemByClass('location-name', swapNode).textContent;
         correctArrows();
-        fetch(`${baseUrl}?place1=${locationName}&place2=${secondName}`,
-            { method: 'PUT' });
+        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT');
     }
 
     _onTrashClick(event) {
@@ -84,8 +84,7 @@ class EventListeners {
         const locationName = getElemByClass('location-name', node).textContent;
         node.parentElement.removeChild(node);
         correctArrows();
-        fetch(`${baseUrl}?place=${locationName}`,
-            { method: 'DELETE' });
+        fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE');
     }
 
     _onPencilClick(event) {
@@ -105,8 +104,7 @@ class EventListeners {
                 const currentNode = getElemByClass('change-name-input');
                 const newName = currentNode.value;
                 validateName(newName);
-                fetch(`${baseUrl}?place=${this.oldName}&param=name&value=${newName}`,
-                    { method: 'PUT' });
+                fetchReq(`${baseUrl}?place=${this.oldName}&param=name&value=${newName}`, 'PUT');
                 parent = currentNode.parentElement.parentElement;
                 addedElement = document.createElement('div');
                 addedElement.className = 'location-name';
@@ -129,7 +127,7 @@ class Article {
     }
 
     initialize() {
-        fetch(`${baseUrl}?place=${this._name}`, { method: 'POST' });
+        fetchReq(`${baseUrl}?place=${this._name}`, 'POST');
         const article = document.createElement('article');
         article.className = 'location horizontal-flex visible';
         article.appendChild(this._createHiddenOpsDiv());
@@ -222,7 +220,7 @@ class Locations {
     }
 
     delete() {
-        fetch(baseUrl, { method: 'DELETE' });
+        fetchReq(baseUrl, 'DELETE');
         while (parentElement.firstChild) {
             parentElement.removeChild(parentElement.firstChild);
         }
