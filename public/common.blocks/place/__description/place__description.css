@@ -1,0 +1,15 @@
+.place__description {
+    margin-left: 10px;
+    width: 70%;
+    font-size: 30px;
+}
+
+.place__button {
+    height: 30px;
+    visibility: hidden;
+}
+
+.place:hover .place__button{
+    visibility: visible;
+    display: inline-block;
+}

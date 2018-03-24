@@ -1,0 +1,8 @@
+.places-list .place:first-of-type .place__moveup-button{
+    display: none;
+}
+
+.place__moveup-button {
+    display: inline-block;
+    margin-left: auto;
+}

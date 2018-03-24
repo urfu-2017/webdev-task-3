@@ -1,0 +1,6 @@
+.place-editor {
+    display: flex;
+    margin-top: 10px;
+    height: 40px;
+    align-items: center;
+}

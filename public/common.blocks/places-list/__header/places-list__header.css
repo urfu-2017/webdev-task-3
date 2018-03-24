@@ -1,0 +1,5 @@
+.places-list__header {
+    border-bottom: thin solid black;
+    display: flex;
+    height: 50px;
+}

@@ -1,0 +1,31 @@
+@import "./common.blocks/main/main.css";
+@import "./common.blocks/footer/footer.css";
+
+@import "./common.blocks/place/place.css";
+@import "./common.blocks/place/__visit-status/place__visit-status.css";
+@import "./common.blocks/place/__description/place__description.css";
+@import "./common.blocks/place/_crossed-description/place_crossed-description.css";
+@import "./common.blocks/place/__moveup-button/place__moveup-button.css";
+@import "./common.blocks/place/__movedown-button/place__movedown-button.css";
+
+@import "./common.blocks/place-editor/__input/place-editor__input.css";
+@import "./common.blocks/place-editor/__accept-button/place-editor__accept-button.css";
+@import "./common.blocks/place-editor/__cancel-button/place-editor__cancel-button.css";
+@import "./common.blocks/place-editor/place-editor.css";
+
+@import "./common.blocks/search/search.css";
+@import "./common.blocks/search/__input/search__input.css";
+@import "./common.blocks/search/__ico/search__ico.css";
+
+@import "./common.blocks/place-creator/__button/place-creator__button.css";
+@import "./common.blocks/place-creator/__name-input/place-creator__name-input.css";
+@import "./common.blocks/place-creator/place-creator.css";
+
+@import "./common.blocks/places-list/__header/places-list__header.css";
+@import "./common.blocks/places-list/places-list.css";
+@import "./common.blocks/places-list/__title/places-list__title.css";
+@import "./common.blocks/places-list/__delete-button/places-list__delete-button.css";
+
+@import "./common.blocks/place-selectors/__input/place-selectors__input.css";
+@import "./common.blocks/place-selectors/__selector/place-selectors__selector.css";
+@import "./common.blocks/place-selectors/place-selectors.css";

@@ -1,0 +1,8 @@
+.places-list .place:last-of-type .place__movedown-button{
+    display: none;
+}
+
+.place__movedown-button{
+    display: inline-block;
+    margin-left: auto;
+}

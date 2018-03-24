@@ -1,0 +1,13 @@
+.places-list__delete-button img {
+    height: 100%;
+
+}
+
+.places-list__delete-button {
+    align-self: center;
+    height: 80%;
+}
+
+.places-list__delete-button-input{
+    display: none;
+}

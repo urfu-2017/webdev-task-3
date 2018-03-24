@@ -1,0 +1,10 @@
+.place-selectors__input:checked + .place-selectors__selector{
+    background-color: black;
+    color: white;
+}
+
+.place-selectors__selector{
+    padding: 5px 13px;
+    background-color: white;
+    color: black;
+}
