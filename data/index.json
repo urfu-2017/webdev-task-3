@@ -1,10 +1,6 @@
 {
   "pageTitle": "Places",
 
-  "places": [
-    { "name": "KEK" }
-  ],
-
   "copyrightName": "tonyfresher",
   "currentYear": 2018
 }
