@@ -32,25 +32,26 @@ exports.PlacesList = class {
     }
 
     addPlace(place) {
-        this._setPlace(place);
-        this.settedPlaces.push(place);
+        const placeBlock = new Place(place);
+        placeBlock.afterDeleteHandler = this.afterDeleteHandler;
+        placeBlock.moveUpHandler = this.moveUpHandler;
+        placeBlock.moveDownHandler = this.moveDownHandler;
+
+        this._setPlaceBlock(placeBlock);
+
+        this.settedPlaces.push(placeBlock);
     }
 
-    _setPlace(place) {
-        if (this.filterCondition(place)) {
-            const placeBlock = new Place(place);
-            const placeDiv = placeBlock.element;
-            placeBlock.afterDeleteHandler = this.afterDeleteHandler;
-            placeBlock.moveUpHandler = this.moveUpHandler;
-            placeBlock.moveDownHandler = this.moveDownHandler;
-            this.placesList.appendChild(placeDiv);
+    _setPlaceBlock(placeBlock) {
+        if (this.filterCondition(placeBlock.place)) {
+            this.placesList.appendChild(placeBlock.element);
         }
     }
 
     rebuild() {
         this._removePlaces();
-        this.settedPlaces.forEach(place => {
-            this._setPlace(place);
+        this.settedPlaces.forEach(placeBlock => {
+            this._setPlaceBlock(placeBlock);
         });
     }
 

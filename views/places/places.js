@@ -60,4 +60,11 @@ exports.Places = class {
             moveControls[i].hidden = true;
         }
     }
+
+    showMoveControls() {
+        const moveControls = document.getElementsByClassName('places__move-controls');
+        for (let i = 0; i < moveControls.length; i++) {
+            moveControls[i].hidden = false;
+        }
+    }
 };

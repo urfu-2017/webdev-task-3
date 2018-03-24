@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     places.setPlaces(allPlaces);
 
-    body.appendChild(addForm.element);
     body.appendChild(searchForm.element);
+    body.appendChild(addForm.element);
     body.appendChild(places.element);
     body.appendChild(footer.element);
 });

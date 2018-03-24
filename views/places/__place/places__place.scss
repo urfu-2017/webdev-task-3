@@ -9,11 +9,25 @@
     }
 
     &__place-isVisited-checkbox {
+        display:none
+    }
+
+    &__place-isVisited-checkbox-label {
         cursor: pointer;
-        display: inline-block;
         position: absolute;
-        top: 7px;
+        top: 10px;
         right: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 100px;    
+        border: 1px solid black;
+    }
+
+    &__place-isVisited-checkbox:checked + &__place-isVisited-span::before  {
+        font-size: 16px;
+        position: relative;
+        bottom: 9px;
+        content: '\2714';
     }
 
     &__place-description {

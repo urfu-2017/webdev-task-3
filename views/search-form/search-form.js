@@ -9,7 +9,7 @@ exports.SearchForm = class {
         this.form.classList.add('search-form');
 
         this.button = document.createElement('button');
-        this.button.innerHTML = 'Найти';
+        this.button.innerHTML = '&#128270;';
         this.button.classList.add('search-form__button');
         this.button.setAttribute('type', 'button');
 

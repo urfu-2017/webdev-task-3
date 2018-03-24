@@ -133,29 +133,31 @@ exports.Place = class {
 
     _setupUpArrow() {
         this.upArrow.onclick = async () => {
-            this.upArrow.hidden = true;
-            this.downArrow.hidden = true;
+            const placesList = document.querySelector('.places__list');
+            let stopProp = (e) => e.stopPropagation();
+
+            placesList.addEventListener('click', stopProp, true);
 
             let prev = this.element.previousElementSibling;
             await this.moveUpHandler(this.place);
             swapDomElements(prev, this.element);
 
-            this.upArrow.hidden = false;
-            this.downArrow.hidden = false;
+            placesList.removeEventListener('click', stopProp, true);
         };
     }
 
     _setupDownArrow() {
         this.downArrow.onclick = async () => {
-            this.upArrow.hidden = true;
-            this.downArrow.hidden = true;
+            const placesList = document.querySelector('.places__list');
+            let stopProp = (e) => e.stopPropagation();
+
+            placesList.addEventListener('click', stopProp, true);
 
             let next = this.element.nextElementSibling;
             await this.moveDownHandler(this.place);
             swapDomElements(next, this.element);
 
-            this.upArrow.hidden = false;
-            this.downArrow.hidden = false;
+            placesList.removeEventListener('click', stopProp, true);
         };
     }
 };

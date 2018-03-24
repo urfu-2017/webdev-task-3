@@ -8,18 +8,18 @@ exports.AddForm = class {
         this.form = document.createElement('div');
         this.form.classList.add('add-form');
 
-        this.button = document.createElement('button');
-        this.button.innerHTML = 'Добавить';
-        this.button.classList.add('add-form__button');
-        this.button.setAttribute('type', 'button');
-
         this.input = document.createElement('input');
         this.input.classList.add('add-form__input');
         this.input.setAttribute('type', 'text');
         this.input.setAttribute('placeholder', 'Название места');
 
-        this.form.appendChild(this.button);
+        this.button = document.createElement('button');
+        this.button.innerHTML = 'Создать';
+        this.button.classList.add('add-form__button');
+        this.button.setAttribute('type', 'button');
+
         this.form.appendChild(this.input);
+        this.form.appendChild(this.button);
     }
 
     get element() {

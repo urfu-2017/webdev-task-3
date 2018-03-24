@@ -52,6 +52,8 @@ exports.PlacesHeader = class {
         this.allPlacesRadio.onclick = () => {
             this.placesBlock.filterCondition = () => true;
             this.placesBlock.rebuild();
+
+            this.placesBlock.showMoveControls();
         };
     }
 
