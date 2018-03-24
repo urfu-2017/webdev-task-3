@@ -204,11 +204,15 @@ class Locations {
     constructor() {
         this.filterLocations = this.filterLocations.bind(this);
         this.submitSearch = this.submitSearch.bind(this);
+        this.startSearch = this.startSearch.bind(this);
     }
 
     submitSearch() {
         event.preventDefault();
-        this.currentSearchResult = getElemByClass('search-form__input').value;
+    }
+
+    startSearch() {
+        this.currentSearchResult = event.target.value;
         this._checkSearch();
     }
 
@@ -257,6 +261,7 @@ class Locations {
         }
 
         getElemByClass('search-form').addEventListener('submit', this.submitSearch);
+        getElemByClass('search-form').addEventListener('keyup', this.startSearch);
         getElemByClass('location-menu__delete-button').addEventListener('click', this.delete);
     }
 
@@ -282,9 +287,17 @@ class Locations {
         return;
     }
 
+    _makeElementsVisible() {
+        const children = parentElement.children;
+        for (const element of children) {
+            element.className = 'location horizontal-flex shown';
+        }
+    }
+
     _checkSearch() {
         this.currentSearchResult = this.currentSearchResult || '';
         const children = parentElement.children;
+        this._makeElementsVisible();
         for (const element of children) {
             const content = getElemByClass('location-name', element).textContent;
             if (content.indexOf(this.currentSearchResult) === -1) {
