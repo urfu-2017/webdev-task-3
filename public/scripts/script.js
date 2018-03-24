@@ -1,6 +1,6 @@
 'use strict';
 
-const BASE_API_URL = 'http://localhost:8000'; // 'https://tonyfresher-webdev-task-2.now.sh';
+const BASE_API_URL = 'https://tonyfresher-webdev-task-2.now.sh';
 const FONT_AWESOME_TIMEOUT = 700;
 
 // DOM
@@ -110,11 +110,11 @@ async function onCreateElement() {
 }
 
 async function onListClear() {
-    await requestDeleteAll();
-
     list.getAllItems().forEach(item => {
         item.remove();
     });
+
+    await requestDeleteAll();
 }
 
 function onListModeChange() {
@@ -130,52 +130,53 @@ function onEditItem(item) {
 
 function onDeleteItem({ wrapper, id }) {
     return async () => {
-        await requestDelete({ id });
-
         wrapper.remove();
+
+        await requestDelete({ id });
     };
 }
 
 function onConfirmEdit(item) {
     return async () => {
-        await requestEdit({ id: item.id, name: item.input.value });
         exitEditMode({ item, edited: true });
+        await requestEdit({ id: item.id, name: item.input.value });
     };
 }
 
 function onCancelEdit(item) {
     return () => {
-        exitEditMode({ item });
+        exitEditMode({ item, edited: false });
     };
 }
 
 function onMoveUpItem({ wrapper, id }) {
     return async () => {
         const neigbour = getListItem(wrapper.previousElementSibling);
-        await requestSwap({ id1: id, id2: neigbour.id });
-
         wrapper.parentNode.insertBefore(wrapper, neigbour.wrapper);
 
         refreshArrows();
+
+        await requestSwap({ id1: id, id2: neigbour.id });
     };
 }
 
 function onMoveDownItem({ wrapper, id }) {
     return async () => {
         const neigbour = getListItem(wrapper.nextElementSibling);
-        await requestSwap({ id1: id, id2: neigbour.id });
-
         wrapper.parentNode.insertBefore(neigbour.wrapper, wrapper);
 
         refreshArrows();
+
+        await requestSwap({ id1: id, id2: neigbour.id });
     };
 }
 
 function onChangeVisited({ id, input, checkbox }) {
     return async () => {
         input.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
-        await requestEdit({ id, visited: checkbox.checked });
         filterList();
+
+        await requestEdit({ id, visited: checkbox.checked });
     };
 }
 
