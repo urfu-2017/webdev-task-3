@@ -12,13 +12,13 @@ const correctArrows = () => {
         const arrowDown = getElemByClass('arrow-down', elem);
         const arrowUp = getElemByClass('arrow-up', elem);
 
-        arrowDown.style.visibility = 'visible';
-        arrowUp.style.visibility = 'visible';
+        arrowUp.className = 'arrow-up button arrow visible';
+        arrowDown.className = 'arrow-down button arrow visible';
         if (idx === 0) {
-            arrowUp.style.visibility = 'hidden';
+            arrowUp.className = 'arrow-up button arrow hidden';
         }
         if (idx === collection.length - 1) {
-            arrowDown.style.visibility = 'hidden';
+            arrowDown.className = 'arrow-down button arrow hidden';
         }
         idx++;
     }
@@ -98,6 +98,7 @@ class EventListeners {
         input.className = 'change-name-input';
         form.appendChild(input);
         form.addEventListener('submit', () => {
+            event.preventDefault();
             let addedElement;
             let parent;
             try {
@@ -111,7 +112,6 @@ class EventListeners {
                 addedElement.innerText = newName;
                 parent.replaceChild(addedElement, currentNode.parentElement);
             } catch (e) {
-                console.error(e);
                 parent.removeChild(addedElement);
             } finally {
                 correctArrows();
@@ -159,9 +159,9 @@ class Article {
     _createSingleArrow(arrowType) {
         const arrowDiv = document.createElement('div');
         if (arrowType === 'arrow-up') {
-            arrowDiv.setAttribute('style', 'visibility:visible;');
+            arrowDiv.className = 'arrow-up button arrow visible';
         } else {
-            arrowDiv.setAttribute('style', 'visibility:hidden;');
+            arrowDiv.className = 'arrow-up button arrow hidden';
         }
         arrowDiv.className = `${arrowType} button arrow`;
 
@@ -274,11 +274,9 @@ class Locations {
 
     _toggleVisibility(element, isVisible) {
         if (isVisible) {
-            element.style.display = 'flex';
-            element.className = 'location horizontal-flex visible';
+            element.className = 'location horizontal-flex visible shown';
         } else {
-            element.style.display = 'none';
-            element.className = 'location horizontal-flex hidden';
+            element.className = 'location horizontal-flex hidden not-shown';
         }
 
         return;
@@ -290,8 +288,7 @@ class Locations {
         for (const element of children) {
             const content = getElemByClass('location-name', element).textContent;
             if (content.indexOf(this.currentSearchResult) === -1) {
-                element.style.display = 'none';
-                element.className = 'location horizontal-flex hidden';
+                element.className = 'location horizontal-flex hidden not-shown';
             }
         }
         correctArrows();
