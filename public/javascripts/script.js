@@ -3,6 +3,8 @@
 const baseUrl = 'https://webdev-task-2-imdqrzyysn.now.sh';
 const getElemByClass = (className, root = document) => root.getElementsByClassName(className)[0];
 const parentElement = getElemByClass('locations-list');
+const loadIcon = getElemByClass('loader');
+
 const throwErr = e => {
     const errDiv = getElemByClass('error-message');
     errDiv.className = 'error-message visible';
@@ -12,9 +14,18 @@ const throwErr = e => {
     }, 3000);
 };
 
-const fetchReq = (url, method) => fetch(url, { method })
-    .then(data => data.json())
-    .catch(throwErr);
+const fetchReq = (url, method) => {
+    getElemByClass('loader').className = 'loader visible';
+    const result = fetch(url, { method })
+        .then(data => {
+            loadIcon.className = 'loader hidden';
+
+            return data.json();
+        })
+        .catch(throwErr);
+
+    return result;
+};
 
 const correctArrows = () => {
     const collection = document.getElementsByClassName('location visible');
