@@ -3,7 +3,18 @@
 const baseUrl = 'https://webdev-task-2-imdqrzyysn.now.sh';
 const getElemByClass = (className, root = document) => root.getElementsByClassName(className)[0];
 const parentElement = getElemByClass('locations-list');
-const fetchReq = (url, method) => fetch(url, { method }).then(data => data.json());
+const throwErr = e => {
+    const errDiv = getElemByClass('error-message');
+    errDiv.className = 'error-message visible';
+    errDiv.innerHTML = e;
+    setTimeout(() => {
+        errDiv.className = 'error-message hidden';
+    }, 3000);
+};
+
+const fetchReq = (url, method) => fetch(url, { method })
+    .then(data => data.json())
+    .catch(throwErr);
 
 const correctArrows = () => {
     const collection = document.getElementsByClassName('location visible');
@@ -60,7 +71,7 @@ class EventListeners {
         if (event.target.classList.value.indexOf('not') === -1) {
             value = true;
         }
-        fetchReq(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, 'PUT');
+        fetchReq(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, 'PUT').then();
     }
 
     _onArrowClick(event) {
@@ -76,7 +87,7 @@ class EventListeners {
         }
         const secondName = getElemByClass('location-name', swapNode).textContent;
         correctArrows();
-        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT');
+        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then();
     }
 
     _onTrashClick(event) {
@@ -84,7 +95,7 @@ class EventListeners {
         const locationName = getElemByClass('location-name', node).textContent;
         node.parentElement.removeChild(node);
         correctArrows();
-        fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE');
+        fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE').then();
     }
 
     _onPencilClick(event) {
@@ -102,16 +113,18 @@ class EventListeners {
             let addedElement;
             let parent;
             try {
-                const currentNode = getElemByClass('change-name-input');
-                const newName = currentNode.value;
+                const current = getElemByClass('change-name-input');
+                const newName = current.value;
+                fetchReq(`${baseUrl}?place=${this.oldName}&param=name&value=${newName}`,
+                    'PUT').then();
                 validateName(newName);
-                fetchReq(`${baseUrl}?place=${this.oldName}&param=name&value=${newName}`, 'PUT');
-                parent = currentNode.parentElement.parentElement;
                 addedElement = document.createElement('div');
                 addedElement.className = 'location-name';
                 addedElement.innerText = newName;
-                parent.replaceChild(addedElement, currentNode.parentElement);
+                current.parentElement.parentElement
+                    .replaceChild(addedElement, current.parentElement);
             } catch (e) {
+                throwErr(e);
                 parent.removeChild(addedElement);
             } finally {
                 correctArrows();
@@ -127,7 +140,7 @@ class Article {
     }
 
     initialize() {
-        fetchReq(`${baseUrl}?place=${this._name}`, 'POST');
+        fetchReq(`${baseUrl}?place=${this._name}`, 'POST').then();
         const article = document.createElement('article');
         article.className = 'location horizontal-flex visible';
         article.appendChild(this._createHiddenOpsDiv());
@@ -214,17 +227,18 @@ class Locations {
     startSearch() {
         this.currentSearchResult = event.target.value;
         this._checkSearch();
+        correctArrows();
     }
 
     filterLocations() {
         const displayParam = event.target.textContent;
-        this._displayElemsByParam(displayParam);
         this._checkSearch();
+        this._displayElemsByParam(displayParam);
         correctArrows();
     }
 
     delete() {
-        fetchReq(baseUrl, 'DELETE');
+        fetchReq(baseUrl, 'DELETE').then();
         while (parentElement.firstChild) {
             parentElement.removeChild(parentElement.firstChild);
         }
@@ -240,6 +254,7 @@ class Locations {
             Article.addEventListeners(addedElement);
             parentElement.appendChild(addedElement);
         } catch (e) {
+            throwErr(e);
             parentElement.removeChild(addedElement);
         } finally {
             correctArrows();
@@ -278,19 +293,16 @@ class Locations {
     }
 
     _toggleVisibility(element, isVisible) {
-        if (isVisible) {
-            element.className = 'location horizontal-flex visible shown';
-        } else {
+        if (!isVisible) {
             element.className = 'location horizontal-flex hidden not-shown';
         }
-
-        return;
+        correctArrows();
     }
 
     _makeElementsVisible() {
         const children = parentElement.children;
         for (const element of children) {
-            element.className = 'location horizontal-flex shown';
+            element.className = 'location horizontal-flex visible shown';
         }
     }
 
