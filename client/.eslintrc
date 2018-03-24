@@ -1,0 +1,15 @@
+{
+    "extends": "hrundel/browser",
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true
+        }
+    },
+
+    "rules": {
+        "newline-before-return": ["off"],
+        "no-return-assign": ["off"]
+    }
+}
