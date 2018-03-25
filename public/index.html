@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Доша помогает Паше</title>
+	<link rel="stylesheet" href="css/control.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="css/places.css">
+	<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+</head>
+<body>
+	<header class="header">Помощь Билли</header>
+	<main class="main">
+		<div class="search">
+			<input placeholder="Поиск" type="text" class="search__place">
+			<input  type="button" value="Найти" class="search__button">
+		</div>
+		<div class="create">
+			<input placeholder="Название места" type="text" name="" class="create__place">
+			<input  type="button" value="Создать" class="create__button">
+		</div>
+		<div class="list">
+			<div class="list__header">
+				<span class="list__places">Места</span>
+				<input type="image" src="/pic/delete.png" class="list__delete-button" width=23 height=25>
+				<input type="image" src="/pic/date.png" class="list__date-button" width=20 height=25>
+				<input type="image" src="/pic/abc.svg" class="list__abc-button" width=20 height=25>
+				<div class="list__filter-buttons">
+					<input type="button" value="Все" class="list__filter-buttons_all">
+					<input type="button" value="Посетить" class="list__filter-buttons_visit">
+					<input type="button" value="Посещенные" class="list__filter-buttons_visited">
+				</div>
+			</div>
+			<hr class="list__unit-line"/>
+			<div class="list__items"></div>
+		</div>
+	</main>
+	<footer class="footer">
+		<span class="footer__year">2018</span>
+		<span class="footer__developer">©dosha</span>
+	</footer>
+	<script src="script/app.js"></script>
+</body>
+</html>

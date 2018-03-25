@@ -1,0 +1,75 @@
+.search,
+.create
+{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin: var(--global-margin);
+
+}
+
+.create
+{
+    margin-bottom: 30px;
+}
+
+.search__place,
+.create__place
+{
+    font: 18px 'Amatic SC';
+    text-indent: 25px;
+    padding: 4px;
+    width: calc(430px - 2*var(--global-margin) - 4px - 90px - 4px - 8px);
+    background: rgb(232, 220, 240);
+    border: none;
+}
+.search__place:focus,
+.create__place:focus
+{
+    background-color: white;
+    outline-color: #3b2751;
+}
+
+.create__button,
+.search__button
+{
+    flex-basis: 90px;
+    font: 18px 'Amatic SC';
+}
+
+.search__place
+{
+    background-image: url('/pic/cat.png');
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    background-position: left;
+}
+
+.create__button,
+.search__button
+{
+    border: none;
+    width: 90px;
+    height: 30px;
+    color: #a675b3;
+    font: 18px 'Amatic SC';
+}
+
+.create__button:not(.active),
+.search__button:not(.active)
+{
+    background-color: transparent;
+    border: 2px solid  #3b2751;
+    color: #3b2751;
+    border-radius: 2px;
+}
+
+.create__button:hover,
+.create__button:focus,
+.search__button:hover,
+.search__button:focus
+{
+    cursor: pointer;
+    color: #fff;
+    outline-color: #c3a3e6;
+}

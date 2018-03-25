@@ -1,0 +1,23 @@
+@font-face
+{
+    font-family: 'Amatic SC';
+    src: url('font/AmaticSC-Regular.ttf');
+}
+
+html
+{
+    font: 18px 'Amatic SC';
+    display: flex;
+    justify-content: center;
+    /* background-color: rgb(252, 252, 252); */
+    --global-margin: 10px;
+    background-color:  #a675b36b;
+}
+
+
+body
+{
+    background-color: transparent;
+    width: 430px;
+    border: 1px solid black;
+}
