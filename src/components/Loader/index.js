@@ -6,9 +6,6 @@ class Loader extends Component {
     constructor(props) {
         super(props);
 
-        this.props.size = this.props.size
-            ? `${this.props.size}px`
-            : 'auto';
         this.props.color = this.props.color
             ? this.props.color
             : 'red';
@@ -19,8 +16,7 @@ class Loader extends Component {
 
     render() {
         return htmlToElement(`
-          <div class="loader ${this.props.modifierClass} ${this.props.elemClass}" 
-               style="width: ${this.props.size}; height: ${this.props.size};">
+          <div class="loader ${this.props.modifierClass} ${this.props.elemClass}">
             <svg class="loader__image" viewBox="25 25 50 50">
               <circle class="loader__image__path"
                       r="20" cx="50" cy="50"

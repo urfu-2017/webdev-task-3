@@ -17,10 +17,7 @@ class PlacesHeader extends Component {
           </button>
         `);
 
-        const loader = new Loader({
-            size: 30,
-            elemClass: 'places-header__clear-loader'
-        }).render();
+        const loader = new Loader({ elemClass: 'places-header__clear-loader' }).render();
 
         elem.addEventListener('click', async (e) => {
             elem.replaceWith(loader);

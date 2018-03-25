@@ -22,6 +22,18 @@ class PlaceManager {
         return store;
     }
 
+    static async clear() {
+        const response = await jsonDelete(`${BASE_API_URL}/places`);
+
+        if (response.status !== 200) {
+            throw new Error(response.message);
+        }
+
+        store = [];
+
+        return store;
+    }
+
     static async create(description) {
         const response = await jsonPost(
             `${BASE_API_URL}/places`,
@@ -37,6 +49,45 @@ class PlaceManager {
         store.push(createdPlace);
 
         return store;
+    }
+
+    static async edit(id, { status, description }) {
+        const requestBody = {};
+
+        if (status !== undefined) {
+            requestBody.isVisited = status;
+        }
+        if (description !== undefined && description !== '') {
+            requestBody.description = description;
+        }
+
+        const response = await jsonPatch(
+            `${BASE_API_URL}/places/${id}`,
+            undefined,
+            requestBody
+        );
+
+        if (response.status !== 200) {
+            throw new Error(response.message);
+        }
+
+        const editedPlace = new Place(response.body);
+        store.splice(store.findIndex(place => place.id === editedPlace.id), 1, editedPlace);
+
+        return editedPlace;
+    }
+
+    static async delete(id) {
+        const response = await jsonDelete(`${BASE_API_URL}/places/${id}`);
+
+        if (response.status !== 200) {
+            throw new Error(response.message);
+        }
+
+        const removedPlace = new Place(response.body);
+        store.splice(store.findIndex(place => place.id === removedPlace.id), 1);
+
+        return removedPlace;
     }
 
     static filter({ query, status }) {
@@ -65,18 +116,6 @@ class PlaceManager {
         );
 
         return filteredPlaces;
-    }
-
-    static async clear() {
-        const response = await jsonDelete(`${BASE_API_URL}/places`);
-
-        if (response.status !== 200) {
-            throw new Error(response.message);
-        }
-
-        store = [];
-
-        return store;
     }
 }
 

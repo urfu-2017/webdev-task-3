@@ -8,15 +8,18 @@ class PlaceRow extends Component {
     }
 
     render() {
-        const row = htmlToElement('<div class="place-row" draggable="true"></div>');
-        row.appendChild(htmlToElement(`
+        const editButton = htmlToElement(`
+            <button type="button" class="place-row__edit"></button>
+        `);
+        const deleteButton = htmlToElement(`
+            <button type="button" class="place-row__delete"></button>
+        `);
+        const description = htmlToElement(`
             <div class="place-row__description">${this.props.place.description}</div>
-        `));
-
+        `);
         const reorder = htmlToElement(`
             <div class="place-row__reorder"></div>
         `);
-
         const status = htmlToElement(`
             <input class="place-row__status" type="checkbox">
         `);
@@ -25,11 +28,21 @@ class PlaceRow extends Component {
             status.checked = true;
         }
 
-        row.appendChild(reorder);
-        row.appendChild(status);
+        const row = htmlToElement(`
+          <div class="place-row" 
+               draggable="true"
+               data-place-id="${this.props.place.id}">     
+          </div>`
+        );
+
+        [editButton, deleteButton, description, reorder, status].forEach(elem => {
+            row.appendChild(elem);
+        });
 
         return row;
     }
+
+
 }
 
 export default PlaceRow;

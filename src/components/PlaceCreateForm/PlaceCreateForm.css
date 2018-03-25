@@ -30,7 +30,7 @@
 }
 
 .place-create__submit-loader {
-    width: 70px !important;
+    width: 70px;
     height: 30px;
     margin-left: 15px;
 }

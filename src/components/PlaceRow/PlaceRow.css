@@ -5,13 +5,63 @@
     flex-direction: row;
 }
 
+.place-row__edit,
+.place-row__delete {
+    border: 0;
+    outline: 0;
+    padding: 0;
+    width: 15px;
+    height: 15px;
+    margin: 0 3px;
+    box-sizing: border-box;
+    background: no-repeat center center;
+    background-size: 15px 15px;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s all ease-in-out;
+}
+
+.place-row__delete:disabled {
+    cursor: not-allowed;
+}
+
+.place-row__delete-loader {
+    width: 21px;
+    height: 15px;
+}
+
+.place-row:hover .place-row__edit,
+.place-row:hover .place-row__delete {
+    opacity: 1;
+    visibility: visible;
+}
+
+.place-row__edit:hover,
+.place-row__delete:hover {
+    filter: opacity(75%);
+}
+
+.place-row__edit:active,
+.place-row__delete:active {
+    filter: opacity(50%);
+}
+
+.place-row__edit {
+    background-image: url('./pencil.svg');
+}
+
+.place-row__delete {
+    background-image: url('./trash.svg');
+}
+
 .place-row__description {
-    width: 200px;
+    width: 250px;
+    margin-left: 5px;
 }
 
 .place-row__reorder {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 20px;
+    height: 20px;
     margin-left: 10px;
     margin-right: 10px;
     background: url('./arrow-dual.svg');
@@ -26,6 +76,12 @@
 }
 
 .place-row__status {
-    width: 2rem;
-    height: 2rem;
+    width: 20px;
+    height: 20px;
+}
+
+.place-row__status-loader {
+    margin: 0 4px;
+    width: 20px;
+    height: 20px;
 }

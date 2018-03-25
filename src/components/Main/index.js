@@ -7,13 +7,12 @@ import PlacesList from '../PlacesList';
 import PlacesHeader from '../PlacesHeader';
 import PlaceCreateForm from '../PlaceCreateForm';
 import PlaceManager from '../../models/place-manager';
-
-import debounce from '../../utils/debounce';
 import htmlToElement from '../../utils/html-to-element';
 
 class Main extends Component {
     constructor(props) {
         super(props);
+        this.updatePlacesList = this.updatePlacesList.bind(this);
     }
 
     updatePlacesList(newPlaces) {
@@ -47,20 +46,22 @@ class Main extends Component {
             filterChangeHandler: PlaceManager.filter
         }).render();
 
-        const placesList = new Loader({ elemClass: 'places-table__loader', size: 30 }).render();
+        const loader = new Loader({ elemClass: 'places-table__loader' }).render();
 
         PlaceManager.load()
             .then(places => {
-                placesList.replaceWith(new PlacesList({
+                const placesList = new PlacesList({
                     elemClass: 'places-table__list',
                     placeObjects: places
-                }).render());
+                }).render();
+
+                loader.replaceWith(placesList);
             })
-            .catch(err => placesList.replaceWith(htmlToElement(`${err}`)));
+            .catch(err => loader.replaceWith(htmlToElement(`${err}`)));
 
         const places = htmlToElement('<div class="places-table main__places"></div>');
         places.appendChild(placesHeader);
-        places.appendChild(placesList);
+        places.appendChild(loader);
 
         const main = htmlToElement(`<main class="main ${elemClass}"></main>`);
         main.appendChild(placeCreateForm);
