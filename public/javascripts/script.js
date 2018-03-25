@@ -59,6 +59,7 @@ const validateName = name => {
 class ArticleList {
     constructor() {
         this.hide = this.hide.bind(this);
+        this.filterBySearch = this.filterBySearch.bind(this);
     }
 
     add(event) {
@@ -79,7 +80,7 @@ class ArticleList {
 
     hide(event) {
         const displayParam = event.target.textContent;
-        this._filterBySearch();
+        this.filterBySearch(event);
         this._filterByVisited(displayParam);
         correctArrows();
     }
@@ -128,8 +129,8 @@ class ArticleList {
         }
     }
 
-    _filterBySearch() {
-        this.currentSearchResult = this.currentSearchResult || '';
+    filterBySearch(event) {
+        this.currentSearchResult = event.target.value || '';
         const children = parentElement.children;
         this._makeElementsVisible();
         for (const element of children) {
@@ -143,6 +144,7 @@ class ArticleList {
 }
 
 const list = new ArticleList();
+getElemByClass('search-form').addEventListener('keyup', list.filterBySearch);
 
 class Button {
     constructor(type, div, fullName) {
