@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Webdev-task-3</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
-          integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk"
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css"
-          integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P"
-          crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="index.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
+    integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk"
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css"
+    integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P"
+    crossorigin="anonymous">
+    <script src="index.js"></script>
 </head>
 <body>
 <article class="page">
     <main class="main">
         <div class="search">
-            <input class="search__field" placeholder="Поиск">
+            <input class="search__field input_type_normal" placeholder="Поиск">
         </div>
-        <form class="create-place">
-            <input class="create-place__name" placeholder="Название места">
-            <button class="create-place__btn-create">Создать</button>
-        </form>
+        <section class="create-place">
+            <input type="text" name="name" class="create-place__name input_type_normal" placeholder="Название места">
+            <button class="create-place__btn-create btn_type_normal">Создать</button>
+        </section>
         <section class="places">
             <header class="places__header">
                 <div class="places__heading">
                     <h3 class="places__heading-text">Места</h3>
-                    <button class="places__btn-delete-all btn-float"><i class="fas fa-trash-alt"></i></button>
+                    <button class="places__btn-clear btn_type_float"><i class="fas fa-trash-alt"></i></button>
                 </div>
                 <div class="places__filter">
                     <input type="radio" name="filter-option" id="all" class="places__inp-all" hidden checked>
@@ -44,8 +44,8 @@
         </section>
     </main>
     <footer class="footer">
-        <div class="footer__year">2018</div>
-        <div class="footer__copyright">© Evgeny</div>
+        <span class="footer__year">2018</span>
+        <span class="footer__copyright">© Evgeny</span>
     </footer>
 </article>
 </body>
