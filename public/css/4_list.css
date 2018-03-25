@@ -5,13 +5,22 @@
 
 .place
 {
+    border-bottom: 1px solid var(--border-color);
     margin: var(--standard-margin-from-hr) 0;
     display: grid;
-    grid-template-columns: 10fr 1fr 1fr;
+    grid-template-columns: 10fr 1fr 2fr;
     grid-template-rows: 40px 55px auto;
     grid-template-areas:    "🐷 🐷 🐼"
-                            "🐰 .. 🐼"
-                            "🐰 🐻 🐻";
+                            "🐰 🐰 🐺"
+                            "🐰 🐰 🐻";
+}
+
+
+.place:hover .place__edit,
+.place:hover .place__delete,
+.place:hover .place__change-order
+{
+    visibility: visible;
 }
 
 .place__title
@@ -24,59 +33,137 @@
     --pic-size: 24px;
 }
 
-.place__name,
-.place__name_edit
+.place__name
 {
-    font-size: 130%;
-    /* width: 300px; */
     height: var(--height-for-input-text);
     box-sizing: border-box;
-    /* display: none; */
+    margin-top: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.place__name_edit
+.place__name-edit
 {
+    display: flex;
+    flex-wrap: nowrap;
     display: none;
+}
+
+.place__name-edit_field
+{
+    height: var(--height-for-input-text);
+    box-sizing: border-box;
+    font-size: 100%;
+    font-family: Antipasto;
+    width: 250px;
     border: 1px solid rgba(0, 0, 0, 0);
     border-bottom: 1px solid var(--border-color);
     outline: none;
     background-color: transparent;
 }
 
-.place__name_edit:focus
+.place__name-edit_field:focus
 {
     border: 1px solid var(--border-color);
 }
 
-.place__name
-{
-    margin-top: 10px;
-}
-
 .place__edit,
 .place__delete,
-.place__edit_cancel,
-.place__edit_accept
+.place__name-edit_cancel,
+.place__name-edit_accept
 {
-    visibility: hidden;
     width: var(--pic-size);
     height: var(--pic-size);
     margin: calc((40px - var(--pic-size))/2) 10px;
+    outline: none;
 }
 
-.place__title:hover > .place__edit,
-.place__title:hover > .place__delete
+.place__name-edit_cancel:hover,
+.place__name-edit_cancel:focus
+
 {
-    visibility: visible;
+    box-shadow: 0 0 4px 2px #F008;
+    transition: .3s;
+}
+
+.place__name-edit_accept:hover,
+.place__name-edit_accept:focus
+{
+    box-shadow: 0 0 4px 2px #0F07;
+    transition: .3s;
+}
+
+.place__edit,
+.place__delete
+{
+    visibility: hidden;
+}
+
+.place__edit:hover,
+.place__delete:hover
+{
+    box-shadow: 0 0 2px 1px var(--border-color);
+    transform: rotate(-15deg) scale(1.2);
+    transition: .3s;
+}
+
+.place__edit:focus,
+.place__delete:focus
+{
+    box-shadow: 0 0 4px 2px var(--border-color);
+    animation: pulse 1s linear infinite;
 }
 
 .place__description
 {
     grid-area: 🐰;
-    margin: 20px 20px 0;
+    margin: 10px;
     font-size: 80%;
     text-indent: 5%;
-    /* overflow: auto; */
+}
+
+.place__description-edit
+{
+    display: none;
+    grid-area: 🐰;
+    margin: 20px 20px 10px;
+    height: calc(2*var(--height-for-input-text));
+    font-size: 80%;
+    font-family: Antipasto;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-bottom: 1px solid var(--border-color);
+    background-color: transparent;
+    outline: none;
+}
+
+.place__description-edit:focus
+{
+    border-color: var(--border-color);
+}
+
+.place__change-order
+{
+    grid-area: 🐺;
+    margin: 3px 14px;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--border-color);
+    border-radius: 20%;
+    background: radial-gradient(farthest-side at 5px 5px, #fff, #60a0ffbb);
+    visibility: hidden;
+}
+
+.place__change-order:hover
+{
+    cursor: pointer;
+    height: 40px;
+    padding: 4px 0;
+    transition: .2s;
+}
+
+.place__change-order:active
+{
+    background: radial-gradient(farthest-side at 12px 12px, #fff, #60a0ffbb);
 }
 
 .place__create-date
@@ -99,6 +186,7 @@
     grid-area: 🐼;
     width: 38px;
     height: 38px;
+    margin: 1px 20px;
     box-sizing: border-box;
     background-image: url(/pics/check-none.svg);
     background-size: 42px 42px;

@@ -4,13 +4,11 @@
     <meta charset="utf-8">
     <title>Pavel is very busy</title>
     <link rel="stylesheet" href="index.css" media="screen">
-
 </head>
 <body>
     <main>
         <div class="search">
             <input type="text" class="search__field" placeholder="Поиск..." name="search">
-            <input type="image" src="/pics/search.png" class="search__button">
             <div class="search__triggers">
                 <input type="radio" name="searchType" id="nameOnly" value="nameOnly" class="blue-radio">
                 <label for="nameOnly" class="search__triggers_type">по названию</label>
@@ -24,19 +22,19 @@
         <div class="new-place">
             <input type="text" name="name" class="new-place__name" placeholder="Введите название места...">
             <textarea name="description" class="new-place__description" placeholder="Введите описание..."></textarea>
-            <input type="image" src="/pics/create.png" class="new-place__create-button">
+            <input type="button" class="new-place__create-button" value="Создать">
         </div>
         <hr>
         <div class="control-panel">
             <span class="control-panel__title">Места</span>
             <input type="image" class="control-panel__delete" src="pics/delete.svg" width="32px">
             <div class="control-panel__sorting">
-                <input type="radio" name="sortType" class="control-panel__sorting_input" id="abcSort" checked>
-                <label for="abcSort" class="control-panel__sorting_type">
+                <input type="radio" name="sortType" class="control-panel__sorting_input" id="name" checked>
+                <label for="name" class="control-panel__sorting_type">
                     <img src="/pics/sort-by-abc.svg" class="control-panel__sorting_image-1" width="31px">
                 </label>
-                <input type="radio" name="sortType" class="control-panel__sorting_input" id="dateSort">
-                <label for="dateSort" class="control-panel__sorting_type">
+                <input type="radio" name="sortType" class="control-panel__sorting_input" id="date">
+                <label for="date" class="control-panel__sorting_type">
                     <img src="/pics/sort-by-date.png" class="control-panel__sorting_image-2" width="31px">
                 </label>
             </div>
@@ -50,41 +48,13 @@
             </div>
         </div>
         <hr>
-        <div class="list">
-            <section class="place">
-                <div class="place__title">
-                    <input type="image" src="/pics/edit.svg" alt="" class="place__edit">
-                    <input type="image" src="/pics/delete.svg" alt="" class="place__delete">
-                    <div class="place__name">Колосс Родосский</div>
-                    <input type="text" class="place__name_edit" name="nameEdit">
-                    <input type="image" src="/pics/cancel.svg" alt="" class="place__edit_cancel">
-                    <input type="image" src="/pics/accept.svg" alt="" class="place__edit_accept">
-                </div>
-                <div class="place__description">Гигантская статуя древнегреческого бога Солнца — Гелиоса,
-                    которая стояла в портовом городе Родосе, расположенном на одноимённом острове
-                    в Эгейском море, в Греции. Одно из «Семи чудес света». Одно из «Семи чудес света» Одно из «Семи чудес света» Одно из «Семи чудес света» Одно из «Семи чудес света» Одно из «Семи чудес света»</div>
-                <div class="place__create-date">
-                    <div>Добавлено</div>
-                    <div>18.03.2018</div>
-                </div>
-                <input type="checkbox" name="isVisit" id="visit_checkbox" class="place__visited_checkbox">
-                <label for="visit_checkbox" class="place__visited">
-            </section>
-        </div>
+        <div class="list"></div>
     </main>
     <hr class="hr-main">
     <footer class="footer">
         <div class="year">2018</div>
         <div class="editor">&copy;spt30</div>
     </footer>
-    <script src="clearAll.js"></script>
-    <script src="createElement.js"></script>
-    <script src="deletePlace.js"></script>
-    <script src="editPlace.js"></script>
-    <script src="searchElement.js"></script>
-    <script src="sorting.js"></script>
-    <script src="switchController.js"></script>
-    <script src="viewFilter.js"></script>
-    <script src="visit-unvisit.js"></script>
+    <script src="handlers.js"></script>
 </body>
 </html>
