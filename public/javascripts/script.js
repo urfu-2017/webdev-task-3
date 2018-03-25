@@ -57,6 +57,10 @@ const validateName = name => {
 };
 
 class ArticleList {
+    constructor() {
+        this.hide = this.hide.bind(this);
+    }
+
     add(event) {
         event.preventDefault();
         const input = document.getElementsByClassName('insertion-form__input')[0].value;
@@ -73,8 +77,11 @@ class ArticleList {
         }
     }
 
-    hide() {
-
+    hide(event) {
+        const displayParam = event.target.textContent;
+        this._filterBySearch();
+        this._filterByVisited(displayParam);
+        correctArrows();
     }
 
     deleteAll() {
@@ -84,19 +91,122 @@ class ArticleList {
         }
     }
 
-    _filterByVisited() {
+    _makeElementsVisible() {
+        const children = parentElement.children;
+        for (const element of children) {
+            element.className = 'location horizontal-flex visible shown';
+        }
+    }
 
+    _toggleVisibility(element, isVisible) {
+        if (!isVisible) {
+            element.className = 'location horizontal-flex hidden not-shown';
+        }
+        correctArrows();
+    }
+
+    _filterByVisited(displayParam) {
+        const list = parentElement.children;
+        switch (displayParam) {
+            case 'All':
+                for (const element of list) {
+                    this._toggleVisibility(element, true);
+                }
+                break;
+            case 'Not visited':
+                for (const element of list) {
+                    this._toggleVisibility(element,
+                        element.lastElementChild.classList.value.indexOf('not') !== -1);
+                }
+                break;
+            default:
+                for (const element of list) {
+                    this._toggleVisibility(element,
+                        element.lastElementChild.classList.value.indexOf('not') === -1);
+                }
+                break;
+        }
     }
 
     _filterBySearch() {
-
+        this.currentSearchResult = this.currentSearchResult || '';
+        const children = parentElement.children;
+        this._makeElementsVisible();
+        for (const element of children) {
+            const content = getElemByClass('location-name', element).textContent;
+            if (content.indexOf(this.currentSearchResult) === -1) {
+                element.className = 'location horizontal-flex hidden not-shown';
+            }
+        }
+        correctArrows();
     }
 }
 
 const list = new ArticleList();
 
-class ArticleMethods {
-    delete() {
+class Button {
+    constructor(type, div, fullName) {
+        this._type = type;
+        this._button = document.createElement(div);
+        this._className = fullName;
+        this._delete = this._delete.bind(this);
+    }
+
+    createButton() {
+        this._button.className = this._className;
+        this._checkMainType();
+        console.info(this._button);
+
+        return this._button;
+    }
+
+    initialize() {
+        this._button = getElemByClass(this._className);
+        this._checkMainType();
+
+        return this._button;
+    }
+
+    _checkMainType() {
+        switch (this._type) {
+            case 'location-insertion__button':
+                this._button.addEventListener('click', list.add);
+                break;
+            case 'location-menu__delete-button':
+                this._button.addEventListener('click', list.deleteAll);
+                break;
+            case 'location-menu__switch':
+                this._button.addEventListener('click', list.hide);
+                break;
+            default:
+                this._checkSecondaryType();
+                break;
+        }
+    }
+
+    _checkSecondaryType() {
+        switch (this._type) {
+            case 'hidden-options__pencil':
+                this._button.addEventListener('click', this._rename);
+                break;
+            case 'hidden-options__trash':
+                this._button.addEventListener('click', this._delete);
+                break;
+            case 'arrow-up':
+                this._button.addEventListener('click', this._swapUp);
+                break;
+            case 'arrow-down':
+                this._button.addEventListener('click', this._swapDown);
+                break;
+            case 'visited-flag':
+                this._button.addEventListener('click', this._toggleVisited);
+                break;
+            default:
+                break;
+        }
+    }
+
+    _delete(event) {
         const node = event.target.parentElement.parentElement;
         const locationName = getElemByClass('location-name', node).textContent;
         node.parentElement.removeChild(node);
@@ -104,7 +214,7 @@ class ArticleMethods {
         fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE').then();
     }
 
-    rename() {
+    _rename(event) {
         const node = getElemByClass('location-name', event.target.parentElement.parentElement);
         this.oldName = node.textContent;
         const input = document.createElement('input');
@@ -139,7 +249,7 @@ class ArticleMethods {
         node.parentElement.replaceChild(form, node);
     }
 
-    swapUp() {
+    _swapUp(event) {
         const article = event.target.parentElement.parentElement;
         const locationName = getElemByClass('location-name', article).textContent;
         const swapNode = article.previousElementSibling;
@@ -150,7 +260,7 @@ class ArticleMethods {
         fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then();
     }
 
-    swapDown() {
+    _swapDown(event) {
         const article = event.target.parentElement.parentElement;
         const locationName = getElemByClass('location-name', article).textContent;
         const swapNode = article.nextElementSibling;
@@ -161,7 +271,7 @@ class ArticleMethods {
         fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then();
     }
 
-    toggleVisited() {
+    _toggleVisited(event) {
         const locationName = getElemByClass('location-name',
             event.target.parentElement).textContent;
         let value = false;
@@ -171,68 +281,6 @@ class ArticleMethods {
             value = true;
         }
         fetchReq(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, 'PUT').then();
-    }
-}
-
-class Button extends ArticleMethods {
-    constructor(type, div, fullName) {
-        super();
-        this._type = type;
-        this._button = document.createElement(div);
-        this._className = fullName;
-    }
-
-    createButton() {
-        this._button.className = this._className;
-        this._checkMainType();
-
-        return this._button;
-    }
-
-    initialize() {
-        this._button = getElemByClass(this._className);
-        this._checkMainType();
-
-        return this._button;
-    }
-
-    _checkMainType() {
-        switch (this._type) {
-            case 'location-insertion__button':
-                this._button.addEventListener('click', list.add);
-                break;
-            case 'location-menu__delete-button':
-                this._button.addEventListener('click', list.deleteAll);
-                break;
-            case 'location-menu__switch':
-                this._button.addEventListener('click', list.hide);
-                break;
-            default:
-                this._checkSecondaryType();
-                break;
-        }
-    }
-
-    _checkSecondaryType() {
-        switch (this._type) {
-            case 'hidden-options__pencil':
-                this._button.addEventListener('click', this.rename);
-                break;
-            case 'hidden-options__trash':
-                this._button.addEventListener('click', this.delete);
-                break;
-            case 'arrow-up':
-                this._button.addEventListener('click', this.swapUp);
-                break;
-            case 'arrow-down':
-                this._button.addEventListener('click', this.swapDown);
-                break;
-            case 'visited-flag':
-                this._button.addEventListener('click', this.toggleVisited);
-                break;
-            default:
-                break;
-        }
     }
 
 }
@@ -266,7 +314,7 @@ class Article {
     _createSingleArrow(arrowType) {
         const visibility = arrowType === 'arrow-up' ? 'visible' : 'hidden';
 
-        return new Button('location__button', 'div',
+        return new Button(arrowType, 'div',
             `${arrowType} location__button button arrow ${visibility}`).createButton();
     }
 
@@ -281,7 +329,7 @@ class Article {
 
     _createNotVisitedDiv() {
 
-        return new Button('location__button',
+        return new Button('visited-flag',
             'div', 'not-visited-icon location__button visited-flag').createButton();
     }
 
@@ -289,9 +337,9 @@ class Article {
         const container = document.createElement('div');
         container.className = 'hidden-options horizontal-flex';
 
-        container.appendChild(new Button('location__button',
+        container.appendChild(new Button('hidden-options__pencil',
             'div', 'hidden-options__pencil location__button button').createButton());
-        container.appendChild(new Button('location__button',
+        container.appendChild(new Button('hidden-options__trash',
             'div', 'hidden-options__trash location__button button').createButton());
 
         return container;
