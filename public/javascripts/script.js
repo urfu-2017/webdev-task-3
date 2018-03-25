@@ -178,6 +178,7 @@ class Button {
         switch (this._type) {
             case 'location-insertion__button':
                 this._button.addEventListener('click', list.add);
+                getElemByClass('insertion-form').addEventListener('submit', list.add);
                 break;
             case 'location-menu__delete-button':
                 this._button.addEventListener('click', list.deleteAll);
