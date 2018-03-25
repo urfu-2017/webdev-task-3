@@ -155,7 +155,6 @@ class Button {
     createButton() {
         this._button.className = this._className;
         this._checkMainType();
-        console.info(this._button);
 
         return this._button;
     }
@@ -165,6 +164,14 @@ class Button {
         this._checkMainType();
 
         return this._button;
+    }
+
+    refreshButtons(article) {
+        getElemByClass('hidden-options__pencil', article).addEventListener('click', this._rename);
+        getElemByClass('hidden-options__trash', article).addEventListener('click', this._delete);
+        getElemByClass('arrow-up', article).addEventListener('click', this._swapUp);
+        getElemByClass('arrow-down', article).addEventListener('click', this._swapDown);
+        getElemByClass('visited-flag', article).addEventListener('click', this._toggleVisited);
     }
 
     _checkMainType() {
@@ -360,4 +367,13 @@ new Button('location-menu__switch', 'div',
     'location-menu__switch show-not-visited-button button').initialize();
 new Button('location-menu__switch', 'div',
     'location-menu__switch show-visited-button button').initialize();
+
+const refreshEventListeners = () => {
+    const collection = parentElement.getElementsByClassName('location');
+    for (const elem of collection) {
+        new Button().refreshButtons(elem);
+    }
+    correctArrows();
+};
+document.addEventListener('DOMContentLoaded', () => refreshEventListeners());
 
