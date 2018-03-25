@@ -1,0 +1,31 @@
+.place-row {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.place-row__description {
+    width: 200px;
+}
+
+.place-row__reorder {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: url('./arrow-dual.svg');
+}
+
+.place-row:first-child .place-row__reorder {
+    background: url('./arrow-down.svg');
+}
+
+.place-row:last-child .place-row__reorder {
+    background: url('./arrow-up.svg');
+}
+
+.place-row__status {
+    width: 2rem;
+    height: 2rem;
+}

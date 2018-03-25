@@ -1,5 +1,5 @@
 class Place {
-    constructor(id, createdAt, isVisited, description) {
+    constructor({ id, createdAt, isVisited, description }) {
         this.id = id;
         this.createdAt = createdAt;
         this.isVisited = isVisited;

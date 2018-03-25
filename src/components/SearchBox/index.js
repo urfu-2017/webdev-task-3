@@ -1,4 +1,4 @@
-import './search-box.css';
+import './SearchBox.css';
 
 import Component from '../Component';
 import htmlToElement from '../../utils/html-to-element';
@@ -8,14 +8,28 @@ class SearchBox extends Component {
         super(props);
     }
 
-    render() {
-        const { elemClass = '' } = this.props;
-
-        return htmlToElement(`
-            <div class="search-box ${elemClass}">
-              <input class="search-box__input text" type="text" placeholder="Поиск" size="30">
-            </div>
+    _renderInput(handler, updateCallback) {
+        const elem = htmlToElement(`
+            <input class="search-box__input text" type="text" placeholder="Поиск" size="30">
         `);
+        elem.addEventListener('input', (e) => {
+            updateCallback(handler({ query: e.target.value }));
+        });
+
+        return elem;
+    }
+
+    render() {
+        const {
+            elemClass = '',
+            updateCallback,
+            searchQueryChangeHandler
+        } = this.props;
+
+        const searchBox = htmlToElement(`<div class="search-box ${elemClass}"></div>`);
+        searchBox.appendChild(this._renderInput(searchQueryChangeHandler, updateCallback));
+
+        return searchBox;
     }
 }
 

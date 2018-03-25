@@ -34,26 +34,30 @@ const jsonBodylessRequest = (httpMethod, url, queryArgs = undefined) => {
         url = `${url}?${encodeQuery(queryArgs)}`;
     }
 
-    const requestSettings = {
-        ...defaultSettings,
-        method: httpMethod,
-        qs: queryArgs
-    };
+    const requestSettings = Object.assign(
+        defaultSettings,
+        {
+            method: httpMethod,
+            qs: queryArgs
+        }
+    );
 
     return jsonRequest(url, requestSettings);
 };
 
 const jsonBodyRequest = (httpMethod, url, queryArgs = undefined, data = undefined) => {
-    const postSettings = {
-        ...defaultSettings,
-        method: httpMethod,
-        qs: queryArgs,
-        body: JSON.stringify(data),
-        headers: {
-            ...defaultSettings.headers,
-            'Content-Type': 'application/json'
+    const postSettings = Object.assign(
+        defaultSettings,
+        {
+            method: httpMethod,
+            qs: queryArgs,
+            body: JSON.stringify(data),
+            headers: Object.assign(
+                defaultSettings.headers,
+                { 'Content-Type': 'application/json' }
+            )
         }
-    };
+    );
 
     return jsonRequest(url, postSettings);
 };

@@ -1,5 +1,5 @@
 import './common.css';
-import './app.css';
+import './App.css';
 
 import Main from '../Main';
 import Header from '../Header';

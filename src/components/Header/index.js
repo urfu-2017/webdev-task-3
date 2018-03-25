@@ -1,4 +1,4 @@
-import './header.css';
+import './Header.css';
 
 import Component from '../Component';
 import htmlToElement from '../../utils/html-to-element';
