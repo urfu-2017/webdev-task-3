@@ -39,6 +39,15 @@ export class VNode {
         return this.isComponent ? this.instance.__root.children : this.children;
     }
 
+    set realChildren(value) {
+        if (this.isComponent) {
+            this.instance.__root.children = value;
+        } else {
+            this.children = value;
+        }
+
+    }
+
     /**
      * @returns {Node}
      */
@@ -154,10 +163,11 @@ export class VNode {
         let n = 0;
         let oldChild = oldChildren[n];
         let newChild = newChildren[n];
+
         while (oldChild || newChild) {
             if (oldChild && !newChild) {
                 // удалить ребёнка из виртуального дерева
-                markToDeleted.push(n);
+                markToDeleted.push(oldChild);
                 oldChild.unmount();
             } else if (!oldChild && newChild) {
                 // добавить ребёнка к виртуальному дереву
@@ -172,7 +182,7 @@ export class VNode {
             newChild = newChildren[n];
         }
 
-        markToDeleted.forEach(i => oldChildren.splice(i, 1));
+        this.realChildren = oldChildren.filter(child => !markToDeleted.includes(child));
     }
 
     /**
@@ -291,7 +301,7 @@ function setAttributes(el, attrs) {
         if (attrName.startsWith('on')) {
             const evtName = attrName.toLowerCase();
             el[evtName] = attrs[attrName];
-        } else {
+        } else if (attrs[attrName] !== false) {
             el.setAttribute(attrName, attrs[attrName]);
         }
     });
