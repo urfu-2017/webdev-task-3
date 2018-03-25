@@ -1,0 +1,6 @@
+.menu__filters
+{
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+}

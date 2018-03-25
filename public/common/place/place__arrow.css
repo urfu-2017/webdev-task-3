@@ -1,0 +1,8 @@
+.place__arrow
+{
+    height: 100%;
+    font-size: 36px;
+    margin-left: -6px;
+    overflow: hidden;
+    background: transparent;
+}

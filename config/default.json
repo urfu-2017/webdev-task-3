@@ -1,8 +1,11 @@
 {
-    "port": 8080,
+    "port": 8081,
     "meta": { "charset": "utf-8" },
     "lang": "ru",
     "title": "Места",
     "year": 2018,
-    "author": "alexsatov"
+    "author": "alexsatov",
+    "api": {
+        "url": "http://localhost:8080/places/"
+    }
 }

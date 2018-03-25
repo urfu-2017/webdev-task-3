@@ -1,0 +1,21 @@
+.place
+{
+    height: 40px;
+    padding: 10px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    list-style-type: none;
+}
+
+.place:first-of-type .up,
+.place:last-of-type .down
+{
+    visibility: hidden;
+}
+
+.place:hover .btn-hidden
+{
+    visibility: visible;
+}

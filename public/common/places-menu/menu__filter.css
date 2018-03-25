@@ -1,0 +1,37 @@
+.menu__filter
+{
+    width: 110px;
+    padding: 5px 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-width: 1px 1px 1px 0;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, .3);
+}
+
+.menu__filter:first-of-type
+{
+    border-left-width: 1px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.menu__filter:last-of-type
+{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+input.menu__filter:nth-of-type(1):checked ~ .places-menu .menu__filters .menu__filter:nth-of-type(1),
+input.menu__filter:nth-of-type(2):checked ~ .places-menu .menu__filters .menu__filter:nth-of-type(2),
+input.menu__filter:nth-of-type(3):checked ~ .places-menu .menu__filters .menu__filter:nth-of-type(3)
+{
+    background-color: deepskyblue;
+}
+
+input.menu__filter:nth-of-type(2):checked ~ .places__list
+{
+    
+}

@@ -1,0 +1,31 @@
+@import './input.css';
+
+@import './one-line/one-line.css';
+
+@import './btn/btn-place.css';
+@import './btn/btn-hidden.css';
+
+@import './main/main.css';
+
+@import './search/search.css';
+@import './search/search__ipt.css';
+@import './search/search__btn/search__btn.css';
+
+@import './place-creator/place-creator.css';
+@import './place-creator/place-creator__ipt.css';
+@import './place-creator/place-creator__btn/place-creator__btn.css';
+
+@import './places/places.css';
+@import './places-menu/places-menu.css';
+@import './places-menu/menu__title.css';
+@import './places-menu/menu__filters.css';
+@import './places-menu/menu__filter.css';
+
+@import './place/place.css';
+@import './place/place__visit.css';
+@import './place/place__arrow.css';
+@import './place/place__name.css';
+@import './place/place__delete.css';
+@import './place/place__edit.css';
+
+@import './footer/footer.css';

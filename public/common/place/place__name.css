@@ -1,0 +1,9 @@
+.place__name
+{
+    width: 74%;
+    font-size: 34px;
+    overflow: hidden;
+    font-weight: normal;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+}

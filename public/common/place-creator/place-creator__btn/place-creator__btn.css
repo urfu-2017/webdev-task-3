@@ -1,0 +1,22 @@
+.place-creator__btn
+{
+    color: #fff;
+    height: 100%;
+    margin: auto;
+    padding: 0 14px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, .3);
+    background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
+}
+
+.place-creator_btn:hover
+{
+    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.4);
+}
+
+.place-creator_btn:active
+{
+    box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.6);
+}

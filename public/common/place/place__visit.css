@@ -1,0 +1,19 @@
+label.place__visit
+{
+    width: 26px;
+    height: 24px;
+    margin-left: 16px;
+    margin-right: 64px;
+    cursor: pointer;
+    background: url('http://csscheckbox.com/checkboxes/u/csscheckbox_4f6bc9a7cc47504b9c36e04aa489f19e.png') 0 0 no-repeat;
+}
+
+input.place__visit:checked + .place label.place__visit
+{
+    background-position-y: -24px;
+}
+
+input.place__visit:checked + .place .place__name
+{
+    text-decoration: line-through;
+}

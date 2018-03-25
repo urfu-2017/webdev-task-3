@@ -1,0 +1,5 @@
+.place__delete
+{
+    background: url('/images/trash-bin.svg') 0 0 no-repeat;
+    background-size: 100% 100%;
+}
