@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Олег</title>
     <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
     <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js" 
     integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l" 
     crossorigin="anonymous"></script>
@@ -16,47 +17,51 @@
     <script src="index.js"></script>
 </head>
 <body>
-
-    <main>
-        <div class="search">
-            <input type="text" class="search__input" placeholder="Поиск">
-        </div>
-        <div class="builder">
-            <input type="text" class="builder__input" placeholder="Название места">
-            <button class="builder__submit">Создать</button>
-        </div>
-        <div class="places">
-            
-            <div class="place__remover">
-                <button class="place__remover-submit">
-                    <span place__remover-title>Очистить список</span>
-                </button>
+    <div class="layout">
+        <main>
+            <div class="search">
+                <input type="text" class="search__input" placeholder="Поиск">
             </div>
-
-            <div class=places__filter>
-                <label>
-                    <input type="radio" name="places-filter" value="all" checked>
-                    Все
-                </label>
-                <label>
-                    <input type="radio" name="places-filter" value="visit">
-                    Посетить
-                </label>
-                <label>
-                    <input type="radio" name="places-filter" value="visited">
-                    Посещённые
-                </label>
+            <div class="builder">
+                <input type="text" class="builder__input" placeholder="Название места"><button class="builder__submit">Создать</button>
             </div>
+            <div class="places">
+                
+                <div class="places__header">
+                    <div class="place__remover">
+                        <button class="place__remover-submit">
+                            <span place__remover-title>Очистить список</span>
+                        </button>
+                    </div>
+        
+                    <div class=places__filter>
+                        <label class="places__filter-choice">
+                            <input type="radio" name="places-filter" value="all" checked>
+                            <div class="places__filter-choice-title">Все</div>
+                        </label>
+                        |
+                        <label class="places__filter-choice">
+                            <input type="radio" name="places-filter" value="visit">
+                            <div class="places__filter-choice-title">Посетить</div>                    
+                        </label>
+                        |
+                        <label class="places__filter-choice">
+                            <input type="radio" name="places-filter" value="visited">
+                            <div class="places__filter-choice-title">Посещённые</div>                    
+                        </label>
+                    </div>
+                </div>
 
-            <div class="places__list"></div>
+                <div>Места</div>
+                <div class="places__list"></div>
 
-        </div>
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="footer__year">2018</div>
+            <div class="footer__copyright">© kvas</div>
+        </footer>
 
-    </main>
-
-    <footer class="footer">
-        <div class="footer__year">2018</div>
-        <div class="footer__copyright">© kvas</div>
-    </footer>
+    </div>
 </body>
 </html>

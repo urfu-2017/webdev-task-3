@@ -24,10 +24,13 @@ async function updatePlaceList() {
     search();
 }
 
-function createButton(content, func) {
+function createButton(content, func, className = null) {
     const button = document.createElement('button');
     button.innerHTML = content;
     button.onclick = func;
+    if (className) {
+        button.className = className;
+    }
 
     return button;
 }
@@ -45,6 +48,7 @@ function createLabel(place) {
     const label = document.createElement('label');
     const textNode = document.createTextNode(place.description);
     const visitMark = document.createElement('i');
+    visitMark.className = 'visit-mark ';
     if (place.visited) {
         visitMark.className += 'fas fa-lemon';
         label.className += 'strikeout';
@@ -64,23 +68,27 @@ function createLINode(place, index, colSize) {
     const node = document.createElement('div');
     const label = createLabel(place);
     const downButton =
-        createButton('<i class="fas fa-arrow-down"></i>', () => rearrange(index, index + 1));
+        createButton('<i class="fas fa-arrow-down"></i>',
+            () => rearrange(index, index + 1), 'down-btn');
     const upButton =
-        createButton('<i class="fas fa-arrow-up"></i>', () => rearrange(index, index - 1));
+        createButton('<i class="fas fa-arrow-up"></i>',
+            () => rearrange(index, index - 1), 'up-btn');
     const deleteButton =
-        createButton('<i class="fas fa-trash-alt"></i>', () => deletePlace(place.id));
+        createButton('<i class="fas fa-trash-alt"></i>',
+            () => deletePlace(place.id), 'delete-btn');
     const editButton =
-        createButton('<i class="fas fa-pencil-alt"></i>', () => editPlaceMode(place));
-    node.appendChild(deleteButton);
-    node.appendChild(editButton);
+        createButton('<i class="fas fa-pencil-alt"></i>',
+            () => editPlaceMode(place), 'edit-btn');
     if (index !== colSize - 1) {
         node.appendChild(downButton);
     }
     if (index !== 0) {
         node.appendChild(upButton);
     }
+    node.appendChild(deleteButton);
+    node.appendChild(editButton);
     node.appendChild(label);
-    node.className = `place${place.id}`;
+    node.className = `place${place.id} place`;
 
     return node;
 }
@@ -145,6 +153,9 @@ function setPlacesList(newPlaces) {
         const node = createLINode(place, index, newPlaces.length);
         placesList.appendChild(node);
     });
+    if (placesList.innerHTML === '') {
+        placesList.innerHTML = 'мест нет';
+    }
 }
 
 function visit(place) {
@@ -225,6 +236,5 @@ window.onload = async function () {
     });
 
     document.querySelector('.place__remover-submit').onclick = clearList;
-
 };
 

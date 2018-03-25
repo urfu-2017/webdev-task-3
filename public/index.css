@@ -1,13 +1,61 @@
-
-
 body
 {
-    padding: 100px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
 }
 
+.layout
+{
+    display: inline-block;
+    border: 1px solid;
+    width: 50%;
+}
+
+main
+{
+    padding: 20px;
+}
+
+.builder,
+.search
+{
+    margin: 0 0 20px 0  ;
+}
+
+.search input
+{
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.builder input
+{
+    width: calc(100% - 80px);
+    box-sizing: border-box;
+}
+
+.builder button
+{
+    width: 80px;
+    box-sizing: border-box;    
+}
+
+
+.places__filter input,
 .hidden
 {
     display: none;
+}
+
+.places__filter-choice-title
+{
+    display: inline-block;
+}
+
+.places__filter input:checked + div
+{
+    color: red;
+    background-clip: content-box;
 }
 
 .strikeout
@@ -15,9 +63,10 @@ body
     text-decoration: line-through;
 }
 
-.places__list div
+.places__list
 {
-    margin: 10px;
+    text-align: center;
+
 }
 
 .footer
@@ -29,3 +78,62 @@ body
     justify-content: space-between;
 }
 
+.places__header
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.place
+{
+    display: inline-block;
+    margin: 10px;
+    width: 80%;
+    height: 20px;
+    position: relative;
+}
+
+.visit-mark
+{
+    right: 0;
+}
+
+.up-btn
+{
+    left: 40px;
+}
+
+
+.down-btn
+{
+    left: 0;
+}
+
+.edit-btn
+{
+    display: none;
+    left: 130px;
+
+}
+
+.delete-btn
+{
+    left: 100px;
+    display: none;
+}
+
+.up-btn,
+.down-btn,
+.visit-mark,
+.delete-btn,
+.edit-btn
+{
+    position: absolute;
+    top: 0;
+}
+
+.place:hover .edit-btn,
+.place:hover .delete-btn
+{
+    display: inline-block;
+}
