@@ -34,13 +34,13 @@ const correctArrows = () => {
         const arrowDown = getElemByClass('arrow-down', elem);
         const arrowUp = getElemByClass('arrow-up', elem);
 
-        arrowUp.className = 'arrow-up button arrow visible';
-        arrowDown.className = 'arrow-down button arrow visible';
+        arrowUp.className = 'arrow-up location__button button arrow visible';
+        arrowDown.className = 'arrow-down location__button button arrow visible';
         if (idx === 0) {
-            arrowUp.className = 'arrow-up button arrow hidden';
+            arrowUp.className = 'arrow-up location__button button arrow hidden';
         }
         if (idx === collection.length - 1) {
-            arrowDown.className = 'arrow-down button arrow hidden';
+            arrowDown.className = 'arrow-down location__button button arrow hidden';
         }
         idx++;
     }
@@ -56,52 +56,47 @@ const validateName = name => {
     }
 };
 
-class EventListeners {
-    constructor(params) {
-        this._visited = params.visited;
-        this._arrows = params.arrows; // array
-        this._trash = params.trash;
-        this._pencil = params.pencil;
-    }
-
-    initListeners() {
-        this._visited.addEventListener('click', this._toggleVisited);
-        this._arrows.forEach(arrow => {
-            arrow.addEventListener('click', this._onArrowClick);
-        });
-        this._trash.addEventListener('click', this._onTrashClick);
-        this._pencil.addEventListener('click', this._onPencilClick);
-    }
-
-    _toggleVisited(event) {
-        const locationName = getElemByClass('location-name',
-            event.target.parentElement).textContent;
-        let value = false;
-        event.target.classList.toggle('visited-icon');
-        event.target.classList.toggle('not-visited-icon');
-        if (event.target.classList.value.indexOf('not') === -1) {
-            value = true;
+class ArticleList {
+    add(event) {
+        event.preventDefault();
+        const input = document.getElementsByClassName('insertion-form__input')[0].value;
+        let addedElement;
+        try {
+            validateName(input);
+            addedElement = createArticle(input);
+            parentElement.appendChild(addedElement);
+        } catch (e) {
+            throwErr(e);
+            parentElement.removeChild(addedElement);
+        } finally {
+            correctArrows();
         }
-        fetchReq(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, 'PUT').then();
     }
 
-    _onArrowClick(event) {
-        const article = event.target.parentElement.parentElement;
-        const locationName = getElemByClass('location-name', article).textContent;
-        let swapNode;
-        if (event.target.classList.value.indexOf('down') !== -1) {
-            swapNode = article.nextElementSibling;
-            swapNode.parentElement.insertBefore(swapNode, article);
-        } else {
-            swapNode = article.previousElementSibling;
-            swapNode.parentElement.insertBefore(article, swapNode);
+    hide() {
+
+    }
+
+    deleteAll() {
+        fetchReq(baseUrl, 'DELETE').then();
+        while (parentElement.firstChild) {
+            parentElement.removeChild(parentElement.firstChild);
         }
-        const secondName = getElemByClass('location-name', swapNode).textContent;
-        correctArrows();
-        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then();
     }
 
-    _onTrashClick(event) {
+    _filterByVisited() {
+
+    }
+
+    _filterBySearch() {
+
+    }
+}
+
+const list = new ArticleList();
+
+class ArticleMethods {
+    delete() {
         const node = event.target.parentElement.parentElement;
         const locationName = getElemByClass('location-name', node).textContent;
         node.parentElement.removeChild(node);
@@ -109,7 +104,7 @@ class EventListeners {
         fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE').then();
     }
 
-    _onPencilClick(event) {
+    rename() {
         const node = getElemByClass('location-name', event.target.parentElement.parentElement);
         this.oldName = node.textContent;
         const input = document.createElement('input');
@@ -143,6 +138,103 @@ class EventListeners {
         });
         node.parentElement.replaceChild(form, node);
     }
+
+    swapUp() {
+        const article = event.target.parentElement.parentElement;
+        const locationName = getElemByClass('location-name', article).textContent;
+        const swapNode = article.previousElementSibling;
+        swapNode.parentElement.insertBefore(article, swapNode);
+
+        const secondName = getElemByClass('location-name', swapNode).textContent;
+        correctArrows();
+        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then();
+    }
+
+    swapDown() {
+        const article = event.target.parentElement.parentElement;
+        const locationName = getElemByClass('location-name', article).textContent;
+        const swapNode = article.nextElementSibling;
+        swapNode.parentElement.insertBefore(swapNode, article);
+
+        const secondName = getElemByClass('location-name', swapNode).textContent;
+        correctArrows();
+        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then();
+    }
+
+    toggleVisited() {
+        const locationName = getElemByClass('location-name',
+            event.target.parentElement).textContent;
+        let value = false;
+        event.target.classList.toggle('visited-icon');
+        event.target.classList.toggle('not-visited-icon');
+        if (event.target.classList.value.indexOf('not') === -1) {
+            value = true;
+        }
+        fetchReq(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, 'PUT').then();
+    }
+}
+
+class Button extends ArticleMethods {
+    constructor(type, div, fullName) {
+        super();
+        this._type = type;
+        this._button = document.createElement(div);
+        this._className = fullName;
+    }
+
+    createButton() {
+        this._button.className = this._className;
+        this._checkMainType();
+
+        return this._button;
+    }
+
+    initialize() {
+        this._button = getElemByClass(this._className);
+        this._checkMainType();
+
+        return this._button;
+    }
+
+    _checkMainType() {
+        switch (this._type) {
+            case 'location-insertion__button':
+                this._button.addEventListener('click', list.add);
+                break;
+            case 'location-menu__delete-button':
+                this._button.addEventListener('click', list.deleteAll);
+                break;
+            case 'location-menu__switch':
+                this._button.addEventListener('click', list.hide);
+                break;
+            default:
+                this._checkSecondaryType();
+                break;
+        }
+    }
+
+    _checkSecondaryType() {
+        switch (this._type) {
+            case 'hidden-options__pencil':
+                this._button.addEventListener('click', this.rename);
+                break;
+            case 'hidden-options__trash':
+                this._button.addEventListener('click', this.delete);
+                break;
+            case 'arrow-up':
+                this._button.addEventListener('click', this.swapUp);
+                break;
+            case 'arrow-down':
+                this._button.addEventListener('click', this.swapDown);
+                break;
+            case 'visited-flag':
+                this._button.addEventListener('click', this.toggleVisited);
+                break;
+            default:
+                break;
+        }
+    }
+
 }
 
 class Article {
@@ -150,7 +242,7 @@ class Article {
         this._name = name;
     }
 
-    initialize() {
+    create() {
         fetchReq(`${baseUrl}?place=${this._name}`, 'POST').then();
         const article = document.createElement('article');
         article.className = 'location horizontal-flex visible';
@@ -159,17 +251,8 @@ class Article {
         article.appendChild(this._createArrowDiv());
         article.appendChild(this._createNotVisitedDiv());
         this.article = article;
-        Article.addEventListeners(this.article);
 
         return this.article;
-    }
-
-    static addEventListeners(element) {
-        const visited = getElemByClass('visited-flag', element);
-        const arrows = Array.from(element.getElementsByClassName('arrow'));
-        const trash = getElemByClass('hidden-options__trash', element);
-        const pencil = getElemByClass('hidden-options__pencil', element);
-        new EventListeners({ visited, arrows, trash, pencil }).initListeners();
     }
 
     _createNameDiv() {
@@ -181,15 +264,10 @@ class Article {
     }
 
     _createSingleArrow(arrowType) {
-        const arrowDiv = document.createElement('div');
-        if (arrowType === 'arrow-up') {
-            arrowDiv.className = 'arrow-up button arrow visible';
-        } else {
-            arrowDiv.className = 'arrow-up button arrow hidden';
-        }
-        arrowDiv.className = `${arrowType} button arrow`;
+        const visibility = arrowType === 'arrow-up' ? 'visible' : 'hidden';
 
-        return arrowDiv;
+        return new Button('location__button', 'div',
+            `${arrowType} location__button button arrow ${visibility}`).createButton();
     }
 
     _createArrowDiv() {
@@ -202,157 +280,36 @@ class Article {
     }
 
     _createNotVisitedDiv() {
-        const divNotVisited = document.createElement('div');
-        divNotVisited.className = 'not-visited-icon visited-flag';
 
-        return divNotVisited;
+        return new Button('location__button',
+            'div', 'not-visited-icon location__button visited-flag').createButton();
     }
 
     _createHiddenOpsDiv() {
         const container = document.createElement('div');
-        const pencilDiv = document.createElement('div');
-        const trashDiv = document.createElement('div');
-
         container.className = 'hidden-options horizontal-flex';
-        pencilDiv.className = 'hidden-options__pencil button';
-        trashDiv.className = 'hidden-options__trash button';
 
-        container.appendChild(pencilDiv);
-        container.appendChild(trashDiv);
+        container.appendChild(new Button('location__button',
+            'div', 'hidden-options__pencil location__button button').createButton());
+        container.appendChild(new Button('location__button',
+            'div', 'hidden-options__trash location__button button').createButton());
 
         return container;
     }
 }
 
-class Locations {
-    constructor() {
-        this.filterLocations = this.filterLocations.bind(this);
-        this.submitSearch = this.submitSearch.bind(this);
-        this.startSearch = this.startSearch.bind(this);
-    }
-
-    submitSearch() {
-        event.preventDefault();
-    }
-
-    startSearch() {
-        this.currentSearchResult = event.target.value;
-        this._checkSearch();
-        correctArrows();
-    }
-
-    filterLocations() {
-        const displayParam = event.target.textContent;
-        this._checkSearch();
-        this._displayElemsByParam(displayParam);
-        correctArrows();
-    }
-
-    delete() {
-        fetchReq(baseUrl, 'DELETE').then();
-        while (parentElement.firstChild) {
-            parentElement.removeChild(parentElement.firstChild);
-        }
-    }
-
-    insert() {
-        event.preventDefault();
-        const input = document.getElementsByClassName('insertion-form__input')[0].value;
-        let addedElement;
-        try {
-            validateName(input);
-            addedElement = new Article(input).initialize();
-            Article.addEventListeners(addedElement);
-            parentElement.appendChild(addedElement);
-        } catch (e) {
-            throwErr(e);
-            parentElement.removeChild(addedElement);
-        } finally {
-            correctArrows();
-        }
-    }
-
-    addEventListeners() {
-        // insert new place by enter and button click
-        const onLocationInsertion = () => this.insert();
-        getElemByClass('insertion-form').addEventListener('submit', onLocationInsertion);
-        getElemByClass('location-insertion__button').addEventListener('click', onLocationInsertion);
-
-        this._addOnRealoadListener();
-
-        // visible invisible
-        const display = document.getElementsByClassName('location-menu__nav');
-        for (const elem of display) {
-            elem.addEventListener('click', this.filterLocations);
-        }
-
-        getElemByClass('search-form').addEventListener('submit', this.submitSearch);
-        getElemByClass('search-form').addEventListener('keyup', this.startSearch);
-        getElemByClass('location-menu__delete-button').addEventListener('click', this.delete);
-    }
-
-    _addOnRealoadListener() {
-        // adding event listeners on reaload for existing elements
-        const refreshEventListeners = () => {
-            const collection = parentElement.getElementsByClassName('location');
-            for (const elem of collection) {
-                Article.addEventListeners(elem);
-            }
-            correctArrows();
-        };
-        document.addEventListener('DOMContentLoaded', () => refreshEventListeners());
-    }
-
-    _toggleVisibility(element, isVisible) {
-        if (!isVisible) {
-            element.className = 'location horizontal-flex hidden not-shown';
-        }
-        correctArrows();
-    }
-
-    _makeElementsVisible() {
-        const children = parentElement.children;
-        for (const element of children) {
-            element.className = 'location horizontal-flex visible shown';
-        }
-    }
-
-    _checkSearch() {
-        this.currentSearchResult = this.currentSearchResult || '';
-        const children = parentElement.children;
-        this._makeElementsVisible();
-        for (const element of children) {
-            const content = getElemByClass('location-name', element).textContent;
-            if (content.indexOf(this.currentSearchResult) === -1) {
-                element.className = 'location horizontal-flex hidden not-shown';
-            }
-        }
-        correctArrows();
-    }
-
-    _displayElemsByParam(displayParam) {
-        const list = parentElement.children;
-        switch (displayParam) {
-            case 'All':
-                for (const element of list) {
-                    this._toggleVisibility(element, true);
-                }
-                break;
-            case 'Not visited':
-                for (const element of list) {
-                    this._toggleVisibility(element,
-                        element.lastElementChild.classList.value.indexOf('not') !== -1);
-                }
-                break;
-            default:
-                for (const element of list) {
-                    this._toggleVisibility(element,
-                        element.lastElementChild.classList.value.indexOf('not') === -1);
-                }
-                break;
-        }
-    }
+function createArticle(name) {
+    return new Article(name).create();
 }
 
-const List = new Locations();
-List.addEventListeners();
+new Button('location-insertion__button', 'div',
+    'location-insertion__button button').initialize();
+new Button('location-menu__delete-button', 'div',
+    'location-menu__delete-button button').initialize();
+new Button('location-menu__switch', 'div',
+    'location-menu__switch show-all-button button').initialize();
+new Button('location-menu__switch', 'div',
+    'location-menu__switch show-not-visited-button button').initialize();
+new Button('location-menu__switch', 'div',
+    'location-menu__switch show-visited-button button').initialize();
+
