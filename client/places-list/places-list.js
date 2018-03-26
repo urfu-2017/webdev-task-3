@@ -4,31 +4,37 @@ import { Place } from '../place/place';
 import styles from './places-list.css';
 /* eslint-enable no-unused-vars */
 
+function stub() {}
+
 export class PlacesList extends Component {
 
+    _getStyle(place) {
+        const { visibility } = this.props;
+        const isVisited = visibility === 'all' ||
+            (visibility === 'visited' && place.isVisited) ||
+            (visibility === 'unvisited' && !place.isVisited);
+
+        return `display: ${isVisited ? 'block' : 'none'}`;
+    }
+
     render() {
+        const { visibility, search } = this.props;
+        const onChangeOrder = visibility === 'all' && !search ? this.props.onChangeOrder : stub;
+
         return (
             <ul class={styles.placesList}>
-                {this.props.places.map(place => (
+                {this.props.places.map((place, index) => (
                     <li class={styles.item} style={this._getStyle(place)}>
                         <Place
+                            order={index}
                             place={place}
                             onChangePlace={this.props.onChangePlace}
                             onDeletePlace={this.props.onDeletePlace}
+                            onChangeOrder={onChangeOrder}
                         />
                     </li>
                 ))}
             </ul>
         );
-    }
-
-    _getStyle(place) {
-        const { search, visibility } = this.props;
-        const isDescription = place.description.toLowerCase().includes(search.toLowerCase());
-        const isVisited = visibility === 'all' ||
-            (visibility === 'visited' && place.isVisited) ||
-            (visibility === 'unvisited' && !place.isVisited);
-
-        return `display: ${isDescription && isVisited ? 'block' : 'none'}`;
     }
 }

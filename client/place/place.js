@@ -16,37 +16,8 @@ export class Place extends Component {
         this.onDelete = this.onDelete.bind(this);
         this.enableEdit = this.enableEdit.bind(this);
         this.disableEdit = this.disableEdit.bind(this);
-    }
-
-    render() {
-        const { description, isVisited } = this.props.place;
-        const { isEditMode } = this.state;
-
-        return (
-            <div class={styles.place}>
-                <input
-                    onChange={this.onVisitChange}
-                    class={styles.visit}
-                    type="checkbox"
-                    checked={isVisited}
-                />
-                <input
-                    ref={el => this.input = el}
-                    class={styles.name}
-                    type="text"
-                    readonly={!isEditMode}
-                    value={description}
-                />
-                <span
-                    onClick={this.enableEdit}
-                    class={styles.action}
-                    title="Редактировать"
-                >
-                    &#9998;
-                </span>
-                <span onClick={this.onDelete} class={styles.action} title="Удалить">&#10006;</span>
-            </div>
-        );
+        this.orderUp = this.orderUp.bind(this);
+        this.orderDown = this.orderDown.bind(this);
     }
 
     onVisitChange(evt) {
@@ -96,5 +67,48 @@ export class Place extends Component {
             document.removeEventListener('click', this.disableEdit);
             this.onDescriptionChange();
         }
+    }
+
+    orderUp() {
+        const { place, order } = this.props;
+        this.props.onChangeOrder(place.id, order - 1);
+    }
+
+    orderDown() {
+        const { place, order } = this.props;
+        this.props.onChangeOrder(place.id, order + 1);
+    }
+
+    render() {
+        const { description, isVisited } = this.props.place;
+        const { isEditMode } = this.state;
+
+        return (
+            <div class={styles.place}>
+                <input
+                    onChange={this.onVisitChange}
+                    class={styles.visit}
+                    type="checkbox"
+                    checked={isVisited}
+                />
+                <input
+                    ref={el => this.input = el}
+                    class={styles.name}
+                    type="text"
+                    readonly={!isEditMode}
+                    value={description}
+                />
+                <span onClick={this.orderUp} class={styles.action}>&#8679;</span>
+                <span onClick={this.orderDown} class={styles.action}>&#8681;</span>
+                <span
+                    onClick={this.enableEdit}
+                    class={styles.action}
+                    title="Редактировать"
+                >
+                    &#9998;
+                </span>
+                <span onClick={this.onDelete} class={styles.action} title="Удалить">&#10006;</span>
+            </div>
+        );
     }
 }

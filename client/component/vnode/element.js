@@ -30,10 +30,8 @@ export class ElementVNode extends AbstractVNode {
     patch(vNode) {
         // eslint-disable-next-line no-unused-vars
         const { ref, ...props } = vNode.props || EMPTY_OBJECT;
-
-        if (props) {
-            this._setAttributes(props);
-        }
+        this.props = props;
+        this._setAttributes(props || EMPTY_OBJECT);
 
         this._diffChildren(vNode);
     }
@@ -43,22 +41,16 @@ export class ElementVNode extends AbstractVNode {
      * @private
      */
     _setAttributes(attributes) {
+        Array.from(this.instance.attributes).forEach(attr => {
+            this.instance.removeAttribute(attr.name);
+        });
+
         Object.entries(attributes).forEach(([name, value]) => {
             if (name.startsWith('on')) {
                 this.instance[name.toLowerCase()] = value;
             } else if (value !== false) {
                 this.instance.setAttribute(name, value);
             }
-        });
-    }
-
-    /**
-     * @param {String[]} names
-     * @private
-     */
-    _removeAttributes(names) {
-        names.forEach(name => {
-            this.instance.removeAttribute(name);
         });
     }
 }

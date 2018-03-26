@@ -21,28 +21,6 @@ export class CreateForm extends Component {
         return false;
     }
 
-    render() {
-        const { error, isFetching } = this.state;
-
-        return (
-            <div>
-                <form class={styles.form} onSubmit={this.onSubmit}>
-                    <input
-                        class={styles.input}
-                        name="title"
-                        type="text"
-                        placeholder="Введите название места"
-                        onInput={this.onClearError}
-                        readOnly={isFetching}
-                        autocomplete="off"
-                    />
-                    <button class={styles.button} disabled={isFetching}>Добавить</button>
-                </form>
-                <ErrorBox error={error}/>
-            </div>
-        );
-    }
-
     /**
      * @param {Event} evt
      */
@@ -78,5 +56,27 @@ export class CreateForm extends Component {
                 evt.target.reset();
             })
             .catch((reason) => this.setState({ isFetching: false, error: reason }));
+    }
+
+    render() {
+        const { error, isFetching } = this.state;
+
+        return (
+            <div>
+                <form class={styles.form} onSubmit={this.onSubmit}>
+                    <input
+                        class={styles.input}
+                        name="title"
+                        type="text"
+                        placeholder="Введите название места"
+                        onInput={this.onClearError}
+                        readOnly={isFetching}
+                        autocomplete="off"
+                    />
+                    <button class={styles.button} disabled={isFetching}>Добавить</button>
+                </form>
+                <ErrorBox error={error}/>
+            </div>
+        );
     }
 }

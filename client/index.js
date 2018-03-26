@@ -1,14 +1,15 @@
-/* eslint-disable no-unused-vars */
 import 'babel-polyfill';
+/* eslint-disable no-unused-vars */
 import { Component } from './component';
 import { CreateForm } from './create-form/create-form';
 import { Controls } from './controls/controls';
 import { PlacesList } from './places-list/places-list';
-
-import styles from './index.css';
 /* eslint-enable no-unused-vars */
 
-const api = 'https://webdev-task-2-srygbfxbpo.now.sh/api/v1/locations';
+import { debounce } from './utils';
+import styles from './index.css';
+
+const api = 'https://webdev-task-2-ocypkazlhm.now.sh/api/v1/locations';
 const options = {
     mode: 'cors',
     timeout: 3000,
@@ -30,13 +31,14 @@ class Application extends Component {
 
         this.addNewPlace = this.addNewPlace.bind(this);
         this.clearPlaces = this.clearPlaces.bind(this);
-        this.changeFilters = this.changeFilters.bind(this);
+        this.changeFilters = debounce(this.changeFilters.bind(this), 300);
         this.changePlace = this.changePlace.bind(this);
         this.deletePlace = this.deletePlace.bind(this);
+        this.changeOrder = this.changeOrder.bind(this);
     }
 
     async componentDidMount() {
-        const response = await fetch(api, options);
+        const response = await fetch(`${api}?pageSize=${Number.MAX_SAFE_INTEGER}`, options);
         const places = await response.json();
 
         this.setState({ places });
@@ -83,8 +85,38 @@ class Application extends Component {
         }
     }
 
-    changeFilters(search, visibility) {
-        this.setState({ search, visibility });
+    async changeOrder(id, position) {
+        if (position < 0 || position > this.state.places.length - 1) {
+            console.info(position);
+            return;
+        }
+
+        const { places } = this.state;
+        const oldPosition = places.findIndex(place => place.id === id);
+        const place = places[oldPosition];
+
+        const oldOrder = places.slice();
+        const newOrder = places.slice();
+
+        newOrder.splice(oldPosition, 1);
+        newOrder.splice(position, 0, place);
+
+        this.setState({ places: newOrder });
+
+        const body = JSON.stringify({ id, position });
+        const response = await fetch(`${api}/order`, { method: 'PUT', body, ...options });
+
+        if (response.status !== 200) {
+            this.setState({ places: oldOrder });
+        }
+    }
+
+    async changeFilters(search, visibility) {
+        const response = await fetch(
+            `${api}?pageSize=${Number.MAX_SAFE_INTEGER}&search=${search}`, options);
+        const places = await response.json();
+
+        this.setState({ search, visibility, places });
     }
 
     render() {
@@ -110,6 +142,7 @@ class Application extends Component {
                         search={search}
                         onChangePlace={this.changePlace}
                         onDeletePlace={this.deletePlace}
+                        onChangeOrder={this.changeOrder}
                     />
                 </div>
             </div>
