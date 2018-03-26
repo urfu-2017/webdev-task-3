@@ -1,0 +1,16 @@
+<div class="main-places-header">
+    <p class="main-places-header__p">Места</p>
+    <img onclick="removeAll()" class="main-places-header__img" src="http://www.iconsearch.ru/uploads/icons/futurosoft_icons/32x32/trashcan_full.png">
+    <input class="main-places-header__radio" type="radio" name="type" id="all" checked>
+    <input class="main-places-header__radio" type="radio" name="type" id="visit">
+    <input class="main-places-header__radio" type="radio" name="type" id="notvisit">
+    <label for="all" onclick="show('all')">
+        <p class ="main-places-header__button button_left">Все</p>
+    </label>
+    <label for="visit" onclick="show('toVisit')">
+        <p class ="main-places-header__button">Посетить</p>
+    </label>
+    <label for="notvisit" onclick="show('visited')">
+        <p class ="main-places-header__button button_right">Посещенные</p>
+    </label>
+</div>
