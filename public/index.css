@@ -1,0 +1,63 @@
+body {
+    margin-top: 3%;
+    border: solid 1px;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.search {
+    margin: 3%;
+}
+
+.create_place {
+    margin: 3%;
+}
+
+.places {
+    margin-right: 7%;
+}
+
+.places_all {
+    margin-left: 5%;
+}
+
+.places_list_item {
+    margin-top: 3%;
+    margin-left: 7%;
+}
+
+.places_list_item_shift {
+    margin-left: 5%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/arrow-up.png");
+    background-size: cover; 
+}
+
+.places_list_item_visit {
+    margin-left: 5%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/not-visited.png");
+    background-size: cover; 
+}
+
+.footer {
+    margin-top: 7%;
+    border: solid 1px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.footer__origin {
+    font-size: 1.5em;
+    float: right;
+}
+
+.footer__copy {
+    font-size: 1.5em;
+}
+
+img {
+    width: 20px;
+}

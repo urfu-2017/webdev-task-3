@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>Paul Durov</title>
+    <link rel="stylesheet" href="/index.css" media="screen">
+</head>
+
+<body>
+    <main>
+        <article class='search'>
+            <input class="search_input" size="60" placeholder="Поиск">
+            <button class="search_button">
+                <img src="/static/search.png">
+            </button>
+        </article>
+        <article class='create_place'>
+            <input size="50" class='create_input' placeholder="Название места">
+            <button class='create_button'>Создать</button>
+        </article>
+        <article class="places">
+            <button class="places_clear">
+                <img src="/static/trash.png">
+            </button>
+            <div class='places_list_header'>Места</div>
+            <button class="places_all">
+                Все
+            </button>
+            <button class="places_novisit">
+                Посетить
+            </button>
+            <button class="places_visit">
+                Посещенные
+            </button>
+            <hr>
+            <ul class='places_list'>
+                Места
+
+            </ul>
+        </article>
+    </main>
+    <footer class="footer">
+        <span class="footer__copy">2018</span>
+        <span class="footer__origin">&copy;kvas</span>
+    </footer>
+</body>
+
+</html>
+
+<script src="scripts/create.js" type="text/javascript"></script>
+<script src="scripts/search.js" type="text/javascript"></script>
+<script src="scripts/places.js" type="text/javascript"></script>
