@@ -30,10 +30,8 @@ routes(app);
 
 
 app.use((err, req, res) => {
-    
-console.error(err.stack);
-
- res.sendStatus(500);
+    console.error(err.stack);
+    res.sendStatus(500);
 });
 
 
