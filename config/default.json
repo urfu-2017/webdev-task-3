@@ -5,7 +5,7 @@
     "title": "Места",
     "year": 2018,
     "author": "alexsatov",
-    "api": {
+    "API": {
         "url": "http://localhost:8080/places/"
     }
 }

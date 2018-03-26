@@ -3,9 +3,6 @@
     width: 26px;
     height: 26px;
     border: 0;
-    padding: 0;
-    outline: none;
-    cursor: pointer;
 }
 
 .btn-place:active

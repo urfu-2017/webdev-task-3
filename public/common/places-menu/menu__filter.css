@@ -31,7 +31,8 @@ input.menu__filter:nth-of-type(3):checked ~ .places-menu .menu__filters .menu__f
     background-color: deepskyblue;
 }
 
-input.menu__filter:nth-of-type(2):checked ~ .places__list
+input.menu__filter:nth-of-type(2):checked ~ .places__list input.place__visit:checked + .place,
+input.menu__filter:nth-of-type(3):checked ~ .places__list input.place__visit:not(:checked) + .place
 {
-    
+    display: none;
 }
