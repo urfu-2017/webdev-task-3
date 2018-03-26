@@ -4,6 +4,7 @@ import { Place } from '../place/place';
 import styles from './places-list.css';
 /* eslint-enable no-unused-vars */
 
+// eslint-disable-next-line no-empty-function
 function stub() {}
 
 export class PlacesList extends Component {
