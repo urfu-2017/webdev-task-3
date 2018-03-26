@@ -38,7 +38,13 @@ class PlacesList extends Component {
             placeRow.dataset.placeId,
             { status: placeStatusElem.checked }
         );
+
         loader.replaceWith(placeStatusElem);
+
+        // Применение фильтров
+        document.querySelector('.filter-button[aria-checked]').dispatchEvent(new Event(
+            'click', { 'bubbles': true, 'cancelable': true }
+        ));
     }
 
     render() {
@@ -54,6 +60,9 @@ class PlacesList extends Component {
         });
 
         list.addEventListener('click', this.removePlace);
+        list.addEventListener('click', PlaceRow.editRejectHandler);
+        list.addEventListener('click', PlaceRow.editApproveHandler);
+        list.addEventListener('click', PlaceRow.switchControlsHandler);
         list.addEventListener('change', this.changePlaceStatus);
 
         return list;

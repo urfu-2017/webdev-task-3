@@ -66,6 +66,12 @@ a,
     font-size: 1.5rem;
 }
 
+.text_ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 a,
 .link {
     color: #3757c5;
@@ -96,8 +102,10 @@ a:hover,
     display: table;
 }
 
-.text_ellipsis {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-transition-delay: 9999s;
+    -webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
 }

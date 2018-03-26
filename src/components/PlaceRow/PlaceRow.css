@@ -18,14 +18,15 @@
     background-size: 15px 15px;
     visibility: hidden;
     opacity: 0;
-    transition: 0.3s all ease-in-out;
+    transition: 0.3s all ease-out;
 }
 
 .place-row__delete:disabled {
     cursor: not-allowed;
 }
 
-.place-row__delete-loader {
+.place-row__delete-loader,
+.place-row__approve-loader {
     width: 21px;
     height: 15px;
 }
@@ -47,16 +48,47 @@
 }
 
 .place-row__edit {
-    background-image: url('./pencil.svg');
+    background-image: url('images/pencil.svg');
 }
 
 .place-row__delete {
-    background-image: url('./trash.svg');
+    background-image: url('images/trash.svg');
 }
 
 .place-row__description {
     width: 250px;
     margin-left: 5px;
+    margin-right: 5px;
+}
+
+.place-row__description[contenteditable="true"] {
+    border-bottom: 1px solid #ff0;
+}
+
+.place-row__description[contenteditable="true"]:focus,
+.place-row__description[contenteditable="true"]:active {
+    outline: none;
+}
+
+.place-row__reject,
+.place-row__approve {
+    border: 0;
+    outline: 0;
+    padding: 0;
+    width: 15px;
+    height: 15px;
+    margin: 0 3px;
+    box-sizing: border-box;
+    background: no-repeat center center;
+    background-size: 15px 15px;
+}
+
+.place-row__reject {
+    background-image: url('images/cancel.svg');
+}
+
+.place-row__approve {
+    background-image: url('images/tick.svg');
 }
 
 .place-row__reorder {
@@ -64,15 +96,15 @@
     height: 20px;
     margin-left: 10px;
     margin-right: 10px;
-    background: url('./arrow-dual.svg');
+    background: url('images/arrow-dual.svg');
 }
 
 .place-row:first-child .place-row__reorder {
-    background: url('./arrow-down.svg');
+    background: url('images/arrow-down.svg');
 }
 
 .place-row:last-child .place-row__reorder {
-    background: url('./arrow-up.svg');
+    background: url('images/arrow-up.svg');
 }
 
 .place-row__status {
