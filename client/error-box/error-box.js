@@ -1,12 +1,11 @@
-import { Component } from '../component/index';
-import s from './error-box.css';
+import { Component } from '../component';
+import styles from './error-box.css';
 
 export class ErrorBox extends Component {
 
     render() {
         const error = this.props.error;
-        const className = s.errorBox + (error ? ` ${s.visible}` : '');
-        console.info(className);
+        const className = styles.errorBox + (error ? ` ${styles.visible}` : '');
 
         return (
             <div class={className}>{String(error)}</div>

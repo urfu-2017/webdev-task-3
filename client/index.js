@@ -5,11 +5,17 @@ import { CreateForm } from './create-form/create-form';
 import { Controls } from './controls/controls';
 import { PlacesList } from './places-list/places-list';
 
-import s from './index.css';
+import styles from './index.css';
 /* eslint-enable no-unused-vars */
 
 const api = 'https://webdev-task-2-srygbfxbpo.now.sh/api/v1/locations';
-const options = { mode: 'cors', headers: { 'Content-Type': 'application/json' } };
+const options = {
+    mode: 'cors',
+    timeout: 3000,
+    headers: {
+        'Content-Type': 'application/json'
+    }
+};
 
 // eslint-disable-next-line no-unused-vars
 class Application extends Component {
@@ -86,8 +92,8 @@ class Application extends Component {
 
         return (
             <div>
-                <header class={s.header}>
-                    <div class={s.container}>
+                <header class={styles.header}>
+                    <div class={styles.container}>
                         <Controls
                             visibility={visibility}
                             search={search}
@@ -96,7 +102,7 @@ class Application extends Component {
                         />
                     </div>
                 </header>
-                <div class={`${s.content} ${s.container}`}>
+                <div class={`${styles.content} ${styles.container}`}>
                     <CreateForm onAddPlace={this.addNewPlace}/>
                     <PlacesList
                         places={places}

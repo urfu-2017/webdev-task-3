@@ -1,16 +1,16 @@
 /* eslint-disable no-unused-vars */
-import { Component } from '../component/index';
+import { Component } from '../component';
 import { Place } from '../place/place';
-import s from './places-list.css';
+import styles from './places-list.css';
 /* eslint-enable no-unused-vars */
 
 export class PlacesList extends Component {
 
     render() {
         return (
-            <ul class={s.placesList}>
+            <ul class={styles.placesList}>
                 {this.props.places.map(place => (
-                    <li class={s.item} style={this._getStyle(place)}>
+                    <li class={styles.item} style={this._getStyle(place)}>
                         <Place
                             place={place}
                             onChangePlace={this.props.onChangePlace}

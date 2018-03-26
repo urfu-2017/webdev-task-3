@@ -1,5 +1,5 @@
-import { Component } from '../component/index';
-import s from './place.css';
+import { Component } from '../component';
+import styles from './place.css';
 
 export class Place extends Component {
 
@@ -23,28 +23,28 @@ export class Place extends Component {
         const { isEditMode } = this.state;
 
         return (
-            <div class={s.place}>
+            <div class={styles.place}>
                 <input
                     onChange={this.onVisitChange}
-                    class={s.visit}
+                    class={styles.visit}
                     type="checkbox"
                     checked={isVisited}
                 />
                 <input
                     ref={el => this.input = el}
-                    class={s.name}
+                    class={styles.name}
                     type="text"
                     readonly={!isEditMode}
                     value={description}
                 />
                 <span
                     onClick={this.enableEdit}
-                    class={s.action}
+                    class={styles.action}
                     title="Редактировать"
                 >
                     &#9998;
                 </span>
-                <span onClick={this.onDelete} class={s.action} title="Удалить">&#10006;</span>
+                <span onClick={this.onDelete} class={styles.action} title="Удалить">&#10006;</span>
             </div>
         );
     }

@@ -1,5 +1,5 @@
-import { Component } from '../component/index';
-import s from './controls.css';
+import { Component } from '../component';
+import styles from './controls.css';
 
 export class Controls extends Component {
 
@@ -21,10 +21,10 @@ export class Controls extends Component {
         const { search, visibility } = this.props;
 
         return (
-            <div class={s.controls}>
-                <div class={s.filters}>
+            <div class={styles.controls}>
+                <div class={styles.filters}>
                     <input
-                        class={s.search}
+                        class={styles.search}
                         ref={el => this.search = el}
                         onInput={this.onFiltersChange}
                         type="text"
@@ -32,7 +32,7 @@ export class Controls extends Component {
                         value={search}
                     />
                     <select
-                        class={s.visibility}
+                        class={styles.visibility}
                         ref={el => this.visibility = el}
                         onChange={this.onFiltersChange}
                     >
@@ -46,7 +46,7 @@ export class Controls extends Component {
                         </option>
                     </select>
                 </div>
-                <button class={s.clear} onClick={this.onClear}>Очистить список</button>
+                <button class={styles.clear} onClick={this.onClear}>Очистить список</button>
             </div>
         );
     }

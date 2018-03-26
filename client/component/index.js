@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { VNode } from './vnode';
+import { createVNode } from './vnode';
 
 /**
  * @property {VNode} __root
@@ -7,7 +7,7 @@ import { VNode } from './vnode';
 export class Component {
 
     static create(type, props, ...children) {
-        return new VNode(type, props, ...children);
+        return createVNode(type, props, ...children);
     }
 
     constructor(props) {
@@ -20,10 +20,6 @@ export class Component {
      * @param {Object | Function} state
      */
     setState(state) {
-        if (typeof state === 'function') {
-            state = state(...state);
-        }
-
         this.state = { ...this.state, ...state };
         this.__root.diff(this.render());
     }

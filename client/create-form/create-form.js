@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Component } from '../component/index';
+import { Component } from '../component';
 import { ErrorBox } from '../error-box/error-box';
-import s from './create-form.css';
+import styles from './create-form.css';
 /* eslint-enable no-unused-vars */
 
 export class CreateForm extends Component {
@@ -26,9 +26,9 @@ export class CreateForm extends Component {
 
         return (
             <div>
-                <form class={s.form} onSubmit={this.onSubmit}>
+                <form class={styles.form} onSubmit={this.onSubmit}>
                     <input
-                        class={s.input}
+                        class={styles.input}
                         name="title"
                         type="text"
                         placeholder="Введите название места"
@@ -36,7 +36,7 @@ export class CreateForm extends Component {
                         readOnly={isFetching}
                         autocomplete="off"
                     />
-                    <button class={s.button} disabled={isFetching}>Добавить</button>
+                    <button class={styles.button} disabled={isFetching}>Добавить</button>
                 </form>
                 <ErrorBox error={error}/>
             </div>
