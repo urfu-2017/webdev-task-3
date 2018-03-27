@@ -1,219 +1,250 @@
 'use strict';
 
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-alert */
 /* eslint-disable no-empty-function */
 
-const PLACES_ADDRESS = 'https://webdev-task-2-clzvgkakug.now.sh/places';
-const idButtonToFilter = {
+const apiUrl = 'https://webdev-task-2-clzvgkakug.now.sh/places';
+const visitsFilters = {
     all: () => true,
     visit: visited => visited === 'false',
     visited: visited => visited === 'true'
 };
 const filtration = {
-    searchMessage: '',
-    checkVisit: idButtonToFilter.all
+    soughtForMessage: '',
+    checkVisit: visitsFilters.all
 };
 const directionToNameMethod = {
     up: 'previousSibling',
     down: 'nextSibling'
 };
 
+const placesContainer = document.querySelector('#places');
+const messagesSearcher = document.querySelector('#search-string');
+const nameAddedPlace = document.querySelector('#name-added-place');
+const visitsChanger = document.querySelectorAll('[name="visit-filter"]');
+const creatorPlaces = document.querySelector('#create-place');
+const cleanerPlaces = document.querySelector('#cleaner-places');
 
-getAll();
 
+const api = {
+    getPlaces() {
+        return fetch(apiUrl, { method: 'GET' })
+            .then(response => response.json());
+    },
 
-document.onkeyup = function (e) {
-    e = e || window.event;
-    // enter
-    if (e.keyCode === 13) {
-        changeSearchFilter();
-        search();
+    postPlace() {
+        return fetch(apiUrl, {
+            method: 'POST',
+            body: JSON.stringify({ name: nameAddedPlace.value }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json());
+    },
+
+    deletePlaces() {
+        return fetch(apiUrl, { method: 'DELETE' });
+    },
+
+    postChangeVisitStatus({ checkbox, isVisited }) {
+        return fetch(`${apiUrl}/${checkbox.parentNode.dataset.id}/visit/${isVisited}`,
+            { method: 'POST' });
+    },
+
+    postSwapPlaces({ first, second }) {
+        return fetch(`${apiUrl}/swap/${getIndexTravel(first)}/${getIndexTravel(second)}`,
+            { method: 'PUT' });
+    },
+
+    deletePlace(travel) {
+        return fetch(`${apiUrl}/${getIndexTravel(travel)}`, { method: 'DELETE' });
+    },
+
+    patchName({ travel, newValue }) {
+        return fetch(`${apiUrl}/edit/${travel.dataset.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ name: newValue }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json());
     }
 };
 
+
+window.addEventListener('load', getAll);
+
+messagesSearcher.addEventListener('keyup', (e = window.event) => {
+    // enter
+    if (e.keyCode === 13) {
+        changeSearchFilter();
+        renderTravels();
+    }
+});
+
+creatorPlaces.addEventListener('click', postAddedTravel);
+
+cleanerPlaces.addEventListener('click', clearTravels);
+
+visitsChanger.forEach(checkbox => checkbox.addEventListener('click', () => {
+    changeVisitFilter();
+    renderTravels();
+}));
+
+
 function getAll() {
-    fetch(PLACES_ADDRESS, {
-        method: 'GET'
-    })
-        .then(response => response.json())
-        .then(places => {
-            const divPlaces = document.getElementById('places');
-            places.forEach(place => {
-                const note = createListItem(place);
-                saveFields(note, place);
-                updateDisplayNote(note, filtration.searchMessage);
-                divPlaces.appendChild(note);
-            });
-        })
+    api.getPlaces()
+        .then(places => places.forEach(SavePlace))
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }
 
+function SavePlace(place) {
+    const travel = createListItem(place);
+    saveFields(travel, place);
+    updateDisplayTravel(travel);
+    placesContainer.appendChild(travel);
+}
 
-function addNote() {
-    const placeName = document.getElementById('place-name').value;
-    if (!placeName) {
+
+function postAddedTravel() {
+    if (!nameAddedPlace.value) {
         return;
     }
-    fetch(PLACES_ADDRESS, {
-        method: 'POST',
-        body: JSON.stringify({ name: placeName }),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(place => {
-            const divPlaces = document.getElementById('places');
-            const note = createListItem(place);
-            saveFields(note, place);
-            updateDisplayNote(note, filtration.searchMessage);
-            divPlaces.appendChild(note);
-        })
+    api.postPlace()
+        .then(SavePlace)
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }
 
-function clearNotes() {
-    fetch(PLACES_ADDRESS, { method: 'DELETE' })
-        .then(() => {
-            const divPlaces = document.getElementById('places');
-            while (divPlaces.firstChild) {
-                divPlaces.removeChild(divPlaces.firstChild);
-            }
-        })
+function clearTravels() {
+    api.deletePlaces()
+        .then(() => placesContainer.innerHTML = '')
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }
 
 function changeSearchFilter() {
-    filtration.searchMessage = document.getElementById('search-string').value;
+    filtration.soughtForMessage = messagesSearcher.value;
 }
 
 function changeVisitFilter() {
-    const radioBoxes = document.getElementsByName('visitFilter');
-    for (let i = 0; i < radioBoxes.length; i++) {
-        if (radioBoxes[i].checked) {
-            filtration.checkVisit = idButtonToFilter[radioBoxes[i].id];
+    for (let i = 0; i < visitsChanger.length; i++) {
+        if (visitsChanger[i].checked) {
+            filtration.checkVisit = visitsFilters[visitsChanger[i].id];
             break;
         }
     }
-    search();
 }
 
-function search() {
-    const divPlaces = document.getElementById('places');
-    const searchString = document.getElementById('search-string').value;
-    if (!divPlaces.hasChildNodes()) {
-        return;
-    }
-    for (let i = 0; i < divPlaces.childNodes.length; i++) {
-        let note = divPlaces.childNodes[i];
-        updateDisplayNote(note, searchString);
+function renderTravels() {
+    for (let i = 0; i < placesContainer.childNodes.length; i++) {
+        let travel = placesContainer.childNodes[i];
+        updateDisplayTravel(travel);
     }
 }
 
-function updateDisplayNote(note, searchString) {
-    if (noteIncludesMessage(note.dataset, searchString) &&
-        filtration.checkVisit(note.dataset.visited)) {
-        note.style.display = 'flex';
+function updateDisplayTravel(travel) {
+    if (travelIncludesMessage(travel.dataset, messagesSearcher.value) &&
+        filtration.checkVisit(travel.dataset.visited)) {
+        travel.style.display = 'flex';
     } else {
-        note.style.display = 'none';
+        travel.style.display = 'none';
     }
 }
 
-function noteIncludesMessage(place, message) {
+function travelIncludesMessage(place, message) {
     return place.name.includes(message);
 }
 
-function saveFields(note, place) {
-    note.dataset.id = place.id;
-    note.dataset.visited = place.visited;
-    note.dataset.name = place.name;
+function saveFields(travel, place) {
+    travel.dataset.id = place.id;
+    travel.dataset.visited = place.visited;
+    travel.dataset.name = place.name;
 }
 
 function createListItem(place) {
-    const note = document.createElement('div');
-    note.className = 'places__element';
-    note.tabIndex = -1;
-    addTitle(note, place);
-    addStatusVisit(note, place);
-    addArrows(note);
-    addEditButton(note);
-    addDeleteButton(note);
-    addCancelButton(note);
-    addOkButton(note);
+    const travel = document.createElement('div');
+    travel.className = 'places__travel';
+    travel.tabIndex = -1;
+    addTitle(travel, place);
+    addStatusVisit(travel, place);
+    addArrows(travel);
+    addEditButton(travel);
+    addDeleteButton(travel);
+    addCancelButton(travel);
+    addOkButton(travel);
 
-    return note;
+    return travel;
 }
 
-function addTitle(note, place) {
+function addTitle(travel, place) {
     const title = document.createElement('input');
     title.type = 'text';
     title.value = place.name;
     title.disabled = true;
-    title.className = 'places__element-title';
-    note.appendChild(title);
+    title.className = 'travel__title';
+    travel.appendChild(title);
 }
 
-function addStatusVisit(note, place) {
+function addStatusVisit(travel, place) {
     const statusVisit = document.createElement('input');
     statusVisit.type = 'checkbox';
-    statusVisit.className = 'places__element-visit-state places__icon places__element-button';
+    statusVisit.className = 'travel__visit-state travel__icon travel__button';
     if (place.visited) {
         statusVisit.checked = true;
     }
-    statusVisit.onclick = () => changeStatusVisit(statusVisit);
-    note.appendChild(statusVisit);
+    statusVisit.addEventListener('click', () => changeStatusVisit(statusVisit));
+    travel.appendChild(statusVisit);
 }
 
-function addArrows(note) {
+function addArrows(travel) {
     const arrowUp = document.createElement('img');
     arrowUp.src = 'pictures/arrow_up.ico';
     arrowUp.alt = 'Передвинуть вверх';
-    arrowUp.className = 'places__element-arrow-up places__icon places__element-button';
-    arrowUp.onclick = () => moveInDirection(note, 'up');
-    note.appendChild(arrowUp);
+    arrowUp.className = 'travel__arrow-up travel__icon travel__button';
+    arrowUp.addEventListener('click', () => moveInDirection(travel, 'up'));
+    travel.appendChild(arrowUp);
 
     const arrowDown = document.createElement('img');
     arrowDown.src = 'pictures/arrow_down.ico';
     arrowDown.alt = 'Передвинуть вниз';
-    arrowDown.className = 'places__element-arrow-down places__icon places__element-button';
-    arrowDown.onclick = () => moveInDirection(note, 'down');
-    note.appendChild(arrowDown);
+    arrowDown.className = 'travel__arrow-down travel__icon travel__button';
+    arrowDown.addEventListener('click', () => moveInDirection(travel, 'down'));
+    travel.appendChild(arrowDown);
 }
 
 function changeStatusVisit(checkbox) {
     const isVisited = !(checkbox.parentNode.dataset.visited === 'true');
     checkbox.disabled = true;
-    fetch(`${PLACES_ADDRESS}/${checkbox.parentNode.dataset.id}/visit/${isVisited}`,
-        { method: 'POST' })
+    api.postChangeVisitStatus({ checkbox, isVisited })
         .then(() => {
             checkbox.parentNode.dataset.visited = isVisited;
-            updateDisplayNote(checkbox.parentNode, filtration.searchMessage);
+            updateDisplayTravel(checkbox.parentNode);
             checkbox.disabled = false;
         })
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }
 
 /**
- * @param {Object} note - вершина dom дерева
+ * @param {Object} travel - вершина dom дерева
  * @param {String} direction - направление (up/down)
  */
-function moveInDirection(note, direction) {
-    let otherNote = note[directionToNameMethod[direction]];
-    while (otherNote) {
-        if (otherNote.style.display !== 'none') {
-            swapNotes(note, otherNote);
+function moveInDirection(travel, direction) {
+    let otherTravel = travel[directionToNameMethod[direction]];
+    while (otherTravel) {
+        if (otherTravel.style.display !== 'none') {
+            swapTravels(travel, otherTravel);
 
             return;
         }
-        otherNote = otherNote[directionToNameMethod[direction]];
+        otherTravel = otherTravel[directionToNameMethod[direction]];
     }
 }
 
-function swapNotes(first, second) {
-    fetch(`${PLACES_ADDRESS}/swap/${getIndexNote(first)}/${getIndexNote(second)}`,
-        { method: 'PUT' })
+function swapTravels(first, second) {
+    api.postSwapPlaces({ first, second })
         .then(() => {
             const parent = first.parentNode;
             let tempForSecond = first.cloneNode(true);
@@ -225,99 +256,101 @@ function swapNotes(first, second) {
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }
 
-function getIndexNote(note) {
-    return Array.from(note.parentNode.children).indexOf(note);
+function getIndexTravel(travel) {
+    return Array.from(travel.parentNode.children).indexOf(travel);
 }
 
-function addEditButton(note) {
+function addEditButton(travel) {
     const editButton = document.createElement('img');
     editButton.src = 'pictures/pencil.ico';
-    editButton.className = 'places__element-change-button places__icon places__element-button';
-    editButton.onclick = () => showEditMenu(note);
-    note.appendChild(editButton);
+    editButton.className = 'travel__change-button travel__icon travel__button';
+    editButton.addEventListener('click', () => showEditMenu(travel));
+    travel.appendChild(editButton);
 }
 
-function addDeleteButton(note) {
+function addDeleteButton(travel) {
     const deleteButton = document.createElement('img');
     deleteButton.src = 'pictures/can.ico';
-    deleteButton.className = 'places__element-delete-button places__icon places__element-button';
-    deleteButton.onclick = () => removeNote(note);
-    note.appendChild(deleteButton);
+    deleteButton.className = 'travel__delete-button travel__icon travel__button';
+    deleteButton.addEventListener('click', () => removeTravel(travel));
+    travel.appendChild(deleteButton);
 }
 
-function addCancelButton(note) {
+function addCancelButton(travel) {
     const cancelButton = document.createElement('img');
     cancelButton.src = 'pictures/cross.ico';
-    cancelButton.className = 'places__element-cancel-button places__icon places__element-button';
-    cancelButton.onclick = () => cancelRename(note);
-    note.appendChild(cancelButton);
+    cancelButton.className = 'travel__cancel-button travel__icon travel__button';
+    cancelButton.addEventListener('click', () => cancelRename(travel));
+    travel.appendChild(cancelButton);
 }
 
-function addOkButton(note) {
+function addOkButton(travel) {
     const okButton = document.createElement('img');
     okButton.src = 'pictures/check_mark.ico';
-    okButton.className = 'places__element-ok-button places__icon places__element-button';
-    okButton.onclick = () => changeName(note);
-    note.appendChild(okButton);
+    okButton.className = 'travel__ok-button travel__icon travel__button';
+    okButton.addEventListener('click', () => changeName(travel));
+    travel.appendChild(okButton);
 }
 
-function removeNote(note) {
-    fetch(`${PLACES_ADDRESS}/${getIndexNote(note)}`,
-        { method: 'DELETE' })
-        .then(() => {
-            note.parentNode.removeChild(note);
-        })
+function removeTravel(travel) {
+    api.deletePlace(travel)
+        .then(() => travel.parentNode.removeChild(travel))
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }
 
-function showEditMenu(note) {
-    const cancelButton = note.querySelector('.places__element-cancel-button');
+function showEditMenu(travel) {
+    const cancelButton = travel.querySelector('.travel__cancel-button');
     cancelButton.style.display = 'block';
-    const okButton = note.querySelector('.places__element-ok-button');
+    const okButton = travel.querySelector('.travel__ok-button');
     okButton.style.display = 'block';
-    note.querySelector('.places__element-title').disabled = false;
-    note.querySelector('.places__element-title').style.border = 'solid 1px #000';
-    note.onmouseover = function () {
-        note.querySelector('.places__element-ok-button').style.display = 'block';
-        note.querySelector('.places__element-cancel-button').style.display = 'block';
-        note.querySelector('.places__element-title').disabled = false;
-        note.querySelector('.places__element-title').style.border = 'solid 1px #000';
-    };
-    note.onmouseout = function () {
-        note.querySelector('.places__element-cancel-button').style.display = 'none';
-        note.querySelector('.places__element-ok-button').style.display = 'none';
-        note.querySelector('.places__element-title').style.border = 'none';
-    };
+    const title = travel.querySelector('.travel__title');
+    title.disabled = false;
+    title.style.border = 'solid 1px #000';
+    travel.addEventListener('mouseover', processTravelOnMouseOver);
+    travel.addEventListener('mouseout', processTravelOnMouseOut);
 }
 
-function cancelRename(note) {
-    note.onmouseover = () => {};
-    note.onmouseout = () => {};
-    note.querySelector('.places__element-title').disabled = true;
-    note.querySelector('.places__element-title').style.border = 'none';
-    note.querySelector('.places__element-title').value = note.dataset.name;
-    const cancelButton = note.querySelector('.places__element-cancel-button');
+function processTravelOnMouseOver() {
+    const cancelButton = this.querySelector('.travel__cancel-button');
+    const okButton = this.querySelector('.travel__ok-button');
+    const title = this.querySelector('.travel__title');
+    okButton.style.display = 'block';
+    cancelButton.style.display = 'block';
+    title.disabled = false;
+    title.style.border = 'solid 1px #000';
+}
+
+function processTravelOnMouseOut() {
+    const cancelButton = this.querySelector('.travel__cancel-button');
+    const okButton = this.querySelector('.travel__ok-button');
+    const title = this.querySelector('.travel__title');
     cancelButton.style.display = 'none';
-    const okButton = note.querySelector('.places__element-ok-button');
+    okButton.style.display = 'none';
+    title.style.border = 'none';
+}
+
+function cancelRename(travel) {
+    travel.removeEventListener('mouseover', processTravelOnMouseOver);
+    travel.removeEventListener('mouseout', processTravelOnMouseOut);
+    const title = travel.querySelector('.travel__title');
+    title.disabled = true;
+    title.style.border = 'none';
+    title.value = travel.dataset.name;
+    const cancelButton = travel.querySelector('.travel__cancel-button');
+    cancelButton.style.display = 'none';
+    const okButton = travel.querySelector('.travel__ok-button');
     okButton.style.display = 'none';
 }
 
-function changeName(note) {
-    const newValue = note.querySelector('.places__element-title').value;
-    cancelRename(note);
-    note.querySelector('.places__element-title').value = newValue;
-    fetch(`${PLACES_ADDRESS}/edit/${note.dataset.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ name: newValue }),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
+function changeName(travel) {
+    const newValue = travel.querySelector('.travel__title').value;
+    cancelRename(travel);
+    const title = travel.querySelector('.travel__title');
+    title.value = newValue;
+    api.patchName({ travel, newValue })
         .then(place => {
-            note.querySelector('.places__element-title').value = place.name;
-            note.dataset.name = place.name;
+            title.value = place.name;
+            travel.dataset.name = place.name;
         })
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }

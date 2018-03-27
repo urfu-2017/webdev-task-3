@@ -1,20 +1,18 @@
 'use strict';
 
 const express = require('express');
-const bodyParser = require('body-parser');
+
 const path = require('path');
 
 const config = require('./config.json');
-const { error404 } = require('./middlewares/notFound');
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '/public')));
+const publicDir = path.join(__dirname, 'public');
+const entryPoint = path.join(publicDir, 'index.html');
 
-require('./routes')(app);
-
-app.use(error404);
+app.use(express.static(publicDir));
+app.get('/*', (req, res) => res.sendFile(entryPoint));
 
 // eslint-disable-next-line no-console
 app.listen(config.port, () => console.log(`Сервер слушает порт ${config.port}`));

@@ -1,6 +1,6 @@
 'use strict';
 
 
-exports.main = async (req, res) => {
+module.exports = async (req, res) => {
     res.render('index');
 };
