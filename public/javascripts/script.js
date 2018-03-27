@@ -16,15 +16,34 @@ const throwErr = e => {
 
 const fetchReq = (url, method) => {
     getElemByClass('loader').className = 'loader visible';
-    const result = fetch(url, { method })
+
+    return fetch(url, { method })
         .then(data => {
             loadIcon.className = 'loader hidden';
 
             return data.json();
         })
-        .catch(throwErr);
+        .then(data => {
+            if (data.code >= 400) {
+                throw new Error(data.message);
+            }
+        })
+        .catch(err => {
+            console.info(err);
+            throwErr(err);
 
-    return result;
+            return Promise.reject('error');
+        });
+};
+
+const validateName = name => {
+    const locationCollection = parentElement.children;
+    for (const elem of locationCollection) {
+        const elemName = getElemByClass('location-name', elem).textContent;
+        if (elemName === name) {
+            throw new Error('Trying to add existing element');
+        }
+    }
 };
 
 const correctArrows = () => {
@@ -46,16 +65,6 @@ const correctArrows = () => {
     }
 };
 
-const validateName = name => {
-    const locationCollection = parentElement.children;
-    for (const elem of locationCollection) {
-        const elemName = getElemByClass('location-name', elem).textContent;
-        if (elemName === name) {
-            throw new Error('Trying to add existing element');
-        }
-    }
-};
-
 class ArticleList {
     constructor() {
         this.hide = this.hide.bind(this);
@@ -65,17 +74,7 @@ class ArticleList {
     add(event) {
         event.preventDefault();
         const input = document.getElementsByClassName('insertion-form__input')[0].value;
-        let addedElement;
-        try {
-            validateName(input);
-            addedElement = createArticle(input);
-            parentElement.appendChild(addedElement);
-        } catch (e) {
-            throwErr(e);
-            parentElement.removeChild(addedElement);
-        } finally {
-            correctArrows();
-        }
+        createArticle(input);
     }
 
     hide(event) {
@@ -86,10 +85,11 @@ class ArticleList {
     }
 
     deleteAll() {
-        fetchReq(baseUrl, 'DELETE').then();
-        while (parentElement.firstChild) {
-            parentElement.removeChild(parentElement.firstChild);
-        }
+        fetchReq(baseUrl, 'DELETE').then(() => {
+            while (parentElement.firstChild) {
+                parentElement.removeChild(parentElement.firstChild);
+            }
+        });
     }
 
     _makeElementsVisible() {
@@ -148,7 +148,6 @@ class Button {
         this._type = type;
         this._button = document.createElement(div);
         this._className = fullName;
-        this._delete = this._delete.bind(this);
     }
 
     createButton() {
@@ -216,9 +215,10 @@ class Button {
     _delete(event) {
         const node = event.target.parentElement.parentElement;
         const locationName = getElemByClass('location-name', node).textContent;
-        node.parentElement.removeChild(node);
-        correctArrows();
-        fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE').then();
+        fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE').then(() => {
+            node.parentElement.removeChild(node);
+            correctArrows();
+        });
     }
 
     _rename(event) {
@@ -238,8 +238,7 @@ class Button {
             try {
                 const current = getElemByClass('change-name-input');
                 const newName = current.value;
-                fetchReq(`${baseUrl}?place=${this.oldName}&param=name&value=${newName}`,
-                    'PUT').then();
+                fetchReq(`${baseUrl}?place=${this.oldName}&param=name&value=${newName}`, 'PUT');
                 validateName(newName);
                 addedElement = document.createElement('div');
                 addedElement.className = 'location-name';
@@ -260,36 +259,37 @@ class Button {
         const article = event.target.parentElement.parentElement;
         const locationName = getElemByClass('location-name', article).textContent;
         const swapNode = article.previousElementSibling;
-        swapNode.parentElement.insertBefore(article, swapNode);
-
         const secondName = getElemByClass('location-name', swapNode).textContent;
-        correctArrows();
-        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then();
+        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then(() => {
+            swapNode.parentElement.insertBefore(article, swapNode);
+            correctArrows();
+        });
     }
 
     _swapDown(event) {
         const article = event.target.parentElement.parentElement;
         const locationName = getElemByClass('location-name', article).textContent;
         const swapNode = article.nextElementSibling;
-        swapNode.parentElement.insertBefore(swapNode, article);
-
         const secondName = getElemByClass('location-name', swapNode).textContent;
-        correctArrows();
-        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then();
+        fetchReq(`${baseUrl}?place1=${locationName}&place2=${secondName}`, 'PUT').then(() => {
+            swapNode.parentElement.insertBefore(swapNode, article);
+            correctArrows();
+        });
     }
 
     _toggleVisited(event) {
         const locationName = getElemByClass('location-name',
             event.target.parentElement).textContent;
         let value = false;
-        event.target.classList.toggle('visited-icon');
-        event.target.classList.toggle('not-visited-icon');
-        if (event.target.classList.value.indexOf('not') === -1) {
+        if (event.target.classList.value.indexOf('not') !== -1) {
             value = true;
         }
-        fetchReq(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, 'PUT').then();
+        fetchReq(`${baseUrl}?place=${locationName}&param=visited&value=${value}`, 'PUT')
+            .then(() => {
+                event.target.classList.toggle('visited-icon');
+                event.target.classList.toggle('not-visited-icon');
+            });
     }
-
 }
 
 class Article {
@@ -298,16 +298,17 @@ class Article {
     }
 
     create() {
-        fetchReq(`${baseUrl}?place=${this._name}`, 'POST').then();
-        const article = document.createElement('article');
-        article.className = 'location horizontal-flex visible';
-        article.appendChild(this._createHiddenOpsDiv());
-        article.appendChild(this._createNameDiv());
-        article.appendChild(this._createArrowDiv());
-        article.appendChild(this._createNotVisitedDiv());
-        this.article = article;
-
-        return this.article;
+        fetchReq(`${baseUrl}?place=${this._name}`, 'POST').then(() => {
+            const article = document.createElement('article');
+            article.className = 'location horizontal-flex visible';
+            article.appendChild(this._createHiddenOpsDiv());
+            article.appendChild(this._createNameDiv());
+            article.appendChild(this._createArrowDiv());
+            article.appendChild(this._createNotVisitedDiv());
+            this.article = article;
+            parentElement.appendChild(this.article);
+            correctArrows();
+        });
     }
 
     _createNameDiv() {
