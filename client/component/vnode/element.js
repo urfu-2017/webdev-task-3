@@ -44,7 +44,7 @@ export class ElementVNode extends AbstractVNode {
         });
 
         Object.entries(attributes).forEach(([name, value]) => {
-            if (name.startsWith('on')) {
+            if (name.startsWith('on') || (name in this.instance)) {
                 this.instance[name.toLowerCase()] = value;
             } else if (value !== false) {
                 this.instance.setAttribute(name, value);

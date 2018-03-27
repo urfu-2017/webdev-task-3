@@ -14,6 +14,10 @@ export class PlacesList extends Component {
         return `display: ${isVisited ? 'block' : 'none'}`;
     }
 
+    shouldUpdate(nextProps) {
+        return this.props.places !== nextProps.places;
+    }
+
     render() {
         const { visibility, search } = this.props;
         const onChangeOrder = visibility === 'all' && !search ? this.props.onChangeOrder : stub;
