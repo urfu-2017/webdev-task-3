@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm run lint",
-    "start": "node index.js"
+    "start": "node app/index/server.js"
   },
   "dependencies": {
     "express": "4.16.3"
