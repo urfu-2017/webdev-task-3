@@ -1,0 +1,82 @@
+.places {
+
+    &__place {
+        position: relative;
+        font-size: 20px;
+        width: 300px;
+        height: 35px;
+        margin: 10px auto 10px 80px;
+    }
+
+    &__place-isVisited-checkbox {
+        display:none
+    }
+
+    &__place-isVisited-checkbox-label {
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        right: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 100px;    
+        border: 1px solid black;
+    }
+
+    &__place-isVisited-checkbox:checked + &__place-isVisited-span::before  {
+        font-size: 16px;
+        position: relative;
+        bottom: 9px;
+        content: '\2714';
+    }
+
+    &__place-description {
+        display: inline-block;
+        position: absolute;
+        left: 70px;
+        top: 5px;
+        max-width: 130px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__place-up-arrow {
+        cursor: pointer;
+        display: inline-block;
+        position: absolute;
+        top: 2px;
+        right: 60px;
+    }
+
+    &__place-down-arrow {
+        cursor: pointer;
+        display: inline-block;
+        position: absolute;
+        top: 2px;
+        right: 40px;
+    }
+
+    &__place-edit-control {
+        position: absolute;
+        cursor: pointer;
+        left: 20px;
+        top: 2px;
+    }
+
+    &__place-delete-control {
+        position: absolute;
+        cursor: pointer;
+        font-size: 30px;
+        left: 0;
+        top: -1px;
+    }
+
+    &__place:first-child .places__place-up-arrow{
+        display: none;
+    }
+
+    &__place:last-child .places__place-down-arrow{
+        display: none;
+    }
+}
