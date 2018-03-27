@@ -69,9 +69,11 @@ class ArticleList {
     constructor() {
         this.hide = this.hide.bind(this);
         this.filterBySearch = this.filterBySearch.bind(this);
+        this.add = this.add.bind(this);
     }
 
     add(event) {
+        console.info('in add');
         event.preventDefault();
         const input = document.getElementsByClassName('insertion-form__input')[0].value;
         createArticle(input);
@@ -148,77 +150,81 @@ class Button {
         this._type = type;
         this._button = document.createElement(div);
         this._className = fullName;
+        this.createButton = this.createButton.bind(this);
+        this.initialize = this.initialize.bind(this);
     }
 
-    createButton() {
+    createButton(eventListener) {
         this._button.className = this._className;
-        this._checkMainType();
+        this._button.addEventListener('click', eventListener);
 
         return this._button;
     }
 
-    initialize() {
+    initialize(eventListener) {
         this._button = getElemByClass(this._className);
-        this._checkMainType();
+        this._button.addEventListener('click', eventListener);
 
         return this._button;
     }
+}
 
-    refreshButtons(article) {
+class LocationInsertionButton extends Button {
+    constructor(type, div, fullName) {
+        super(type, div, fullName);
+        this.initializeSubClass = this.initializeSubClass.bind(this);
+    }
+
+    initializeSubClass() {
+        return super.initialize(list.add);
+    }
+}
+
+class DeletionButton extends Button {
+    constructor(type, div, fullName) {
+        super(type, div, fullName);
+    }
+
+    createButtonSubClass() {
+        return super.createButton(list.deleteAll);
+    }
+
+    initializeSubClass() {
+        return super.initialize(list.deleteAll);
+    }
+}
+
+class SwitchButton extends Button {
+    constructor(type, div, fullName) {
+        super(type, div, fullName);
+    }
+
+    createButtonSubClass() {
+        return super.createButton(list.hide);
+    }
+
+    initializeSubClass() {
+        return super.initialize(list.hide);
+    }
+}
+
+class PencilButton extends Button {
+    constructor(type, div, fullName) {
+        super(type, div, fullName);
+        this.refresh = this.refresh.bind(this);
+        this.createButtonSubClass = this.createButtonSubClass.bind(this);
+    }
+
+    createButtonSubClass() {
+        return this.createButton(this._rename);
+    }
+
+    initializeSubClass() {
+        return this.initialize(this._rename);
+    }
+
+    refresh(article) {
         getElemByClass('hidden-options__pencil', article).addEventListener('click', this._rename);
-        getElemByClass('hidden-options__trash', article).addEventListener('click', this._delete);
-        getElemByClass('arrow-up', article).addEventListener('click', this._swapUp);
-        getElemByClass('arrow-down', article).addEventListener('click', this._swapDown);
-        getElemByClass('visited-flag', article).addEventListener('click', this._toggleVisited);
-    }
-
-    _checkMainType() {
-        switch (this._type) {
-            case 'location-insertion__button':
-                this._button.addEventListener('click', list.add);
-                getElemByClass('insertion-form').addEventListener('submit', list.add);
-                break;
-            case 'location-menu__delete-button':
-                this._button.addEventListener('click', list.deleteAll);
-                break;
-            case 'location-menu__switch':
-                this._button.addEventListener('click', list.hide);
-                break;
-            default:
-                this._checkSecondaryType();
-                break;
-        }
-    }
-
-    _checkSecondaryType() {
-        switch (this._type) {
-            case 'hidden-options__pencil':
-                this._button.addEventListener('click', this._rename);
-                break;
-            case 'hidden-options__trash':
-                this._button.addEventListener('click', this._delete);
-                break;
-            case 'arrow-up':
-                this._button.addEventListener('click', this._swapUp);
-                break;
-            case 'arrow-down':
-                this._button.addEventListener('click', this._swapDown);
-                break;
-            case 'visited-flag':
-                this._button.addEventListener('click', this._toggleVisited);
-                break;
-            default:
-                break;
-        }
-    }
-
-    _delete(event) {
-        const node = event.target.parentElement.parentElement;
-        const locationName = getElemByClass('location-name', node).textContent;
-        fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE').then(() => {
-            node.parentElement.removeChild(node);
-            correctArrows();
-        });
     }
 
     _rename(event) {
@@ -254,6 +260,55 @@ class Button {
         });
         node.parentElement.replaceChild(form, node);
     }
+}
+
+class TrashButton extends Button {
+    constructor(type, div, fullName) {
+        super(type, div, fullName);
+        this.refresh = this.refresh.bind(this);
+        this.createButtonSubClass = this.createButtonSubClass.bind(this);
+    }
+
+    createButtonSubClass() {
+        return this.createButton(this._delete);
+    }
+
+    initializeSubClass() {
+        return this.initialize(this._delete);
+    }
+
+    refresh(article) {
+        getElemByClass('hidden-options__trash', article).addEventListener('click', this._delete);
+    }
+
+    _delete(event) {
+        const node = event.target.parentElement.parentElement;
+        const locationName = getElemByClass('location-name', node).textContent;
+        fetchReq(`${baseUrl}?place=${locationName}`, 'DELETE').then(() => {
+            node.parentElement.removeChild(node);
+            correctArrows();
+        });
+    }
+}
+
+class ArrowUpButton extends Button {
+    constructor(type, div, fullName) {
+        super(type, div, fullName);
+        this.refresh = this.refresh.bind(this);
+        this.createButtonSubClass = this.createButtonSubClass.bind(this);
+    }
+
+    createButtonSubClass() {
+        return this.createButton(this._swapUp);
+    }
+
+    initializeSubClass() {
+        return this.initialize(this._swapUp);
+    }
+
+    refresh(article) {
+        getElemByClass('arrow-up', article).addEventListener('click', this._swapUp);
+    }
 
     _swapUp(event) {
         const article = event.target.parentElement.parentElement;
@@ -265,6 +320,26 @@ class Button {
             correctArrows();
         });
     }
+}
+
+class ArrowDownButton extends Button {
+    constructor(type, div, fullName) {
+        super(type, div, fullName);
+        this.refresh = this.refresh.bind(this);
+        this.createButtonSubClass = this.createButtonSubClass.bind(this);
+    }
+
+    createButtonSubClass() {
+        return this.createButton(this._swapDown);
+    }
+
+    initializeSubClass() {
+        return this.initialize(this._swapDown);
+    }
+
+    refresh(article) {
+        getElemByClass('arrow-down', article).addEventListener('click', this._swapDown);
+    }
 
     _swapDown(event) {
         const article = event.target.parentElement.parentElement;
@@ -275,6 +350,26 @@ class Button {
             swapNode.parentElement.insertBefore(swapNode, article);
             correctArrows();
         });
+    }
+}
+
+class VisitButton extends Button {
+    constructor(type, div, fullName) {
+        super(type, div, fullName);
+        this.refresh = this.refresh.bind(this);
+        this.createButtonSubClass = this.createButtonSubClass.bind(this);
+    }
+
+    createButtonSubClass() {
+        return this.createButton(this._toggleVisited);
+    }
+
+    initializeSubClass() {
+        return this.initialize(this._toggleVisited);
+    }
+
+    refresh(article) {
+        getElemByClass('visited-flag', article).addEventListener('click', this._toggleVisited);
     }
 
     _toggleVisited(event) {
@@ -321,9 +416,14 @@ class Article {
 
     _createSingleArrow(arrowType) {
         const visibility = arrowType === 'arrow-up' ? 'visible' : 'hidden';
+        if (arrowType === 'arrow-up') {
+            return new ArrowUpButton(arrowType, 'div',
+                `${arrowType} location__button button arrow ${visibility}`).createButtonSubClass();
+        }
 
-        return new Button(arrowType, 'div',
-            `${arrowType} location__button button arrow ${visibility}`).createButton();
+        return new ArrowUpButton(arrowType, 'div',
+            `${arrowType} location__button button arrow ${visibility}`).createButtonSubClass();
+
     }
 
     _createArrowDiv() {
@@ -337,18 +437,18 @@ class Article {
 
     _createNotVisitedDiv() {
 
-        return new Button('visited-flag',
-            'div', 'not-visited-icon location__button visited-flag').createButton();
+        return new VisitButton('visited-flag',
+            'div', 'not-visited-icon location__button visited-flag').createButtonSubClass();
     }
 
     _createHiddenOpsDiv() {
         const container = document.createElement('div');
         container.className = 'hidden-options horizontal-flex';
 
-        container.appendChild(new Button('hidden-options__pencil',
-            'div', 'hidden-options__pencil location__button button').createButton());
-        container.appendChild(new Button('hidden-options__trash',
-            'div', 'hidden-options__trash location__button button').createButton());
+        container.appendChild(new PencilButton('hidden-options__pencil',
+            'div', 'hidden-options__pencil location__button button').createButtonSubClass());
+        container.appendChild(new TrashButton('hidden-options__trash',
+            'div', 'hidden-options__trash location__button button').createButtonSubClass());
 
         return container;
     }
@@ -358,21 +458,25 @@ function createArticle(name) {
     return new Article(name).create();
 }
 
-new Button('location-insertion__button', 'div',
-    'location-insertion__button button').initialize();
-new Button('location-menu__delete-button', 'div',
-    'location-menu__delete-button button').initialize();
-new Button('location-menu__switch', 'div',
-    'location-menu__switch show-all-button button').initialize();
-new Button('location-menu__switch', 'div',
-    'location-menu__switch show-not-visited-button button').initialize();
-new Button('location-menu__switch', 'div',
-    'location-menu__switch show-visited-button button').initialize();
+new LocationInsertionButton('location-insertion__button', 'div',
+    'location-insertion__button button').initializeSubClass();
+new DeletionButton('location-menu__delete-button', 'div',
+    'location-menu__delete-button button').initializeSubClass();
+new SwitchButton('location-menu__switch', 'div',
+    'location-menu__switch show-all-button button').initializeSubClass();
+new SwitchButton('location-menu__switch', 'div',
+    'location-menu__switch show-not-visited-button button').initializeSubClass();
+new SwitchButton('location-menu__switch', 'div',
+    'location-menu__switch show-visited-button button').initializeSubClass();
 
 const refreshEventListeners = () => {
     const collection = parentElement.getElementsByClassName('location');
     for (const elem of collection) {
-        new Button().refreshButtons(elem);
+        new TrashButton().refresh(elem);
+        new PencilButton().refresh(elem);
+        new ArrowUpButton().refresh(elem);
+        new ArrowDownButton().refresh(elem);
+        new VisitButton().refresh(elem);
     }
     correctArrows();
 };
