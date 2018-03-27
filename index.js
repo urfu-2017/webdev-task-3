@@ -1,4 +1,3 @@
-/* eslint-disable new-cap */
 'use strict';
 
 const frontPage = require('./mocks/front-page.json');
@@ -31,10 +30,10 @@ Handlebars.registerHelper('json', function (content) {
 app.set('view engine', 'handlebars');
 
 app.get('/', async (req, res) =>{
-    const temp = new fetchGet();
-    const tst = await temp.Get();
-    console.info(tst);
-    res.locals.data = tst;
+// eslint-disable-next-line new-cap
+    const tempData = new fetchGet();
+    const info = await tempData.getInfo();
+    res.locals.data = info;
     res.render('main', frontPage);
 });
 
@@ -46,6 +45,4 @@ app.listen(8080, () => {
 app.use(function (req, res) {
     res.status(404);
     res.send({ error: 'Not found' });
-
-
 });

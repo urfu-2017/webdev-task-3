@@ -5,26 +5,29 @@
     <title>{{title}}</title></head>
 <script>
     async function checkboxStatus(n, id, nameOfPlace) {
+        const url='https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/';
+
         let x = n.checked;
+        let body = '';
         if (x !== false) {
-            let body = 'mark=' + encodeURIComponent(x) + '&place=' + nameOfPlace;
+            body = 'mark=' + encodeURIComponent(x) + '&place=' + nameOfPlace;
         } else body = 'place=' + nameOfPlace;
-        await fetch('https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/' + id, {
+        await fetch(url + id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: body
+            body
         });
     }
 
 
 </script>
 <link rel="stylesheet" href="{{ staticBasePath }}index.css" media="screen">
-<body>
-
 <header class="header main-page-header">{{header}}</header>
+
+<body>
 
 <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for places..">
 <p>
@@ -48,12 +51,11 @@
             <p class="icons">
                 <img
                     src="https://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png"
-                    onclick="Delete({{json this._id}},this) ">
+                    onclick="deleteElement({{json this._id}},this) ">
                 <img onclick="edit(this,{{json this._id}})"
                      src="https://cdn.iconscout.com/public/images/icon/free/png-512/pencil-art-draw-design-sketch-stationary-tool-3b225aa02dd4e31d-512x512.png">
             </p>
             <p class="places"><span>{{this.place}}</span></p>
-            <p class="shuffle">shuffle</p>
             {{#if this.mark}}
                 <p class="mark"><input type="checkbox" class="markInput"
                                        onclick="checkboxStatus(this,{{json this._id}},{{json this.place}})" checked
@@ -119,9 +121,10 @@
             this.className += " active";
         });
     }
+    const url='https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/';
 
     async function deleteAll() {
-        await fetch('https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/', {
+        await fetch(url, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -173,13 +176,13 @@
         const place = document.getElementById("post").value;
 
         const body = 'place=' + encodeURIComponent(text);
-        const data = await fetch('https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/' + id, {
+        const data = await fetch(url + id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: body
+            body
         });
     }
 
@@ -188,46 +191,48 @@
         const place = document.getElementById("post").value;
 
         const body = 'place=' + encodeURIComponent(place);
-        const data = await fetch('https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/', {
+        const data = await fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: body
+            body
         })
             .then(res => res.json())
-            .then(res => {
-                id = res.insertedIds[0];
-                const buttons = document.createElement("p");
-                buttons.className = 'icons';
-                const trash = document.createElement('img');
-                trash.setAttribute('src', "https://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png");
-                trash.setAttribute('onclick', `Delete("${id}",this)`);
-                buttons.appendChild(trash);
-                const edit = document.createElement('img');
-                edit.setAttribute('src', "https://cdn.iconscout.com/public/images/icon/free/png-512/pencil-art-draw-design-sketch-stationary-tool-3b225aa02dd4e31d-512x512.png");
-                edit.setAttribute('onclick', `edit(this,"${id}")`);
-                buttons.appendChild(edit);
-                const node = document.createElement("p");
-                node.className = 'places';
-                const mark = document.createElement("p");
-                mark.className = 'mark';
-                const textnode = document.createTextNode(place.toString());
-                node.appendChild(textnode);
-                const markCheckbox = document.createElement('input');
-                markCheckbox.setAttribute('type', 'checkbox');
-                markCheckbox.setAttribute('class', 'markInput');
-                markCheckbox.setAttribute('onclick', `checkboxStatus(this,"${id}","${place}")`);
-                mark.appendChild(markCheckbox);
-                const element = document.createElement("div");
-                element.className = 'filterDiv false';
-                element.setAttribute('id', 'myUL');
-                element.appendChild(buttons);
-                element.appendChild(node);
-                element.appendChild(mark);
-                document.getElementById('myDiv').appendChild(element);
-            })
+            .then(res => createPlaceHTML(res,place))
+    }
+
+    function createPlaceHTML(result,place) {
+        id = result.insertedIds[0];
+        const buttons = document.createElement("p");
+        buttons.className = 'icons';
+        const trash = document.createElement('img');
+        trash.setAttribute('src', "https://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png");
+        trash.setAttribute('onclick', `deleteElement("${id}",this)`);
+        buttons.appendChild(trash);
+        const edit = document.createElement('img');
+        edit.setAttribute('src', "https://cdn.iconscout.com/public/images/icon/free/png-512/pencil-art-draw-design-sketch-stationary-tool-3b225aa02dd4e31d-512x512.png");
+        edit.setAttribute('onclick', `edit(this,"${id}")`);
+        buttons.appendChild(edit);
+        const node = document.createElement("p");
+        node.className = 'places';
+        const mark = document.createElement("p");
+        mark.className = 'mark';
+        const textnode = document.createTextNode(place.toString());
+        node.appendChild(textnode);
+        const markCheckbox = document.createElement('input');
+        markCheckbox.setAttribute('type', 'checkbox');
+        markCheckbox.setAttribute('class', 'markInput');
+        markCheckbox.setAttribute('onclick', `checkboxStatus(this,"${id}","${place}")`);
+        mark.appendChild(markCheckbox);
+        const element = document.createElement("div");
+        element.className = 'filterDiv false';
+        element.setAttribute('id', 'myUL');
+        element.appendChild(buttons);
+        element.appendChild(node);
+        element.appendChild(mark);
+        document.getElementById('myDiv').appendChild(element);
     }
 
     function myFunction() {
@@ -248,11 +253,11 @@
         }
     }
 
-    async function Delete(id, n) {
+    async function deleteElement(id, n) {
         let obj;
         n.parentNode.parentNode.remove(n);
 
-        await fetch('https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/' + id, {
+        await fetch(url + id, {
             method: 'DELETE',
         })
             .then(res => res.json())

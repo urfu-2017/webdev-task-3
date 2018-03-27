@@ -1,11 +1,11 @@
 'use strict';
 
 const fetch = require('node-fetch');
+const url = 'https://webdev-task-2-cfndvqnpss.now.sh/notes';
 
+const fetchResults = async () => {
 
-const method = async () => {
-
-    const response = await fetch('https://webdev-task-2-cfndvqnpss.now.sh/notes', {
+    const response = await fetch(url, {
         method: 'GET',
         headers: {
             'X-Custom-Header': 'ProcessThisImmediately',
@@ -17,17 +17,14 @@ const method = async () => {
     return response.json();
 };
 
-class model {
+class Info {
 
-    async Get() {
-        const info = await method();
-        let data = {};
-        Object.assign(data, {
-            info
-        });
+    async getInfo() {
+        const info = await fetchResults();
+        const data = { info };
 
         return data;
     }
 }
 
-module.exports = model;
+module.exports = Info;
