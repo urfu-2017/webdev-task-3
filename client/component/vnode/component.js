@@ -4,10 +4,6 @@ import { EMPTY_OBJECT } from './utils';
 
 export class ComponentVNode extends AbstractVNode {
 
-    constructor(name, props) {
-        super(name, props);
-    }
-
     get node() {
         return this.instance.__root.instance;
     }

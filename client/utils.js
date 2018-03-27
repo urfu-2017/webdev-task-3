@@ -2,12 +2,12 @@
 export function debounce(fn, time, context = this) {
     let timeout;
 
-    return function() {
+    return function () {
         const functionCall = () => fn.apply(context, arguments);
 
         clearTimeout(timeout);
         timeout = setTimeout(functionCall, time);
-    }
+    };
 }
 
 // eslint-disable-next-line no-empty-function

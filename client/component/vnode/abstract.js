@@ -1,7 +1,7 @@
 /**
  * @property {String | Function} type
  * @property {Object} props
- * @property {VNode} children
+ * @property {AbstractVNode} children
  * @property {Node | Component} instance
  */
 export class AbstractVNode {
@@ -47,7 +47,7 @@ export class AbstractVNode {
 
     /**
      * Начинает процесс обновления дерева компонентов
-     * @param {VNode} vNode
+     * @param {AbstractVNode} vNode
      */
     diff(vNode) {
         if (this.type !== vNode.type) {
@@ -59,10 +59,12 @@ export class AbstractVNode {
 
     /**
      * Заменяет один узел другим в dom дереве
-     * @param {VNode} vNode
+     * @param {AbstractVNode} vNode
      */
     replace(vNode) {
-        vNode.createInstance();
+        if (!this.instance) {
+            vNode.createInstance();
+        }
 
         for (const child of vNode.children) {
             child.mount(vNode.node);
@@ -71,7 +73,7 @@ export class AbstractVNode {
         // Заменяем элемент в dom дереве
         const parentNode = this.node.parentNode;
         parentNode.insertBefore(vNode.node, this.node);
-        this.node.remove();
+        this.unmount();
 
         // Заменяем узел в виртуальном дереве
         this.type = vNode.type;
@@ -81,7 +83,7 @@ export class AbstractVNode {
     }
 
     /**
-     * @param {VNode} vNode
+     * @param {AbstractVNode} vNode
      * @private
      */
     // eslint-disable-next-line max-statements

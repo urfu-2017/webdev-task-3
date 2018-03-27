@@ -15,9 +15,7 @@ export class ElementVNode extends AbstractVNode {
         this.instance = document.createElement(this.type);
         const { ref, ...props } = this.props || EMPTY_OBJECT;
 
-        if (props) {
-            this._setAttributes(props);
-        }
+        this._setAttributes(props);
 
         if (ref) {
             ref(this.instance);
@@ -31,7 +29,7 @@ export class ElementVNode extends AbstractVNode {
         // eslint-disable-next-line no-unused-vars
         const { ref, ...props } = vNode.props || EMPTY_OBJECT;
         this.props = props;
-        this._setAttributes(props || EMPTY_OBJECT);
+        this._setAttributes(props);
 
         this._diffChildren(vNode);
     }
