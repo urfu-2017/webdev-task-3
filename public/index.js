@@ -108,9 +108,13 @@ async function rearrange(oldIndex, newIndex) {
 }
 
 async function deletePlace(id) {
-    places = places.filter(p => p.id !== id);
-    setPlacesList(places);
-    await fetch(apiUrl + id, { method: 'DELETE' });
+    await fetch(apiUrl + id, { method: 'DELETE' }).then(() => {
+        places = places.filter(p => p.id !== id);
+        setPlacesList(places);
+    })
+        .catch(() => {
+            throw new Error(`fail to delete place: id=${id}`);
+        });
 }
 
 function editPlaceMode(place) {
