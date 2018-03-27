@@ -145,6 +145,7 @@ class ArticleList {
 
 const list = new ArticleList();
 getElemByClass('search-form').addEventListener('keyup', list.filterBySearch);
+getElemByClass('search-form').addEventListener('submit', event => event.preventDefault());
 
 class Button {
     constructor(type, div, fullName) {
