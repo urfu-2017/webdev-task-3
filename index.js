@@ -7,6 +7,7 @@ const express = require('express');
 const routes = require('./routes');
 const { setInfo } = require('./middlewares/info-setter');
 const { handleError } = require('./middlewares/error-handler');
+const { port } = require('./config/default.js');
 
 const app = express();
 
@@ -24,4 +25,4 @@ routes(app);
 
 app.use(handleError);
 
-app.listen(3000, () => console.info('Open http://localhost:3000'));
+app.listen(port, () => console.info(`Open http://localhost:${port}`));

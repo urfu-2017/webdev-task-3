@@ -31,6 +31,8 @@ exports.PlaceEditor = class {
         this.editInput = this.editor.querySelector('.places__place-edit-input');
         this.cancelControl = this.editor.querySelector('.places__cancel-edit-control');
         this.acceptControl = this.editor.querySelector('.places__accept-edit-control');
+
+        this.editInput.value = this.place.description;
     }
 
     _setupCancelControl() {
