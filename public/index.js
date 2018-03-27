@@ -21,7 +21,7 @@ async function createPlace() {
 
 async function updatePlaceList() {
     await loadPlaces();
-    search();
+    filterPlaces();
 }
 
 function createButton(content, func, className = null) {
@@ -36,7 +36,7 @@ function createButton(content, func, className = null) {
 }
 
 function createVisitCheckbox(place) {
-    const checkbox = document.createElement('input');
+    const checkbox = document.createElement('input', { 'type': 'checkbox' });
     checkbox.type = 'checkbox';
     checkbox.checked = place.visited;
     checkbox.onclick = visit(place);
@@ -97,7 +97,7 @@ async function rearrange(oldIndex, newIndex) {
     const temp = places[oldIndex];
     places[oldIndex] = places[newIndex];
     places[newIndex] = temp;
-    search();
+    filterPlaces();
     await fetch(apiUrl + places[newIndex].id, {
         method: 'PATCH',
         headers: {
@@ -124,7 +124,7 @@ function editPlaceMode(place) {
     });
     input.value = place.description;
     var ok = createButton('<i class="fas fa-check"></i>', async () => await editDescription(place));
-    var cancel = createButton('<i class="fas fa-times"></i>', search);
+    var cancel = createButton('<i class="fas fa-times"></i>', filterPlaces);
     node.appendChild(input);
     node.appendChild(ok);
     node.appendChild(cancel);
@@ -167,7 +167,7 @@ async function setVisitValue(id, visited) {
     if (targetPlace) {
         targetPlace.visited = visited;
     }
-    search();
+    filterPlaces();
 
     await fetch(apiUrl + id, {
         method: 'PATCH',
@@ -180,7 +180,7 @@ async function setVisitValue(id, visited) {
     await updatePlaceList();
 }
 
-function search() {
+function filterPlaces() {
     const description = document.querySelector('.search__input').value;
 
     let res = places.filter(place => place.description.includes(description));
@@ -218,7 +218,7 @@ window.onload = async function () {
     document.querySelector('.search__input')
         .addEventListener('keypress', async e => {
             if (e.keyCode === 13) {
-                await search();
+                await filterPlaces();
             }
         });
 
@@ -232,7 +232,7 @@ window.onload = async function () {
         });
 
     document.querySelectorAll('.places__filter input').forEach(input => {
-        input.onclick = search;
+        input.onclick = filterPlaces;
     });
 
     document.querySelector('.place__remover-submit').onclick = clearList;
