@@ -1,3 +1,7 @@
 {
-    "extends": "hrundel/node"
+    "extends": "hrundel/node",
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    }
 }
