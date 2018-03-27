@@ -29,7 +29,7 @@ const fetchReq = (url, method) => {
             }
         })
         .catch(err => {
-            console.info(err);
+            console.error(err);
             throwErr(err);
 
             return Promise.reject('error');
@@ -160,8 +160,6 @@ class Button {
     initialize(eventListener) {
         this._button = getElemByClass(this._className);
         this._button.addEventListener('click', eventListener);
-
-        return this._button;
     }
 }
 
@@ -170,8 +168,8 @@ class LocationInsertionButton extends Button {
         super(type, div, fullName);
     }
 
-    initializeSubClass() {
-        return super.initialize(list.add);
+    initialize() {
+        super.initialize(list.add);
     }
 }
 
@@ -180,12 +178,8 @@ class DeletionButton extends Button {
         super(type, div, fullName);
     }
 
-    createButtonSubClass() {
-        return super.createButton(list.deleteAll);
-    }
-
-    initializeSubClass() {
-        return super.initialize(list.deleteAll);
+    initialize() {
+        super.initialize(list.deleteAll);
     }
 }
 
@@ -194,12 +188,8 @@ class SwitchButton extends Button {
         super(type, div, fullName);
     }
 
-    createButtonSubClass() {
-        return super.createButton(list.hide);
-    }
-
-    initializeSubClass() {
-        return super.initialize(list.hide);
+    initialize() {
+        super.initialize(list.hide);
     }
 }
 
@@ -424,15 +414,16 @@ function createArticle(name) {
 }
 
 new LocationInsertionButton('location-insertion__button', 'div',
-    'location-insertion__button button').initializeSubClass();
+    'location-insertion__button button').initialize();
+getElemByClass('insertion-form').addEventListener('submit', list.add);
 new DeletionButton('location-menu__delete-button', 'div',
-    'location-menu__delete-button button').initializeSubClass();
+    'location-menu__delete-button button').initialize();
 new SwitchButton('location-menu__switch', 'div',
-    'location-menu__switch show-all-button button').initializeSubClass();
+    'location-menu__switch show-all-button button').initialize();
 new SwitchButton('location-menu__switch', 'div',
-    'location-menu__switch show-not-visited-button button').initializeSubClass();
+    'location-menu__switch show-not-visited-button button').initialize();
 new SwitchButton('location-menu__switch', 'div',
-    'location-menu__switch show-visited-button button').initializeSubClass();
+    'location-menu__switch show-visited-button button').initialize();
 
 const refreshEventListeners = () => {
     const collection = parentElement.getElementsByClassName('location');
