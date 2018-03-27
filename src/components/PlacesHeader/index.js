@@ -3,15 +3,10 @@ import trashIcon from './trash.svg';
 
 import Loader from '../Loader';
 import Component from '../Component';
-import htmlToElement from '../../utils/html-to-element';
 
 class PlacesHeader extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     _renderClearButton(handler, updateCallback) {
-        const elem = htmlToElement(`
+        const elem = Component.htmlToElement(`
           <button class="places-header__clear">
             <img class="places-header__clear-icon" src="${trashIcon}">
           </button>
@@ -29,7 +24,7 @@ class PlacesHeader extends Component {
     }
 
     _renderFilters(handler, updateCallback) {
-        const elem = htmlToElement(`
+        const elem = Component.htmlToElement(`
           <div class="place-header__filters">
             <button class="filter-button text text_ellipsis" 
                     title="Показать все места" type="button"
@@ -71,17 +66,16 @@ class PlacesHeader extends Component {
     }
 
     render() {
-        const {
-            elemClass = '',
-            updateCallback,
-            placesClearHandler,
-            filterChangeHandler
-        } = this.props;
+        const { elemClass = '', updateCallback, onPlacesClear, onFilterChange } = this.props;
 
-        const placesHeader = htmlToElement(`<div class="places-header ${elemClass}"></div>`);
-        placesHeader.appendChild(htmlToElement('<h2 class="places-header__title">Места</h2>'));
-        placesHeader.appendChild(this._renderClearButton(placesClearHandler, updateCallback));
-        placesHeader.appendChild(this._renderFilters(filterChangeHandler, updateCallback));
+        const placesHeader = Component.htmlToElement(
+            `<div class="places-header ${elemClass}"></div>`
+        );
+        placesHeader.appendChild(
+            Component.htmlToElement('<h2 class="places-header__title">Места</h2>')
+        );
+        placesHeader.appendChild(this._renderClearButton(onPlacesClear, updateCallback));
+        placesHeader.appendChild(this._renderFilters(onFilterChange, updateCallback));
 
         return placesHeader;
     }

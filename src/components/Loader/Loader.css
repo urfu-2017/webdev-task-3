@@ -8,23 +8,21 @@
     display: block;
 }
 
-.loader_fixed {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    z-index: 100;
-    position: fixed;
-}
-
+.loader_fixed,
 .loader_absolute {
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    margin: auto;
     z-index: 100;
+    margin: auto;
+}
+
+.loader_fixed {
+    position: fixed;
+}
+
+.loader_absolute {
     position: absolute;
 }
 

@@ -3,34 +3,29 @@ import './PlaceRow.css';
 import Loader from '../Loader';
 import Component from '../Component';
 import PlaceManager from '../../models/place-manager';
-import htmlToElement from '../../utils/html-to-element';
 
-const rejectChangesButton = htmlToElement(`
+const rejectChangesButton = Component.htmlToElement(`
   <button class="place-control-toggler place-row__reject" type="button"></button>
 `);
-const approveChangesButton = htmlToElement(`
+const approveChangesButton = Component.htmlToElement(`
   <button class="place-control-toggler place-row__approve" type="button"></button>
 `);
-const editButton = htmlToElement(`
+const editButton = Component.htmlToElement(`
   <button class="place-control-toggler place-row__edit" type="button"></button>
 `);
-const deleteButton = htmlToElement(`
+const deleteButton = Component.htmlToElement(`
   <button class="place-row__delete" type="button"></button>
 `);
 
 class PlaceRow extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        const description = htmlToElement(`
+        const description = Component.htmlToElement(`
             <div class="place-row__description">${this.props.place.description}</div>
         `);
-        const reorder = htmlToElement(`
+        const reorder = Component.htmlToElement(`
             <div class="place-row__reorder"></div>
         `);
-        const status = htmlToElement(`
+        const status = Component.htmlToElement(`
             <input class="place-row__status" type="checkbox">
         `);
 
@@ -38,7 +33,7 @@ class PlaceRow extends Component {
             status.checked = true;
         }
 
-        const row = htmlToElement(`
+        const row = Component.htmlToElement(`
           <div class="place-row" 
                draggable="true"
                data-place-id="${this.props.place.id}">     
@@ -54,7 +49,7 @@ class PlaceRow extends Component {
     }
 }
 
-PlaceRow.switchControlsHandler = e => {
+PlaceRow.onSwitchControls = e => {
     if (!e.target.classList.contains('place-control-toggler')) {
         return;
     }
@@ -80,7 +75,7 @@ PlaceRow.switchControlsHandler = e => {
     descriptionElem.contentEditable = descriptionElem.contentEditable === 'true' ? 'false' : 'true';
 };
 
-PlaceRow.editRejectHandler = e => {
+PlaceRow.onEditReject = e => {
     if (!e.target.classList.contains('place-row__reject')) {
         return;
     }
@@ -90,7 +85,7 @@ PlaceRow.editRejectHandler = e => {
     descriptionElem.innerHTML = descriptionElem.dataset.originalText;
 };
 
-PlaceRow.editApproveHandler = async e => {
+PlaceRow.onEditApprove = async e => {
     if (!e.target.classList.contains('place-row__approve')) {
         return;
     }
@@ -111,11 +106,11 @@ PlaceRow.editApproveHandler = async e => {
             });
             descriptionElem.innerHTML = editedPlace.description;
         } catch (err) {
-            PlaceRow.editRejectHandler(e);
+            PlaceRow.onEditReject(e);
         }
 
         loader.replaceWith(approveButton);
-        PlaceRow.switchControlsHandler(e);
+        PlaceRow.onSwitchControls(e);
     }
 };
 

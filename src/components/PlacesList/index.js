@@ -2,13 +2,8 @@ import Loader from '../Loader';
 import PlaceRow from '../PlaceRow';
 import Component from '../Component';
 import PlaceManager from '../../models/place-manager';
-import htmlToElement from '../../utils/html-to-element';
 
 class PlacesList extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     async removePlace(e) {
         if (!e.target.classList.contains('place-row__delete')) {
             return;
@@ -49,16 +44,16 @@ class PlacesList extends Component {
     render() {
         const { elemClass = '', placeObjects } = this.props;
 
-        const list = htmlToElement(`<div class="places-list ${elemClass}"></div>`);
+        const list = Component.htmlToElement(`<div class="places-list ${elemClass}"></div>`);
 
         placeObjects.forEach(place => {
             list.appendChild(new PlaceRow({ place: place }).render());
         });
 
         list.addEventListener('click', this.removePlace);
-        list.addEventListener('click', PlaceRow.editRejectHandler);
-        list.addEventListener('click', PlaceRow.editApproveHandler);
-        list.addEventListener('click', PlaceRow.switchControlsHandler);
+        list.addEventListener('click', PlaceRow.onEditReject);
+        list.addEventListener('click', PlaceRow.onEditApprove);
+        list.addEventListener('click', PlaceRow.onSwitchControls);
         list.addEventListener('change', this.changePlaceStatus);
 
         return list;

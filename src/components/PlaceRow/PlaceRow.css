@@ -19,6 +19,7 @@
     visibility: hidden;
     opacity: 0;
     transition: 0.3s all ease-out;
+    cursor: pointer;
 }
 
 .place-row__delete:disabled {
@@ -81,6 +82,7 @@
     box-sizing: border-box;
     background: no-repeat center center;
     background-size: 15px 15px;
+    cursor: pointer;
 }
 
 .place-row__reject {
@@ -110,6 +112,7 @@
 .place-row__status {
     width: 20px;
     height: 20px;
+    cursor: pointer;
 }
 
 .place-row__status-loader {

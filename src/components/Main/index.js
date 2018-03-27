@@ -7,7 +7,6 @@ import PlacesList from '../PlacesList';
 import PlacesHeader from '../PlacesHeader';
 import PlaceCreateForm from '../PlaceCreateForm';
 import PlaceManager from '../../models/place-manager';
-import htmlToElement from '../../utils/html-to-element';
 
 class Main extends Component {
     constructor(props) {
@@ -30,20 +29,20 @@ class Main extends Component {
         const searchBox = new SearchBox({
             elemClass: 'main__search',
             updateCallback: this.updatePlacesList,
-            searchQueryChangeHandler: PlaceManager.filter
+            onSearchQueryChange: PlaceManager.filter
         }).render();
 
         const placeCreateForm = new PlaceCreateForm({
             elemClass: 'main__place-form',
             updateCallback: this.updatePlacesList,
-            placeSubmitHandler: PlaceManager.create
+            onPlaceSubmit: PlaceManager.create
         }).render();
 
         const placesHeader = new PlacesHeader({
             elemClass: 'places-table__header',
             updateCallback: this.updatePlacesList,
-            placesClearHandler: PlaceManager.clear,
-            filterChangeHandler: PlaceManager.filter
+            onPlacesClear: PlaceManager.clear,
+            onFilterChange: PlaceManager.filter
         }).render();
 
         const loader = new Loader({ elemClass: 'places-table__loader' }).render();
@@ -57,13 +56,13 @@ class Main extends Component {
 
                 loader.replaceWith(placesList);
             })
-            .catch(err => loader.replaceWith(htmlToElement(`${err}`)));
+            .catch(err => loader.replaceWith(Component.htmlToElement(`${err}`)));
 
-        const places = htmlToElement('<div class="places-table main__places"></div>');
+        const places = Component.htmlToElement('<div class="places-table main__places"></div>');
         places.appendChild(placesHeader);
         places.appendChild(loader);
 
-        const main = htmlToElement(`<main class="main ${elemClass}"></main>`);
+        const main = Component.htmlToElement(`<main class="main ${elemClass}"></main>`);
         main.appendChild(placeCreateForm);
         main.appendChild(searchBox);
         main.appendChild(places);

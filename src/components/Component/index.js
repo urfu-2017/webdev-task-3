@@ -2,11 +2,17 @@ document.components = {};
 document.nextComponentId = 0;
 
 class Component {
-    constructor(props = {}) {
-        this.props = props;
-        this.id = document.nextComponentId;
-        document.components[this.id] = this;
-        document.nextComponentId++;
+    constructor(props = {}, defaultProps = {}) {
+        this.props = Object.assign(props, defaultProps);
+    }
+
+    static htmlToElement(html) {
+        html = html.trim();
+
+        const template = document.createElement('template');
+        template.innerHTML = html;
+
+        return template.content.firstChild;
     }
 }
 

@@ -1,17 +1,12 @@
 import './Header.css';
 
 import Component from '../Component';
-import htmlToElement from '../../utils/html-to-element';
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const { elemClass = '' } = this.props;
 
-        return htmlToElement(`
+        return Component.htmlToElement(`
           <header class="header ${elemClass}">
             <h1 class="header__title">
               <span class="header__brand">Pavel</span>
