@@ -1,0 +1,94 @@
+.container {
+    width: 300px;
+    border: 1px solid;
+    margin: 0 36%;
+    .header  {
+        &__search-input {
+            margin: 13px 14px;
+            width: 88%;
+        }
+        &__create {
+            &__place-input {
+                margin: 16px 7px 7px 14px;
+            }
+            &__create-button {
+                border-radius: 10px;
+                cursor: pointer;
+            }
+        }
+    }
+    .main {
+        &__nav {
+            display: flex;
+            margin: 5px 16px;
+            border-bottom: 1px solid #000;
+            &__place {
+                display: flex;
+                flex-basis: 100%;
+                align-items: center;
+            }
+            &__recycle {
+                font-size: 20px;
+                padding-left: 5px;
+                cursor: pointer;
+            }
+            &__filters {
+                display: flex;
+                border-radius: 12px;
+                border: 1px solid;
+                font-size: 9px;
+                margin-top: 6px;
+                height: 14px;
+                &__all, &__visited {
+                    padding: 3px;
+                    cursor: pointer;
+                }
+                &__visit {
+                    border-left: 1px solid;
+                    border-right: 1px solid;
+                    padding: 3px;
+                    cursor: pointer;
+                }
+            }
+        }
+        &__places {
+            margin-top: 15px;
+            font-size: 17px; 
+            &__instance {
+                display: flex;
+                &__title {
+                    padding: 0 20px 0 30px;
+                    flex-basis: 60%;
+                }
+                &:first-child {
+                    .up {
+                        display: none;
+                    }
+                    .down {
+                        flex-basis: 5.5%;
+                    }
+                }
+                &:last-child {
+                    .down {
+                        display: none;
+                    }
+                    .up {
+                        flex-basis: 5.5%;
+                    }
+                }
+            }
+        }
+    }
+    .footer {
+        display: flex;
+        border-top: 1px solid;
+        margin-top: 30px;
+        &__copyright {
+            padding: 10px;
+            flex-basis: 100%;
+        }
+        &__date {
+            padding: 10px; 
+        }
+    }
+}

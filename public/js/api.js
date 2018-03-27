@@ -28,13 +28,29 @@ export class PlacesAPI {
         return this.makeRequest('places/', 'post', { name: name });
     }
 
+    edit(id, name) {
+        return this.makeRequest(`places/${id}/edit/`, 'put', { name: name });
+    }
+
     list() {
         return this.makeRequest('places/', 'get').then(
             response => response.json(), console.error
         );
     }
 
+    delete(id) {
+        return this.makeRequest(`places/${id}/`, 'delete');
+    }
+
     clear() {
         return this.makeRequest('places/', 'delete');
+    }
+
+    changePriority(id, priority) {
+        return this.makeRequest(`places/${id}/priority/`, 'put', { priority: priority });
+    }
+
+    setVisited(id, isVisited) {
+        return this.makeRequest(`places/${id}/${isVisited ? 'visited' : 'unvisited'}/`, 'put');
     }
 }
