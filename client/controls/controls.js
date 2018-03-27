@@ -17,6 +17,21 @@ export class Controls extends Component {
             this.props.visibility !== nextProps.visibility;
     }
 
+    onFiltersChange() {
+        const search = this.search.value;
+        const visibility = this.visibility.value;
+
+        this.props.onFilterChange(search, visibility);
+    }
+
+    /**
+     * @param {Event} evt
+     */
+    onClear(evt) {
+        evt.preventDefault();
+        this.props.onClear();
+    }
+
     render() {
         const { search, visibility } = this.props;
 
@@ -49,20 +64,5 @@ export class Controls extends Component {
                 <button class={styles.clear} onClick={this.onClear}>Очистить список</button>
             </div>
         );
-    }
-
-    onFiltersChange() {
-        const search = this.search.value;
-        const visibility = this.visibility.value;
-
-        this.props.onFilterChange(search, visibility);
-    }
-
-    /**
-     * @param {Event} evt
-     */
-    onClear(evt) {
-        evt.preventDefault();
-        this.props.onClear();
     }
 }

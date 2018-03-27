@@ -1,8 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { Component } from '../component';
 import { ErrorBox } from '../error-box/error-box';
 import styles from './create-form.css';
-/* eslint-enable no-unused-vars */
 
 export class CreateForm extends Component {
 
@@ -36,7 +34,7 @@ export class CreateForm extends Component {
      */
     onSubmit(evt) {
         evt.preventDefault();
-        const isFetching = this.state.isFetching;
+        const { isFetching } = this.state;
 
         if (isFetching) {
             return;

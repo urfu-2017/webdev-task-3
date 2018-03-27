@@ -1,24 +1,20 @@
 import 'babel-polyfill';
-/* eslint-disable no-unused-vars */
 import { Component } from './component';
 import { CreateForm } from './create-form/create-form';
 import { Controls } from './controls/controls';
 import { PlacesList } from './places-list/places-list';
-/* eslint-enable no-unused-vars */
-
 import { debounce } from './utils';
 import styles from './index.css';
 
+const pageSize = 100;
 const api = 'https://webdev-task-2-ocypkazlhm.now.sh/api/v1/locations';
 const options = {
     mode: 'cors',
-    timeout: 3000,
     headers: {
         'Content-Type': 'application/json'
     }
 };
 
-// eslint-disable-next-line no-unused-vars
 class Application extends Component {
 
     constructor(props) {
@@ -31,14 +27,14 @@ class Application extends Component {
 
         this.addNewPlace = this.addNewPlace.bind(this);
         this.clearPlaces = this.clearPlaces.bind(this);
-        this.changeFilters = debounce(this.changeFilters.bind(this), 300);
+        this.changeFilters = debounce(this.changeFilters.bind(this), 300, this);
         this.changePlace = this.changePlace.bind(this);
         this.deletePlace = this.deletePlace.bind(this);
         this.changeOrder = this.changeOrder.bind(this);
     }
 
     async componentDidMount() {
-        const response = await fetch(`${api}?pageSize=${Number.MAX_SAFE_INTEGER}`, options);
+        const response = await fetch(`${api}?pageSize=${pageSize}`, options);
         const places = await response.json();
 
         this.setState({ places });
@@ -113,7 +109,7 @@ class Application extends Component {
 
     async changeFilters(search, visibility) {
         const response = await fetch(
-            `${api}?pageSize=${Number.MAX_SAFE_INTEGER}&search=${search}`, options);
+            `${api}?pageSize=${pageSize}&search=${search}`, options);
         const places = await response.json();
 
         this.setState({ search, visibility, places });

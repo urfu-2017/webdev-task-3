@@ -1,11 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { Component } from '../component';
 import { Place } from '../place/place';
+import { stub } from '../utils';
 import styles from './places-list.css';
-/* eslint-enable no-unused-vars */
-
-// eslint-disable-next-line no-empty-function
-function stub() {}
 
 export class PlacesList extends Component {
 
