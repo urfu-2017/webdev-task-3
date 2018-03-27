@@ -69,11 +69,9 @@ class ArticleList {
     constructor() {
         this.hide = this.hide.bind(this);
         this.filterBySearch = this.filterBySearch.bind(this);
-        this.add = this.add.bind(this);
     }
 
     add(event) {
-        console.info('in add');
         event.preventDefault();
         const input = document.getElementsByClassName('insertion-form__input')[0].value;
         createArticle(input);
@@ -150,8 +148,6 @@ class Button {
         this._type = type;
         this._button = document.createElement(div);
         this._className = fullName;
-        this.createButton = this.createButton.bind(this);
-        this.initialize = this.initialize.bind(this);
     }
 
     createButton(eventListener) {
@@ -172,7 +168,6 @@ class Button {
 class LocationInsertionButton extends Button {
     constructor(type, div, fullName) {
         super(type, div, fullName);
-        this.initializeSubClass = this.initializeSubClass.bind(this);
     }
 
     initializeSubClass() {
@@ -211,16 +206,10 @@ class SwitchButton extends Button {
 class PencilButton extends Button {
     constructor(type, div, fullName) {
         super(type, div, fullName);
-        this.refresh = this.refresh.bind(this);
-        this.createButtonSubClass = this.createButtonSubClass.bind(this);
     }
 
     createButtonSubClass() {
         return this.createButton(this._rename);
-    }
-
-    initializeSubClass() {
-        return this.initialize(this._rename);
     }
 
     refresh(article) {
@@ -265,16 +254,10 @@ class PencilButton extends Button {
 class TrashButton extends Button {
     constructor(type, div, fullName) {
         super(type, div, fullName);
-        this.refresh = this.refresh.bind(this);
-        this.createButtonSubClass = this.createButtonSubClass.bind(this);
     }
 
     createButtonSubClass() {
         return this.createButton(this._delete);
-    }
-
-    initializeSubClass() {
-        return this.initialize(this._delete);
     }
 
     refresh(article) {
@@ -294,16 +277,10 @@ class TrashButton extends Button {
 class ArrowUpButton extends Button {
     constructor(type, div, fullName) {
         super(type, div, fullName);
-        this.refresh = this.refresh.bind(this);
-        this.createButtonSubClass = this.createButtonSubClass.bind(this);
     }
 
     createButtonSubClass() {
         return this.createButton(this._swapUp);
-    }
-
-    initializeSubClass() {
-        return this.initialize(this._swapUp);
     }
 
     refresh(article) {
@@ -325,16 +302,10 @@ class ArrowUpButton extends Button {
 class ArrowDownButton extends Button {
     constructor(type, div, fullName) {
         super(type, div, fullName);
-        this.refresh = this.refresh.bind(this);
-        this.createButtonSubClass = this.createButtonSubClass.bind(this);
     }
 
     createButtonSubClass() {
         return this.createButton(this._swapDown);
-    }
-
-    initializeSubClass() {
-        return this.initialize(this._swapDown);
     }
 
     refresh(article) {
@@ -356,16 +327,10 @@ class ArrowDownButton extends Button {
 class VisitButton extends Button {
     constructor(type, div, fullName) {
         super(type, div, fullName);
-        this.refresh = this.refresh.bind(this);
-        this.createButtonSubClass = this.createButtonSubClass.bind(this);
     }
 
     createButtonSubClass() {
         return this.createButton(this._toggleVisited);
-    }
-
-    initializeSubClass() {
-        return this.initialize(this._toggleVisited);
     }
 
     refresh(article) {
