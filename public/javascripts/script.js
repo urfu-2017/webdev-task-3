@@ -79,7 +79,7 @@ class ArticleList {
     }
 
     hide(event) {
-        const displayParam = event.target.textContent;
+        const displayParam = event.target.className;
         this.filterBySearch(event);
         this._filterByVisited(displayParam);
         correctArrows();
@@ -108,24 +108,20 @@ class ArticleList {
 
     _filterByVisited(displayParam) {
         const list = parentElement.children;
-        switch (displayParam) {
-            case 'All':
-                for (const element of list) {
-                    this._toggleVisibility(element, true);
-                }
-                break;
-            case 'Not visited':
-                for (const element of list) {
-                    this._toggleVisibility(element,
-                        element.lastElementChild.classList.value.indexOf('not') !== -1);
-                }
-                break;
-            default:
-                for (const element of list) {
-                    this._toggleVisibility(element,
-                        element.lastElementChild.classList.value.indexOf('not') === -1);
-                }
-                break;
+        if (displayParam.indexOf('show-all-button') !== -1) {
+            for (const element of list) {
+                this._toggleVisibility(element, true);
+            }
+        } else if (displayParam.indexOf('show-not-visited-button') !== -1) {
+            for (const element of list) {
+                this._toggleVisibility(element,
+                    element.lastElementChild.classList.value.indexOf('not') !== -1);
+            }
+        } else {
+            for (const element of list) {
+                this._toggleVisibility(element,
+                    element.lastElementChild.classList.value.indexOf('not') === -1);
+            }
         }
     }
 
