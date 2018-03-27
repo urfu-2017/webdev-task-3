@@ -1,0 +1,99 @@
+.hidden-options
+{
+    visibility: hidden;
+}
+
+.location:hover .hidden-options
+{
+    visibility: visible;
+}
+
+.hidden-options__pencil
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/pencil.png");
+    background-size: cover;    
+}
+
+.hidden-options__trash
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/trash.png");
+    background-size: cover;  
+}
+
+.hidden-options__trash:hover
+{
+    visibility: visible;
+}
+
+.location-name
+{
+    width: 30%;
+}
+
+.arrow-up
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/arrow-up.png");
+    background-size: cover;    
+}
+
+.arrow-down
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/arrow-down.png"); 
+    background-size: cover;       
+}
+
+.visited-flag
+{
+    border-radius: 10px;
+    border: 1px solid #e0e0f8;
+}
+
+.visited-flag:hover
+{
+    border-color: #3a3a87;
+    box-shadow: 1px 1px 3px #3a3a87; 
+}
+
+.visited-icon
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/visited.png"); 
+    background-size: cover; 
+}
+
+.not-visited-icon
+{
+    width: 15px;
+    height: 15px;
+    background-image: url("/static/not-visited.png"); 
+    background-size: cover; 
+}
+
+.visible
+{
+    visibility: visible;
+}
+
+.hidden
+{
+    visibility: hidden;
+}
+
+.shown
+{
+    display: flex;
+}
+
+.not-shown
+{
+    display: none;
+}

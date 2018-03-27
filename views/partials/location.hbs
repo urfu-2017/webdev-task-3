@@ -1,0 +1,17 @@
+<div class="hidden-options horizontal-flex">
+    <div class="hidden-options__pencil location__button button"></div>
+    <div class="hidden-options__trash location__button button"></div>
+</div>
+
+<div class="location-name">{{ this.name }}</div>
+
+<div class="arrows horizontal-flex">
+    <div class="arrow-up location__button button arrow"></div>
+    <div class="arrow-down location__button button arrow"></div>
+</div>
+
+{{#if this.visited}}
+    <div class="visited-icon location__button visited-flag"></div>
+{{else}}
+    <div class="not-visited-icon location__button visited-flag"></div>
+{{/if}}

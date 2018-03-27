@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="css/styles.css" media="screen">
+    <link rel="stylesheet" href="css/locations.css" media="screen">
+</head>
+
+<body class="body">
+    <div class="error-message hidden"></div>
+    <div class="loader hidden"></div>
+    <section class="content position_center">
+        <div class="search-bar position_center">
+            <form class="search-form">
+                <div class="search-form__button button"></div>
+                <input class="search-form__input input" type="text" placeholder="Search">
+            </form>
+        </div>
+        <div class="location-insertion position-center horizontal-flex">
+            <form class="insertion-form">
+                <input class="insertion-form__input input" type="text" placeholder="Location name">
+            </form>
+            <div class="location-insertion__button button">Create</div>
+        </div>
+        <div class="location-menu horizontal-flex">
+            <div class="location-menu__main horizontal-flex">
+                <header class="location-menu__header">Locations</header>
+                <div class="location-menu__delete-button button"></div>
+            </div>
+            <nav class="location-menu__nav horizontal-flex">
+                <div class="location-menu__switch show-all-button button">All</div>
+                <div class="location-menu__switch show-not-visited-button button">Not visited</div>
+                <div class="location-menu__switch show-visited-button button">Visited</div>
+            </nav>
+        </div>
+        <hr class="horizontal-line">
+        <section class="locations-list">
+            {{#each places}}
+            <article class="location horizontal-flex visible">{{> location }}</article>
+            {{/each}}
+        </section>
+        <hr class="horizontal-line">
+        <footer class="footer horizontal-flex">
+            <div class="footer__year">{{ year }}</div>
+            <div class="footer__copyright">{{ copyright }}</div>
+        </footer>
+    </section>
+</body>
+
+</html>
+<script src="javascripts/script.js" type="text/javascript"></script>
