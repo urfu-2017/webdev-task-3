@@ -1,5 +1,5 @@
 // Глобальные переменные
-const baseUrl = 'https://webdev-task-2-ocewtvanui.now.sh/api/';
+const baseUrl = 'https://webdev-task-2-dowwqxitcb.now.sh/api/';
 
 const state = {
     recordsToDisplay: [],
