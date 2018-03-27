@@ -42,24 +42,19 @@ class PlaceRow extends Component {
           <div class="place-row" 
                draggable="true"
                data-place-id="${this.props.place.id}">     
-          </div>`
-        );
+          </div>`);
 
-        [
-            editButton.cloneNode(),
-            deleteButton.cloneNode(),
-            description,
-            reorder,
-            status
-        ].forEach(elem => {
-            row.appendChild(elem);
-        });
+        [editButton.cloneNode(), deleteButton.cloneNode(), description, reorder, status].forEach(
+            elem => {
+                row.appendChild(elem);
+            }
+        );
 
         return row;
     }
 }
 
-PlaceRow.switchControlsHandler = (e) => {
+PlaceRow.switchControlsHandler = e => {
     if (!e.target.classList.contains('place-control-toggler')) {
         return;
     }
@@ -85,7 +80,7 @@ PlaceRow.switchControlsHandler = (e) => {
     descriptionElem.contentEditable = descriptionElem.contentEditable === 'true' ? 'false' : 'true';
 };
 
-PlaceRow.editRejectHandler = (e) => {
+PlaceRow.editRejectHandler = e => {
     if (!e.target.classList.contains('place-row__reject')) {
         return;
     }
@@ -95,7 +90,7 @@ PlaceRow.editRejectHandler = (e) => {
     descriptionElem.innerHTML = descriptionElem.dataset.originalText;
 };
 
-PlaceRow.editApproveHandler = async (e) => {
+PlaceRow.editApproveHandler = async e => {
     if (!e.target.classList.contains('place-row__approve')) {
         return;
     }
@@ -111,10 +106,9 @@ PlaceRow.editApproveHandler = async (e) => {
         approveButton.replaceWith(loader);
 
         try {
-            const editedPlace = await PlaceManager.edit(
-                row.dataset.placeId,
-                { description: descriptionElem.innerHTML.trim() }
-            );
+            const editedPlace = await PlaceManager.edit(row.dataset.placeId, {
+                description: descriptionElem.innerHTML.trim()
+            });
             descriptionElem.innerHTML = editedPlace.description;
         } catch (err) {
             PlaceRow.editRejectHandler(e);

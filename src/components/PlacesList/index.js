@@ -15,9 +15,11 @@ class PlacesList extends Component {
         }
 
         const placeRow = e.target.parentNode;
-        e.target.replaceWith(new Loader({
-            elemClass: 'place-row__delete-loader'
-        }).render());
+        e.target.replaceWith(
+            new Loader({
+                elemClass: 'place-row__delete-loader'
+            }).render()
+        );
 
         await PlaceManager.delete(placeRow.dataset.placeId);
         placeRow.remove();
@@ -34,24 +36,18 @@ class PlacesList extends Component {
         const loader = new Loader({ elemClass: 'place-row__status-loader' }).render();
         placeStatusElem.replaceWith(loader);
 
-        await PlaceManager.edit(
-            placeRow.dataset.placeId,
-            { status: placeStatusElem.checked }
-        );
+        await PlaceManager.edit(placeRow.dataset.placeId, { status: placeStatusElem.checked });
 
         loader.replaceWith(placeStatusElem);
 
         // Применение фильтров
-        document.querySelector('.filter-button[aria-checked]').dispatchEvent(new Event(
-            'click', { 'bubbles': true, 'cancelable': true }
-        ));
+        document
+            .querySelector('.filter-button[aria-checked]')
+            .dispatchEvent(new Event('click', { bubbles: true, cancelable: true }));
     }
 
     render() {
-        const {
-            elemClass = '',
-            placeObjects
-        } = this.props;
+        const { elemClass = '', placeObjects } = this.props;
 
         const list = htmlToElement(`<div class="places-list ${elemClass}"></div>`);
 

@@ -10,11 +10,7 @@ class PlaceCreateForm extends Component {
     }
 
     render() {
-        const {
-            elemClass = '',
-            updateCallback,
-            placeSubmitHandler
-        } = this.props;
+        const { elemClass = '', updateCallback, placeSubmitHandler } = this.props;
 
         const form = htmlToElement(`
           <form class="place-create ${elemClass}" name="new-place-form">
@@ -30,7 +26,7 @@ class PlaceCreateForm extends Component {
         );
         form.appendChild(submitButton);
 
-        form.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', async e => {
             e.preventDefault();
 
             const loader = new Loader({

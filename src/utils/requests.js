@@ -1,4 +1,4 @@
-const encodeQuery = (queryArgs) => {
+const encodeQuery = queryArgs => {
     return Object.keys(queryArgs)
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(queryArgs[key])}`)
         .join('&');
@@ -34,30 +34,21 @@ const jsonBodylessRequest = (httpMethod, url, queryArgs = undefined) => {
         url = `${url}?${encodeQuery(queryArgs)}`;
     }
 
-    const requestSettings = Object.assign(
-        defaultSettings,
-        {
-            method: httpMethod,
-            qs: queryArgs
-        }
-    );
+    const requestSettings = Object.assign(defaultSettings, {
+        method: httpMethod,
+        qs: queryArgs
+    });
 
     return jsonRequest(url, requestSettings);
 };
 
 const jsonBodyRequest = (httpMethod, url, queryArgs = undefined, data = undefined) => {
-    const postSettings = Object.assign(
-        defaultSettings,
-        {
-            method: httpMethod,
-            qs: queryArgs,
-            body: JSON.stringify(data),
-            headers: Object.assign(
-                defaultSettings.headers,
-                { 'Content-Type': 'application/json' }
-            )
-        }
-    );
+    const postSettings = Object.assign(defaultSettings, {
+        method: httpMethod,
+        qs: queryArgs,
+        body: JSON.stringify(data),
+        headers: Object.assign(defaultSettings.headers, { 'Content-Type': 'application/json' })
+    });
 
     return jsonRequest(url, postSettings);
 };

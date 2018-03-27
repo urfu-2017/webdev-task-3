@@ -12,7 +12,7 @@ class SearchBox extends Component {
         const elem = htmlToElement(`
             <input class="search-box__input text" type="text" placeholder="Поиск" size="30">
         `);
-        elem.addEventListener('input', (e) => {
+        elem.addEventListener('input', e => {
             updateCallback(handler({ query: e.target.value }));
         });
 
@@ -20,11 +20,7 @@ class SearchBox extends Component {
     }
 
     render() {
-        const {
-            elemClass = '',
-            updateCallback,
-            searchQueryChangeHandler
-        } = this.props;
+        const { elemClass = '', updateCallback, searchQueryChangeHandler } = this.props;
 
         const searchBox = htmlToElement(`<div class="search-box ${elemClass}"></div>`);
         searchBox.appendChild(this._renderInput(searchQueryChangeHandler, updateCallback));

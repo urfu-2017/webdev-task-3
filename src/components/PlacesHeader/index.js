@@ -19,7 +19,7 @@ class PlacesHeader extends Component {
 
         const loader = new Loader({ elemClass: 'places-header__clear-loader' }).render();
 
-        elem.addEventListener('click', async (e) => {
+        elem.addEventListener('click', async e => {
             elem.replaceWith(loader);
             updateCallback(await handler(e));
             loader.replaceWith(elem);
@@ -55,7 +55,7 @@ class PlacesHeader extends Component {
           </div>
         `);
 
-        elem.addEventListener('click', (e) => {
+        elem.addEventListener('click', e => {
             e.preventDefault();
 
             const filterButtons = e.target.parentNode.children;

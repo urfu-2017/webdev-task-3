@@ -35,11 +35,9 @@ class PlaceManager {
     }
 
     static async create(description) {
-        const response = await jsonPost(
-            `${BASE_API_URL}/places`,
-            undefined,
-            { description: description }
-        );
+        const response = await jsonPost(`${BASE_API_URL}/places`, undefined, {
+            description: description
+        });
 
         if (response.status !== 200) {
             throw new Error(response.message);
@@ -61,11 +59,7 @@ class PlaceManager {
             requestBody.description = description;
         }
 
-        const response = await jsonPatch(
-            `${BASE_API_URL}/places/${id}`,
-            undefined,
-            requestBody
-        );
+        const response = await jsonPatch(`${BASE_API_URL}/places/${id}`, undefined, requestBody);
 
         if (response.status !== 200) {
             throw new Error(response.message);
@@ -111,8 +105,8 @@ class PlaceManager {
             default:
         }
 
-        filteredPlaces = filteredPlaces.filter(
-            place => place.description.toLowerCase().includes(filtersState.query)
+        filteredPlaces = filteredPlaces.filter(place =>
+            place.description.toLowerCase().includes(filtersState.query)
         );
 
         return filteredPlaces;

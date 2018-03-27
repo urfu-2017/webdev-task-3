@@ -1,4 +1,5 @@
 import './Loader.css';
+
 import Component from '../Component';
 import htmlToElement from '../../utils/html-to-element';
 
@@ -6,9 +7,7 @@ class Loader extends Component {
     constructor(props) {
         super(props);
 
-        this.props.color = this.props.color
-            ? this.props.color
-            : 'red';
+        this.props.color = this.props.color ? this.props.color : '#f00';
         this.props.modifierClass = this.props.modifier
             ? `loader_${this.props.modifier}`
             : 'loader_block';

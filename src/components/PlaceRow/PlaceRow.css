@@ -61,12 +61,12 @@
     margin-right: 5px;
 }
 
-.place-row__description[contenteditable="true"] {
+.place-row__description[contenteditable='true'] {
     border-bottom: 1px solid #ff0;
 }
 
-.place-row__description[contenteditable="true"]:focus,
-.place-row__description[contenteditable="true"]:active {
+.place-row__description[contenteditable='true']:focus,
+.place-row__description[contenteditable='true']:active {
     outline: none;
 }
 
