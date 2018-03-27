@@ -3,6 +3,21 @@
 const API_URL = 'https://webdev-task-2-vwybpuuxcw.now.sh';
 const indexMap = new WeakMap();
 
+class LoadScreen {
+    static createLoadScreen() {
+        const elem = document.body;
+        const div = document.createElement('div');
+        div.classList.add('load-screen');
+        div.innerHTML = '<h3 class="load-screen__text">Loading...</h3>';
+        elem.appendChild(div);
+    }
+
+    static deleteLoadScreen() {
+        const elem = document.querySelector('.load-screen');
+        elem.remove();
+    }
+}
+
 class EditField {
     constructor(element, index) {
         this.sourceElement = element.closest('.places__place');
@@ -49,11 +64,13 @@ class EditField {
     async _onSave() {
 
         const text = this.element.querySelector('.edit-field__field').value;
+        LoadScreen.createLoadScreen();
         await fetch(API_URL + `/place/${this.index}/edit`, {
             method: 'PATCH',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ name: text })
         });
+        LoadScreen.deleteLoadScreen();
         this.sourceText.innerHTML = text;
         this.element.remove();
         this.sourceElement.style = '';
@@ -123,16 +140,18 @@ class Place {
     }
 
     async _onDelete() {
+        LoadScreen.createLoadScreen();
         await fetch(API_URL + `/place/${this.index}/delete`, { method: 'delete' });
+        LoadScreen.deleteLoadScreen();
         this.element.remove();
     }
 
-    _onMoveUp() {
+    async _onMoveUp() {
         const parentElement = this.element.parentElement;
         const currentElementClone = this.element.cloneNode(true);
         const previousElement = this.element.previousElementSibling;
         const previousElementClone = previousElement.cloneNode(true);
-        this._changeIndexes(this.element, previousElement);
+        await this._changeIndexes(this.element, previousElement);
         parentElement.replaceChild(previousElementClone, this.element);
         parentElement.replaceChild(currentElementClone, previousElement);
         // возвращаем eventlistener
@@ -140,12 +159,12 @@ class Place {
         parentElement.replaceChild(previousElement, previousElementClone);
     }
 
-    _onMoveDown() {
+    async _onMoveDown() {
         const parentElement = this.element.parentElement;
         const currentElementClone = this.element.cloneNode(true);
         const nextElement = this.element.nextElementSibling;
         const nextElementClone = nextElement.cloneNode(true);
-        this._changeIndexes(this.element, nextElement);
+        await this._changeIndexes(this.element, nextElement);
         parentElement.replaceChild(nextElementClone, this.element);
         parentElement.replaceChild(currentElementClone, nextElement);
         // возвращаем eventlistener
@@ -153,27 +172,31 @@ class Place {
         parentElement.replaceChild(nextElement, nextElementClone);
     }
 
-    _changeIndexes(elem1, elem2) {
+    async _changeIndexes(elem1, elem2) {
         const place1 = indexMap.get(elem1);
         const place2 = indexMap.get(elem2);
         const index1 = place1.index;
         const index2 = place2.index;
-        place1.index = index2;
-        place2.index = index1;
-        fetch(API_URL + '/places/switch', {
+        LoadScreen.createLoadScreen();
+        await fetch(API_URL + '/places/switch', {
             method: 'PUT',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ index1, index2 })
         });
+        LoadScreen.deleteLoadScreen();
+        place1.index = index2;
+        place2.index = index1;
     }
 
-    _onChangeStatus() {
+    async _onChangeStatus() {
         this.isVisited = !this.isVisited;
         const nameField = this.element.querySelector('.places__place-name');
-        nameField.classList.toggle('places__place-name_checked');
-        fetch(API_URL + `/place/${this.index}/toggle`, {
+        LoadScreen.createLoadScreen();
+        await fetch(API_URL + `/place/${this.index}/toggle`, {
             method: 'PATCH'
         });
+        LoadScreen.deleteLoadScreen();
+        nameField.classList.toggle('places__place-name_checked');
     }
 }
 
@@ -188,8 +211,10 @@ class PlaceList {
     }
 
     async loadPlaces() {
+        LoadScreen.createLoadScreen();
         const response = await fetch(API_URL + '/places/list/all');
         const places = await response.json();
+        LoadScreen.deleteLoadScreen();
         for (const place of places) {
             this.createPlace(place);
         }
@@ -227,20 +252,24 @@ class PlaceList {
         if (!text) {
             return;
         }
+        LoadScreen.createLoadScreen();
         const response = await fetch(API_URL + '/places/add', {
             method: 'post',
             headers: { 'content-type': 'application/json' },
             body: JSON.stringify({ name: text })
         });
         const place = await response.json();
+        LoadScreen.deleteLoadScreen();
         this.createPlace(place);
     }
 
-    _onClear() {
-        this.element.innerHTML = '';
-        fetch(API_URL + '/places/clear', {
+    async _onClear() {
+        LoadScreen.createLoadScreen();
+        await fetch(API_URL + '/places/clear', {
             method: 'delete'
         });
+        LoadScreen.deleteLoadScreen();
+        this.element.innerHTML = '';
     }
 
     _onFilter() {
