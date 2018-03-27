@@ -1,0 +1,7 @@
+{
+    "extends": "stylelint-config-hrundel",
+    "rules": {
+        "number-leading-zero": "always",
+        "block-opening-brace-newline-before": "never-single-line"
+    }
+}
