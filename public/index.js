@@ -67,24 +67,24 @@ function createLabel(place) {
 function createLINode(place, index, colSize) {
     const node = document.createElement('div');
     const label = createLabel(place);
-    const downButton =
+    if (index !== colSize - 1) {
+        const downButton =
         createButton('<i class="fas fa-arrow-down"></i>',
             () => rearrange(index, index + 1), 'down-btn');
-    const upButton =
-        createButton('<i class="fas fa-arrow-up"></i>',
-            () => rearrange(index, index - 1), 'up-btn');
-    const deleteButton =
-        createButton('<i class="fas fa-trash-alt"></i>',
-            () => deletePlace(place.id), 'delete-btn');
-    const editButton =
-        createButton('<i class="fas fa-pencil-alt"></i>',
-            () => editPlaceMode(place), 'edit-btn');
-    if (index !== colSize - 1) {
         node.appendChild(downButton);
     }
     if (index !== 0) {
+        const upButton =
+        createButton('<i class="fas fa-arrow-up"></i>',
+            () => rearrange(index, index - 1), 'up-btn');
         node.appendChild(upButton);
     }
+    const deleteButton =
+    createButton('<i class="fas fa-trash-alt"></i>',
+        () => deletePlace(place.id), 'delete-btn');
+    const editButton =
+    createButton('<i class="fas fa-pencil-alt"></i>',
+        () => editPlaceMode(place), 'edit-btn');
     node.appendChild(deleteButton);
     node.appendChild(editButton);
     node.appendChild(label);

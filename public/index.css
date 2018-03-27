@@ -137,3 +137,9 @@ main
 {
     display: inline-block;
 }
+
+.place button {
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
