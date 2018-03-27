@@ -1,3 +1,4 @@
+import { AbstractVNode } from './abstract';
 import { ElementVNode } from './element';
 import { ComponentVNode } from './component';
 import { PrimitiveVNode } from './primitive';
@@ -23,6 +24,10 @@ export function createVNode(type, props, ...children) {
  */
 function parseChildren(result, child) {
     if (Array.isArray(child)) {
+        if (child.some(c => !(c instanceof AbstractVNode))) {
+            throw new Error('В списке разрешены только html элементы или компоненты');
+        }
+
         result.push(...child);
     } else if (typeof child === 'string' || typeof child === 'number') {
         result.push(new PrimitiveVNode(child));

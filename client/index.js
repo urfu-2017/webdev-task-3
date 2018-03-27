@@ -36,65 +36,53 @@ class Application extends Component {
     }
 
     async componentDidMount() {
-        this.setState({ isFetching: true });
-        const response = await fetch(`${api}?pageSize=${pageSize}`, options);
+        const response = await this.sendRequest(`${api}?pageSize=${pageSize}`);
         const places = await response.json();
 
-        this.setState({ places, isFetching: false });
+        this.setState({ places });
     }
 
     async addNewPlace({ name }) {
         const body = JSON.stringify({ description: name });
-
-        this.setState({ isFetching: true });
-        const response = await fetch(api, { method: 'POST', body, ...options });
+        const response = await this.sendRequest(api, 'POST', body);
         const place = await response.json();
 
         if (response.status !== 201) {
-            this.setState({ isFetching: false });
             throw place.error;
         }
 
-        this.setState({ places: [...this.state.places, place], isFetching: false });
+        this.setState({ places: [...this.state.places, place] });
     }
 
     async changePlace(place) {
         const body = JSON.stringify(place);
-
-        this.setState({ isFetching: true });
-        const response = await fetch(`${api}/${place.id}`, { method: 'PATCH', body, ...options });
+        const response = await this.sendRequest(`${api}/${place.id}`, 'PATCH', body);
 
         if (response.status !== 200) {
-            this.setState({ isFetching: false });
-            return Promise.reject();
+            throw Error('Не удалось изменить данные');
         }
 
         this.setState({
-            places: this.state.places.map(p => p.id === place.id ? place : p),
-            isFetching: false
+            places: this.state.places.map(p => p.id === place.id ? place : p)
         });
     }
 
     async deletePlace(place) {
-        this.setState({ isFetching: true });
-        const response = await fetch(`${api}/${place.id}`, { method: 'DELETE', ...options });
+        const response = await this.sendRequest(`${api}/${place.id}`, 'DELETE');
         let { places } = this.state.places;
 
         if (response.status === 200) {
             places = places.filter(p => p.id !== place.id);
         }
 
-        this.setState({ places, isFetching: false });
+        this.setState({ places });
     }
 
     async clearPlaces() {
-        this.setState({ isFetching: true });
-        const response = await fetch(api, { method: 'DELETE', ...options });
+        const response = await this.sendRequest(api, 'DELETE');
 
         if (response.status === 200) {
-            this.setState({ places: [], isFetching: false });
-        } else {
-            this.setState({ isFetching: false });
+            this.setState({ places: [] });
         }
     }
 
@@ -113,26 +101,35 @@ class Application extends Component {
         newOrder.splice(oldPosition, 1);
         newOrder.splice(position, 0, place);
 
-        this.setState({ places: newOrder, isFetching: true });
+        this.setState({ places: newOrder });
 
         const body = JSON.stringify({ id, position });
-        const response = await fetch(`${api}/order`, { method: 'PUT', body, ...options });
+        const response = await this.sendRequest(`${api}/order`, 'PUT', body);
 
         if (response.status !== 200) {
-            this.setState({ places: oldOrder, isFetching: false });
-        } else {
-            this.setState({ isFetching: false });
+            this.setState({ places: oldOrder });
         }
     }
 
     async changeFilters(search, visibility) {
-        this.setState({ isFetching: true });
-
-        const response = await fetch(
-            `${api}?pageSize=${pageSize}&search=${search}`, options);
+        const response = await this.sendRequest(
+            `${api}?pageSize=${pageSize}&search=${search}`, 'GET');
         const places = await response.json();
 
-        this.setState({ search, visibility, places, isFetching: false });
+        this.setState({ search, visibility, places });
+    }
+
+    async sendRequest(url, method, body) {
+        this.setState({ isFetching: true });
+        try {
+            const response = await fetch(url, { method, body, ...options });
+            this.setState({ isFetching: false });
+
+            return response;
+        } catch (err) {
+            this.setState({ isFetching: false });
+            throw err;
+        }
     }
 
     render() {

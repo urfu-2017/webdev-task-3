@@ -18,6 +18,7 @@ export class Place extends Component {
         this.disableEdit = this.disableEdit.bind(this);
         this.orderUp = this.orderUp.bind(this);
         this.orderDown = this.orderDown.bind(this);
+        this.onKeyUp = this.onKeyUp.bind(this);
     }
 
     onVisitChange(evt) {
@@ -55,17 +56,18 @@ export class Place extends Component {
     enableEdit() {
         this.setState({ isEditMode: true });
         this.input.focus();
-
-        setTimeout(() => {
-            document.addEventListener('click', this.disableEdit);
-        }, 300);
     }
 
-    disableEdit(evt) {
-        if (evt.target !== this.input) {
+    disableEdit() {
+        if (this.state.isEditMode) {
             this.setState({ isEditMode: false });
-            document.removeEventListener('click', this.disableEdit);
             this.onDescriptionChange();
+        }
+    }
+
+    onKeyUp(evt) {
+        if (evt.keyCode === 13) {
+            this.input.blur();
         }
     }
 
@@ -97,6 +99,9 @@ export class Place extends Component {
                     type="text"
                     readonly={!isEditMode}
                     value={description}
+                    onBlur={this.disableEdit}
+                    onKeyUp={this.onKeyUp}
+                    placeholder="Название не может быть пустым"
                 />
                 <span onClick={this.orderUp} class={styles.action}>&#8679;</span>
                 <span onClick={this.orderDown} class={styles.action}>&#8681;</span>

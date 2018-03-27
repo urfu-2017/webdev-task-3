@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { createVNode } from './vnode';
 
 /**
@@ -45,7 +44,7 @@ export class Component {
      * @param {Object} newProps
      * @returns {boolean}
      */
-    shouldUpdate(newProps) {
+    shouldUpdate() {
         return true;
     }
 

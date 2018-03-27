@@ -25,14 +25,18 @@ export class AbstractVNode {
         throw new Error('Not implemented');
     }
 
+    tryCreateInstance() {
+        if (!this.instance) {
+            this.createInstance();
+        }
+    }
+
     /**
      * Рекурсивно монтирует узлы к корню
      * @param {Node} node
      */
     mount(node) {
-        if (!this.instance) {
-            this.createInstance();
-        }
+        this.tryCreateInstance();
 
         for (const child of this.children) {
             child.mount(this.node);
@@ -62,9 +66,7 @@ export class AbstractVNode {
      * @param {AbstractVNode} vNode
      */
     replace(vNode) {
-        if (!this.instance) {
-            vNode.createInstance();
-        }
+        vNode.tryCreateInstance();
 
         for (const child of vNode.children) {
             child.mount(vNode.node);

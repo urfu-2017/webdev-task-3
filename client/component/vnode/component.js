@@ -46,7 +46,7 @@ export class ComponentVNode extends AbstractVNode {
             this.props = this.instance.props = props;
             const root = this.instance.render();
 
-            this._diffChildren(root);
+            this.instance.__root.patch(root);
         }
     }
 

@@ -60,7 +60,7 @@ export class CreateForm extends Component {
         const { error, isFetching } = this.state;
 
         return (
-            <div>
+            <div class={styles.container}>
                 <form class={styles.form} onSubmit={this.onSubmit}>
                     <input
                         class={styles.input}

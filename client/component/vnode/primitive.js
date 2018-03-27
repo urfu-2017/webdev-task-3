@@ -7,7 +7,17 @@ export class PrimitiveVNode extends AbstractVNode {
 
     constructor(value) {
         super(primitiveType, { value: String(value) });
-        this.children = EMPTY_ARRAY;
+    }
+
+    get children() {
+        return EMPTY_ARRAY;
+    }
+
+    /**
+     * @param {*} value
+     */
+    set children(value) {
+        // ignored
     }
 
     createInstance() {
