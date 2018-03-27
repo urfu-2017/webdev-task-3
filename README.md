@@ -3,5 +3,6 @@
 ### Инструкция для запуску
 
 - npm i
+- npm run build
 - npm start
 - Сервис работает по адресу [http://localhost:8080](http://localhost:8080)
