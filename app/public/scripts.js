@@ -63,6 +63,8 @@ const recordTemplate = `<div class="record">
 </form>
 </div>`;
 
+const spinnerTemplate = '<div class="spinner-wrapper hidden"><div class="spinner"></div></div>';
+
 const titleWrapperTemplate = `<div class="record__element record__title-wrapper">
 <span class="record__title record__element"></span>
 <span class="record__edit record__editor hidden"></span>
@@ -84,6 +86,15 @@ function htmlToElement(html) {
     return template.content.firstChild;
 }
 
+function toggleLoadSpinner() {
+    const recordsList = document.querySelector('.spinner-wrapper');
+    if (recordsList.classList.contains('hidden')) {
+        recordsList.classList.remove('hidden');
+    } else {
+        recordsList.classList.add('hidden');
+    }
+}
+
 function updateState(updatedProps) {
     if (updatedProps) {
         Object.keys(updatedProps).forEach(prop => {
@@ -103,7 +114,7 @@ function updateState(updatedProps) {
 function repaintRecords() {
     const recordList = document.querySelector('.records-list');
     recordList.innerHTML = '';
-
+    recordList.appendChild(htmlToElement(spinnerTemplate));
     for (let i = 0; i < state.recordsToDisplay.length; i++) {
         recordList.appendChild(buildRecord(i));
     }
@@ -232,25 +243,33 @@ function toggleVisited() {
     if (title.classList.contains('crossed')) {
         state.recordsToDisplay[number].isVisited = false;
         title.classList.remove('crossed');
-        api.updateRecord(state.recordsToDisplay[number].id, { isVisited: 'false' });
+        toggleLoadSpinner();
+        api.updateRecord(state.recordsToDisplay[number].id, { isVisited: 'false' })
+            .then(toggleLoadSpinner());
     } else {
         state.recordsToDisplay[number].isVisited = true;
         title.classList.add('crossed');
-        api.updateRecord(state.recordsToDisplay[number].id, { isVisited: 'true' });
+        toggleLoadSpinner();
+        api.updateRecord(state.recordsToDisplay[number].id, { isVisited: 'true' })
+            .then(toggleLoadSpinner());
     }
 }
 
 function moveRecord() {
     const index = parseInt(this.getAttribute('number'), 10);
-    let newRecords = state.records;
+    const newRecords = state.records;
     if (this.classList.contains('record__up-arrow')) {
         const upRecord = newRecords[index - 1];
-        api.moveRecord(newRecords[index].id, 'up');
+        toggleLoadSpinner();
+        api.moveRecord(newRecords[index].id, 'up')
+            .then(toggleLoadSpinner());
         newRecords[index - 1] = newRecords[index];
         newRecords[index] = upRecord;
     } else {
         const downRecord = newRecords[index + 1];
-        api.moveRecord(newRecords[index].id, 'down');
+        toggleLoadSpinner();
+        api.moveRecord(newRecords[index].id, 'down')
+            .then(toggleLoadSpinner());
         newRecords[index + 1] = newRecords[index];
         newRecords[index] = downRecord;
     }
@@ -281,7 +300,10 @@ function deleteRecord() {
     this.parentNode.parentNode.remove();
     newRecords.splice(newRecords.findIndex(item => item.id === record.id), 1);
 
-    api.deleteRecords([record.id]);
+    toggleLoadSpinner();
+    api.deleteRecords([record.id])
+        .then(toggleLoadSpinner());
+
     updateState({ records: newRecords });
 }
 
@@ -294,7 +316,9 @@ function acceptEdit() {
     const index = this.parentNode.getAttribute('number');
     const record = state.recordsToDisplay[index];
     record.place = this.parentNode.firstChild.value;
-    api.updateRecord(record.id, { place: record.place });
+    toggleLoadSpinner();
+    api.updateRecord(record.id, { place: record.place })
+        .then(toggleLoadSpinner());
 
     updateState();
 }
@@ -309,17 +333,21 @@ function cancelEdit() {
 function deleteAllRecords() {
     if (state.filter === 'all') {
         updateState({ records: [] });
-        api.deleteAllRecords();
+        toggleLoadSpinner();
+        api.deleteAllRecords()
+            .then(toggleLoadSpinner());
     } else {
         const recordsToDelete = [];
-        let newRecords = state.records;
+        const newRecords = state.records;
         state.recordsToDisplay.forEach((record) => {
             recordsToDelete.push(record.id);
             newRecords.splice(newRecords.indexOf(record), 1);
         });
 
         updateState({ records: newRecords });
-        api.deleteRecords(recordsToDelete);
+        toggleLoadSpinner();
+        api.deleteRecords(recordsToDelete)
+            .then(toggleLoadSpinner());
     }
 }
 
@@ -336,20 +364,20 @@ function createRecord() {
     this.previousElementSibling.setAttribute('placeholder', 'Название места');
     this.setAttribute('disabled', '');
 
-    let newRecords = state.records;
+    const newRecords = state.records;
 
+    toggleLoadSpinner();
     api.createRecord(value)
         .then((record) => {
             this.removeAttribute('disabled');
+            toggleLoadSpinner();
             newRecords.push(record);
             updateState({ records: newRecords });
         });
 }
 
 function updateInput() {
-    if (this.value) {
-        updateState({ input: this.value });
-    }
+    updateState({ input: this.value });
 }
 
 // Ининциализация страницы, первичная отрисовка динамических записей
