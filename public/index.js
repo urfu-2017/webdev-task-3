@@ -1,9 +1,9 @@
 const URL = 'https://webdev-task-2-rmcovhtbdk.now.sh/places';
 
-var allPlaces = true;
-var onlyVisited = true;
-var textForFilter = '';
-var placesList;
+let allPlaces = true;
+let onlyVisited = true;
+let textForFilter = '';
+let placesList;
 
 class PlaceWrapper {
     constructor(place, index) {
@@ -36,6 +36,7 @@ class PlaceWrapper {
         let elementEditFileds = document.querySelector(`.places__edit-${this.place.id}`);
         let elementEdit = document.querySelector(`.places__edit-one-${this.place.id}`);
         elementEdit.onclick = () => {
+            document.querySelector(`.places__new-name-${this.place.id}`).value = this.place.name;
             elementPlaceName.style.display = 'none';
             elementEditFileds.style.display = 'block';
         };
@@ -149,7 +150,7 @@ class PlacesList {
             .then(() => fetch(URL))
             .then(data => data.json())
             .then(json => {
-                var items = json;
+                let items = json;
                 _this.updatePlacesList(items);
             });
     }
@@ -240,22 +241,22 @@ window.onload = async function () {
 
     await placesList.getPlacesFromServer();
 
-    var createPlaceBtn = document.querySelector('.create-place__button');
+    let createPlaceBtn = document.querySelector('.create-place__button');
     createPlaceBtn.onclick = create;
 
-    var clearBtn = document.querySelector('.places__delete-all');
+    let clearBtn = document.querySelector('.places__delete-all');
     clearBtn.onclick = deleteAll;
 
-    var allBtn = this.document.querySelector('.places__button-all');
+    let allBtn = this.document.querySelector('.places__button-all');
     allBtn.onclick = showAll;
 
-    var visitedBtn = this.document.querySelector('.places__button-visited');
+    let visitedBtn = this.document.querySelector('.places__button-visited');
     visitedBtn.onclick = showVisited;
 
-    var notVisitedBtn = this.document.querySelector('.places__button-not-visited');
+    let notVisitedBtn = this.document.querySelector('.places__button-not-visited');
     notVisitedBtn.onclick = showNotVisited;
 
-    var searchInput = this.document.querySelector('.search__input');
+    let searchInput = this.document.querySelector('.search__input');
     searchInput.onkeydown = (e) => filterByText(e);
 };
 
