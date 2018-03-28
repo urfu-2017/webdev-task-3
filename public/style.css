@@ -1,0 +1,205 @@
+body
+{
+    padding: 50px 5%;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.page
+{
+    background-color: #eefbfd;
+    margin: auto;
+    text-align: initial;
+    padding: 20px;
+    width: 600px;
+    box-shadow: 0 0 5px #000;
+    border: 1px solid #000;
+    overflow: hidden;
+}
+
+button,
+input,
+label
+{
+    cursor: pointer;
+}
+
+.search
+{
+    position: relative;
+}
+
+.search__field
+{
+    width: 100%;
+    box-sizing: border-box;
+    text-indent: 20px;
+    border-radius: 5px;
+}
+
+.search:before
+{
+    position: absolute;
+    content: "\f002";
+    font-family: 'Font Awesome 5 Free';
+    line-height: 20px;
+    top: 0;
+    bottom: 0;
+    padding: 0 3px;
+}
+
+.create-place
+{
+    display: flex;
+    margin: 20px 0 15px 0;
+}
+
+.create-place__name
+{
+    flex-grow: 1;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.btn_type_normal {
+    background: #00ff37;
+    border: none;
+    border-radius: 20px;
+}
+
+.input_type_normal {
+    padding: 5px;
+    border: none;
+}
+
+.places__header
+{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 1px;
+    margin-bottom: 20px;
+}
+
+.places__heading
+{
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.places__heading-text
+{
+    display: inline-block;
+    margin: 0;
+}
+
+.places__btn-all,
+.places__btn-not-visited,
+.places__btn-visited
+{
+    border: solid black 1px;
+}
+
+.places__btn-all:hover,
+.places__btn-not-visited:hover,
+.places__btn-visited:hover {
+    box-shadow: 0 0 5px #5ab9e6;
+}
+
+.places__btn-all
+{
+    border-radius: 5px 0 0 5px;
+    border-right: none;
+}
+
+.places__btn-visited
+{
+    border-radius: 0 5px 5px 0;
+    border-left: none;
+}
+
+.places__inp-all:checked + .places__btn-all,
+.places__inp-visited:checked + .places__btn-visited,
+.places__inp-not-visited:checked + .places__btn-not-visited
+{
+    background: rgba(255, 0, 0, 0.3);
+}
+
+.places__place
+{
+    display: flex;
+    align-items: baseline;
+}
+
+.places__place-name,
+.edit-field
+{
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.places__place-name
+{
+    font-size: 1.5em;
+}
+
+.places__place-name_checked {
+    text-decoration: line-through;
+    color: rgb(107, 107, 107);
+}
+
+.places__move-buttons
+{
+    margin-right: 10px;
+}
+
+.edit-field__buttons
+{
+    display: inline-block;
+}
+
+.places__place:not(:hover) .places__edit-buttons
+{
+    visibility: hidden;
+}
+
+.places__place:first-of-type .places__btn-move-up,
+.places__place:last-of-type .places__btn-move-down
+{
+    visibility: hidden;
+}
+
+.btn_type_float
+{
+    background: none;
+    border: solid rgba(255, 255, 255, 0) 1px;
+    border-radius: 2px;
+}
+
+.btn_type_float:hover
+{
+    border: solid grey 1px;
+}
+
+.footer
+{
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #000;
+}
+
+.load-screen
+{
+    position: absolute;
+    display: flex;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.219);
+}
+
+.load-screen__text
+{
+    margin: auto;
+    color: #fff;
+}
