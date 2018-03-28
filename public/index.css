@@ -1,0 +1,127 @@
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+    min-height: 100vh;
+    font-family: 'Comic Sans MS', Arial, sans-serif;
+    font-weight: 200;
+    color: black;
+}
+
+input {
+    color: black;
+    border: 1px solid black;
+    border-radius: 2px;
+}
+
+.section-header {
+    font-weight: 600;
+    font-size: 28px;
+}
+
+.main-layout {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 50%;
+    font-size: 18px;
+}
+
+.search-box {
+    margin: 24px;
+}
+
+.search-box__title {
+    display: block;
+    margin: 0 0 4px;
+}
+
+.search-box__input {
+    font-size: 24px;
+    width: 100%;
+}
+
+.create-box {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 24px;
+}
+
+.create-box__input {
+    flex-grow: 2;
+    font-size: 24px;
+}
+
+.create-box__button {
+    display: block;
+    margin: 0 0 0 24px;
+    padding: 7px 20px;
+    background: darkorange;
+    color: #fff;
+    border: none;
+    font-family: "Comic Sans MS", Arial, sans-serif;
+    font-size: 16px;
+}
+
+.create-box__button:focus {
+    outline-width: 0;
+}
+
+.create-box__button:active {
+    box-shadow: 0 0;
+}
+
+.list {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin: 0 24px 8px;
+}
+
+.list__header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 16px;
+    border-bottom: 1px solid black;
+}
+
+.list__title {
+    margin: 0 16px 0 0;
+}
+
+.list__radio {
+    display: none;
+}
+
+.list__radio-label {
+    color: cornflowerblue;
+    font-weight: 200;
+}
+
+.list__radio:checked ~ span {
+    color: black;
+    font-weight: 600;
+}
+
+.list__clear {
+    color: cornflowerblue;
+
+    width: 24px;
+    height: 24px;
+}
+
+.list__clear:active {
+    color: black;
+}
+
+.list__header-blank-space {
+    flex-grow: 2;
+}
+
