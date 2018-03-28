@@ -1,0 +1,25 @@
+{
+    "extends": ["hrundel/browser", "plugin:react/recommended"],
+    "parserOptions": {
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true
+        }
+    },
+
+    "plugins": ["react"],
+    "settings": {
+        "react": {
+            "pragma": "Component"
+        }
+    },
+
+    "rules": {
+        "newline-before-return": ["off"],
+        "no-return-assign": ["off"],
+        "react/no-unknown-property": ["off"],
+        "react/prop-types": ["off"],
+        "react/jsx-key": ["off"]
+    }
+}

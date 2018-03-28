@@ -1,0 +1,8 @@
+.errorBox {
+    visibility: hidden;
+    color: red;
+}
+
+.visible {
+    visibility: visible;
+}
