@@ -285,7 +285,7 @@ async function requestSwap({ name1, name2 }) {
     });
 }
 
-async function requestEdit({item, name, visited }) {
+async function requestEdit({ item, name, visited }) {
     return await fetch(`${NOW_SCRIPT_ADDRESS}/places/?name=${item.name}`, {
         mode: 'cors',
         method: 'PATCH',
