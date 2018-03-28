@@ -23,30 +23,23 @@ export class Place extends Component {
 
     onVisitChange(evt) {
         const isVisited = evt.target.checked;
+        evt.target.checked = !isVisited;
 
         if (this.state.isFetching) {
             return;
         }
 
-        this.props.onChangePlace({ ...this.props.place, isVisited })
-            .catch(() => {
-                evt.target.checked = !isVisited;
-            });
+        this.props.onChangePlace({ ...this.props.place, isVisited });
     }
 
-    onDescriptionChange() {
-        const newDescription = this.input.value;
-        const place = this.props.place;
+    onDescriptionChange(newDescription) {
+        const { place } = this.props;
 
         if (!newDescription || (newDescription === place.description)) {
-            this.input.value = place.description;
             return;
         }
 
-        this.props.onChangePlace({ ...this.props.place, description: newDescription })
-            .catch(() => {
-                this.input.value = place.description;
-            });
+        this.props.onChangePlace({ ...place, description: newDescription });
     }
 
     onDelete() {
@@ -60,8 +53,10 @@ export class Place extends Component {
 
     disableEdit() {
         if (this.state.isEditMode) {
+            const description = this.input.value;
+
             this.setState({ isEditMode: false });
-            this.onDescriptionChange();
+            this.onDescriptionChange(description);
         }
     }
 

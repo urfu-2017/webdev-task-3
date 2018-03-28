@@ -95,19 +95,16 @@ class Application extends Component {
         const oldPosition = places.findIndex(place => place.id === id);
         const place = places[oldPosition];
 
-        const oldOrder = places.slice();
         const newOrder = places.slice();
 
         newOrder.splice(oldPosition, 1);
         newOrder.splice(position, 0, place);
 
-        this.setState({ places: newOrder });
-
         const body = JSON.stringify({ id, position });
         const response = await this.sendRequest(`${api}/order`, 'PUT', body);
 
-        if (response.status !== 200) {
-            this.setState({ places: oldOrder });
+        if (response.status === 200) {
+            this.setState({ places: newOrder });
         }
     }
 
