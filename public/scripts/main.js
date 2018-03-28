@@ -110,17 +110,17 @@ class Place {
 
         element.innerHTML =
             `<input class="place__edit-button place__button"
-            type="image" src="./icons./002-pen.svg" alt="pen">
+            type="image" src="./icons/002-pen.svg" alt="pen">
 
         <input class="place__delete-button place__button"
-        type="image" src="./icons./009-can.svg" alt="trash">
+        type="image" src="./icons/009-can.svg" alt="trash">
 
         <div class="place__description ${descriptionModificator}">${placeModel.description}</div>
         <input class="place__moveup-button place__button"
-        type="image" src="./icons./upArrow.svg" alt="up arrow">
+        type="image" src="./icons/upArrow.svg" alt="up arrow">
 
         <input class="place__movedown-button place__button"
-        type="image" src="./icons./downArrow.svg" alt="down arrow">
+        type="image" src="./icons/downArrow.svg" alt="down arrow">
 
         <input class="place__visit-status" type="checkbox" ${inputState}>`;
 
