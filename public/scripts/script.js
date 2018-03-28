@@ -265,7 +265,6 @@ async function requestCreate({ name }) {
 }
 
 async function requestDelete({ name }) {
-    console.log(name);
     return await fetch(`${NOW_SCRIPT_ADDRESS}/places/?name=${name}`, {
         mode: 'cors',
         method: 'DELETE'
@@ -287,7 +286,6 @@ async function requestSwap({ name1, name2 }) {
 }
 
 async function requestEdit({item, name, visited }) {
-    console.log(arguments);
     return await fetch(`${NOW_SCRIPT_ADDRESS}/places/?name=${item.name}`, {
         mode: 'cors',
         method: 'PATCH',

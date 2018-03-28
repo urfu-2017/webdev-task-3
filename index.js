@@ -16,8 +16,8 @@ app.set('views', viewsDir);
 app.use(express.static(publicDir));
 
 app.get('/', (req, res) => {
-            res.render('index', require('./data.json'));
-        });
+    res.render('index', require('./data.json'));
+});
 
 hbs.registerPartials(partialsDir, () => {
     app.listen(8080, () => {
