@@ -8,7 +8,6 @@ const fetchResults = async () => {
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            'X-Custom-Header': 'ProcessThisImmediately',
             'Content-type': 'application/json; charset=utf-8'
         }
 

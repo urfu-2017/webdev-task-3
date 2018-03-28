@@ -3,66 +3,48 @@
 <head>
     <meta charset="utf-8">
     <title>{{title}}</title></head>
-<script>
-    async function checkboxStatus(n, id, nameOfPlace) {
-        const url='https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/';
 
-        let x = n.checked;
-        let body = '';
-        if (x !== false) {
-            body = 'mark=' + encodeURIComponent(x) + '&place=' + nameOfPlace;
-        } else body = 'place=' + nameOfPlace;
-        await fetch(url + id, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body
-        });
-    }
+        <scr{{!}}ipt src="{{ staticBasePath }}mainScripts.js"></scr{{!}}ipt>
 
-
-</script>
 <link rel="stylesheet" href="{{ staticBasePath }}index.css" media="screen">
 <header class="header main-page-header">{{header}}</header>
 
 <body>
 
-<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for places..">
+<input type="text" id="searchInput" onkeyup="liveSearch()" placeholder="Search for places..">
 <p>
     <input type="text" id="post" placeholder="Add places..">
     <button type="button" onclick="loadDoc()">Request data</button>
 </p>
 <button type="button" onclick="deleteAll()">Delete All</button>
 
-<div id="myBtnContainer">
+<div id="btnContainer">
     <button class="btn active" onclick="filterSelection('all')"> Show all</button>
     <button class="btn" onclick="filterSelection('true')"> was</button>
     <button class="btn" onclick="filterSelection('false')"> wasnt</button>
 </div>
-<div id="myDiv">
+<div id="mainDiv">
 
 
     {{data.info.description}}
     {{#each data.info}}
 
-        <div class="filterDiv {{this.mark}}" id="myUL">
+        <div class="filterDiv {{this.mark}}" id="filtered">
             <p class="icons">
                 <img
                     src="https://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png"
                     onclick="deleteElement({{json this._id}},this) ">
-                <img onclick="edit(this,{{json this._id}})"
+                <img onclick="editElement(this,{{json this._id}})"
                      src="https://cdn.iconscout.com/public/images/icon/free/png-512/pencil-art-draw-design-sketch-stationary-tool-3b225aa02dd4e31d-512x512.png">
             </p>
             <p class="places"><span>{{this.place}}</span></p>
             {{#if this.mark}}
                 <p class="mark"><input type="checkbox" class="markInput"
-                                       onclick="checkboxStatus(this,{{json this._id}},{{json this.place}})" checked
+                                       onclick="checkStatusofCheckbox(this,{{json this._id}},{{json this.place}})" checked
                                        title="mark"></p>
             {{else}}
                 <p class="mark"><input type="checkbox" class="markInput"
-                                       onclick="checkboxStatus(this,{{json this._id}},{{json this.place}})"
+                                       onclick="checkStatusofCheckbox(this,{{json this._id}},{{json this.place}})"
                                        title="mark"></p>
             {{/if}}
 
@@ -70,203 +52,6 @@
 
     {{/each}}
 </div>
-
-<script>
-
-    filterSelection("all");
-
-    function filterSelection(c) {
-        let x, i;
-        x = document.getElementsByClassName("filterDiv");
-        if (c === "all") c = "";
-        // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
-        for (i = 0; i < x.length; i++) {
-            w3RemoveClass(x[i], "show");
-            if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-        }
-    }
-
-    // Show filtered elements
-    function w3AddClass(element, name) {
-        let i, arr1, arr2;
-        arr1 = element.className.split(" ");
-        arr2 = name.split(" ");
-        for (i = 0; i < arr2.length; i++) {
-            if (arr1.indexOf(arr2[i]) === -1) {
-                element.className += " " + arr2[i];
-            }
-        }
-    }
-
-    // Hide elements that are not selected
-    function w3RemoveClass(element, name) {
-        let i, arr1, arr2;
-        arr1 = element.className.split(" ");
-        arr2 = name.split(" ");
-        for (i = 0; i < arr2.length; i++) {
-            while (arr1.indexOf(arr2[i]) > -1) {
-                arr1.splice(arr1.indexOf(arr2[i]), 1);
-            }
-        }
-        element.className = arr1.join(" ");
-    }
-
-    // Add active class to the current control button (highlight it)
-    const btnContainer = document.getElementById("myBtnContainer");
-    const btns = btnContainer.getElementsByClassName("btn");
-    for (let i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", function () {
-            let current = document.getElementsByClassName("active");
-            current[0].className = current[0].className.replace(" active", "");
-            this.className += " active";
-        });
-    }
-    const url='https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/';
-
-    async function deleteAll() {
-        await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-        });
-        let myNode = document.getElementById("myDiv");
-        while (myNode.firstChild) {
-            myNode.removeChild(myNode.firstChild);
-        }
-
-    }
-
-    async function edit(n, id) {
-        let span, input, text;
-        span = n.parentNode.parentNode.childNodes[3].getElementsByTagName('span')[0];
-
-        if (span) {
-            span.style.display = "none";
-
-            text = span.innerHTML;
-
-            // Create an input
-            input = document.createElement("input");
-            input.type = "text";
-            input.value = text;
-            input.size = Math.max(text.length / 4 * 3, 4);
-            span.parentNode.insertBefore(input, span);
-
-            // Focus it, hook blur to undo
-            input.focus();
-            input.onblur = function () {
-                // Remove the input
-                span.parentNode.removeChild(input);
-
-                // Update the span
-                span.innerHTML = input.value === "" ? "&nbsp;" : input.value;
-
-                // Show the span again
-                span.style.display = "";
-            };
-
-            input.onchange = () => upload(input.value, id);
-
-        }
-    }
-
-    async function upload(text, id) {
-        const place = document.getElementById("post").value;
-
-        const body = 'place=' + encodeURIComponent(text);
-        const data = await fetch(url + id, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body
-        });
-    }
-
-
-    async function loadDoc() {
-        const place = document.getElementById("post").value;
-
-        const body = 'place=' + encodeURIComponent(place);
-        const data = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body
-        })
-            .then(res => res.json())
-            .then(res => createPlaceHTML(res,place))
-    }
-
-    function createPlaceHTML(result,place) {
-        id = result.insertedIds[0];
-        const buttons = document.createElement("p");
-        buttons.className = 'icons';
-        const trash = document.createElement('img');
-        trash.setAttribute('src', "https://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png");
-        trash.setAttribute('onclick', `deleteElement("${id}",this)`);
-        buttons.appendChild(trash);
-        const edit = document.createElement('img');
-        edit.setAttribute('src', "https://cdn.iconscout.com/public/images/icon/free/png-512/pencil-art-draw-design-sketch-stationary-tool-3b225aa02dd4e31d-512x512.png");
-        edit.setAttribute('onclick', `edit(this,"${id}")`);
-        buttons.appendChild(edit);
-        const node = document.createElement("p");
-        node.className = 'places';
-        const mark = document.createElement("p");
-        mark.className = 'mark';
-        const textnode = document.createTextNode(place.toString());
-        node.appendChild(textnode);
-        const markCheckbox = document.createElement('input');
-        markCheckbox.setAttribute('type', 'checkbox');
-        markCheckbox.setAttribute('class', 'markInput');
-        markCheckbox.setAttribute('onclick', `checkboxStatus(this,"${id}","${place}")`);
-        mark.appendChild(markCheckbox);
-        const element = document.createElement("div");
-        element.className = 'filterDiv false';
-        element.setAttribute('id', 'myUL');
-        element.appendChild(buttons);
-        element.appendChild(node);
-        element.appendChild(mark);
-        document.getElementById('myDiv').appendChild(element);
-    }
-
-    function myFunction() {
-        let input, filter, ul, li, a, i;
-        input = document.getElementById('myInput');
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("myDiv");
-        li = ul.getElementsByClassName('filterDiv');
-
-        // Loop through all list items, and hide those who don't match the search query
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("p")[0];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-    }
-
-    async function deleteElement(id, n) {
-        let obj;
-        n.parentNode.parentNode.remove(n);
-
-        await fetch(url + id, {
-            method: 'DELETE',
-        })
-            .then(res => res.json())
-            .then(data => obj = data)
-
-    }
-
-
-</script>
 
 </body>
 <footer class="footer">
