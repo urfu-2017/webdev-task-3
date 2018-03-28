@@ -19,7 +19,19 @@ async function createPlace() {
     await updatePlaceList();
 }
 
+function enableSpinner() {
+    const node = document.createElement('div');
+    node.className = 'loading';
+    const spinner = document.createElement('div');
+    node.appendChild(spinner);
+    spinner.className = 'spinner';
+    const placesList = document.querySelector('.places__list');
+    placesList.innerHTML = '';
+    placesList.appendChild(node);
+}
+
 async function updatePlaceList() {
+    enableSpinner();
     await loadPlaces();
     filterPlaces();
 }
@@ -138,6 +150,7 @@ async function editDescription(place) {
     const input = document.querySelector(`.place${place.id} input`);
     const description = input.value;
     if (description) {
+        enableSpinner();
         await fetch(apiUrl + place.id, {
             method: 'PATCH',
             headers: {
@@ -171,7 +184,7 @@ async function setVisitValue(id, visited) {
     if (targetPlace) {
         targetPlace.visited = visited;
     }
-    filterPlaces();
+    enableSpinner();
 
     await fetch(apiUrl + id, {
         method: 'PATCH',
@@ -222,7 +235,7 @@ window.onload = async function () {
     document.querySelector('.search__input')
         .addEventListener('keypress', async e => {
             if (e.keyCode === 13) {
-                await filterPlaces();
+                await updatePlaceList();
             }
         });
 
@@ -236,7 +249,7 @@ window.onload = async function () {
         });
 
     document.querySelectorAll('.places__filter input').forEach(input => {
-        input.onclick = filterPlaces;
+        input.onclick = updatePlaceList;
     });
 
     document.querySelector('.place__remover-submit').onclick = clearList;

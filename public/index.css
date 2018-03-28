@@ -66,7 +66,7 @@ main
 .places__list
 {
     text-align: center;
-
+    margin-top: 20px;
 }
 
 .footer
@@ -142,4 +142,21 @@ main
     border: none;
     background-color: transparent;
     outline: none;
+}
+
+.loading
+{
+    position: relative;
+    min-height: 100px;
+}
+
+.spinner
+{
+    background: url(img/spinner.svg) no-repeat center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-size: 100px 100px;
 }
