@@ -35,7 +35,7 @@ export const api = {
     },
 
     deletePlace(travel) {
-        return fetch(`${apiUrl}/${getIndexTravel(travel)}`, { method: 'DELETE' });
+        return fetch(`${apiUrl}/${travel.dataset.id}`, { method: 'DELETE' });
     },
 
     patchName({ travel, newValue }) {

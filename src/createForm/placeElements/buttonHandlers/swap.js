@@ -1,15 +1,9 @@
 import { api } from '../../../api';
+import { updateState } from '../../../state';
 
 
 export function swapTravels(first, second) {
     api.postSwapPlaces({ first, second })
-        .then(() => {
-            const parent = first.parentNode;
-            let tempForSecond = first.cloneNode(true);
-            parent.insertBefore(tempForSecond, first);
-            parent.insertBefore(first, second);
-            parent.insertBefore(second, tempForSecond);
-            parent.removeChild(tempForSecond);
-        })
+        .then(() => updateState(false, { swapTravels: { first, second } }))
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }

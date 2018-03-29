@@ -1,4 +1,3 @@
-import { renderTravel, placesContainer } from '../state';
 import { addTitle } from './placeElements/addTitle';
 import { addVisitStatus } from './placeElements/addVisitStatus';
 import { addArrows } from './placeElements/addArrows';
@@ -8,11 +7,11 @@ import { addCancelButton } from './placeElements/addCancelButton';
 import { addOkButton } from './placeElements/addOkButton';
 
 
-export function addTravel(place) {
+export function createTravel(place) {
     const travel = createListItem(place);
     saveFields(travel, place);
-    renderTravel(travel);
-    placesContainer.appendChild(travel);
+
+    return travel;
 }
 
 function createListItem(place) {

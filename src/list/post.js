@@ -1,6 +1,6 @@
 import { api } from '../api';
-import { nameAddedPlace } from '../state';
-import { addTravel } from '../createForm/addPlace';
+import { nameAddedPlace, updateState } from '../state';
+import { createTravel } from '../createForm/addPlace';
 
 
 export function postAddedTravel() {
@@ -8,6 +8,6 @@ export function postAddedTravel() {
         return;
     }
     api.postPlace()
-        .then(addTravel)
+        .then(place => updateState(false, { addTravel: createTravel(place) }))
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }

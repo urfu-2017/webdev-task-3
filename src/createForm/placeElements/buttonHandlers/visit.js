@@ -1,14 +1,15 @@
 import { api } from '../../../api';
-import { renderTravel } from '../../../state';
+import { updateState } from '../../../state';
 
 
 export function changeVisitStatus(checkbox) {
-    const isVisited = !(checkbox.parentNode.dataset.visited === 'true');
+    const travel = checkbox.parentNode;
+    const isVisited = !(travel.dataset.visited === 'true');
     checkbox.disabled = true;
     api.postChangeVisitStatus({ checkbox, isVisited })
         .then(() => {
-            checkbox.parentNode.dataset.visited = isVisited;
-            renderTravel(checkbox.parentNode);
+            travel.dataset.visited = isVisited;
+            updateState(false, { updateTravelDisplay: travel });
             checkbox.disabled = false;
         })
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));

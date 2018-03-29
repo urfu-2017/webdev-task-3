@@ -1,4 +1,5 @@
 import { api } from '../../api';
+import { updateState } from '../../state';
 
 
 export function addDeleteButton(travel) {
@@ -11,6 +12,6 @@ export function addDeleteButton(travel) {
 
 function removeTravel(travel) {
     api.deletePlace(travel)
-        .then(() => travel.parentNode.removeChild(travel))
+        .then(() => updateState(false, { deleteTravel: travel }))
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }

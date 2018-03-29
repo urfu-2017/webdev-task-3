@@ -1,9 +1,9 @@
 import { api } from '../api';
-import { placesContainer } from '../state';
+import { updateState } from '../state';
 
 
 export function clearTravels() {
     api.deletePlaces()
-        .then(() => placesContainer.innerHTML = '')
+        .then(() => updateState(false, { clear: true }))
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }

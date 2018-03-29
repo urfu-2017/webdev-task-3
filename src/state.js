@@ -20,6 +20,44 @@ export const visitsChanger = document.querySelectorAll('[name="visit-filter"]');
 export const creatorPlaces = document.querySelector('#create-place');
 export const cleanerPlaces = document.querySelector('#cleaner-places');
 
+export const editState = {
+    addTravel(travel) {
+        placesContainer.appendChild(travel);
+        renderTravel(travel);
+    },
+
+    clear() {
+        placesContainer.innerHTML = '';
+    },
+
+    updateTravelDisplay(travel) {
+        renderTravel(travel);
+    },
+
+    swapTravels({ first, second }) {
+        let tempForSecond = first.cloneNode(true);
+        placesContainer.insertBefore(tempForSecond, first);
+        placesContainer.insertBefore(first, second);
+        placesContainer.insertBefore(second, tempForSecond);
+        placesContainer.removeChild(tempForSecond);
+    },
+
+    deleteTravel(travel) {
+        placesContainer.removeChild(travel);
+    }
+};
+
+
+export function updateState(isFullRendering, changes) {
+    if (changes) {
+        // changes[method] === value
+        Object.keys(changes).forEach(method => editState[method](changes[method]));
+    }
+    if (isFullRendering) {
+        renderTravels();
+    }
+}
+
 
 export function renderTravels() {
     for (let i = 0; i < placesContainer.childNodes.length; i++) {
@@ -28,7 +66,7 @@ export function renderTravels() {
     }
 }
 
-export function renderTravel(travel) {
+function renderTravel(travel) {
     if (travelIncludesMessage(travel.dataset, messagesSearcher.value) &&
         filtration.checkVisit(travel.dataset.visited)) {
         travel.style.display = 'flex';
