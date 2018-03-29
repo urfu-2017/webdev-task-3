@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+</head>
+<body>
+    <main>
+        <input type="text" placeholder="Поиск" class="search">
+        <div class="place-creater">
+            <input type="text" placeholder="Название места" class="place-creater__input place">
+            <input type="button" value="Создать" class="place-creater__button create">
+        </div>
+        <article class="place-editor">
+            <div class="basket">
+                <p class="basket__text">Места</p>
+                <img src="imgs/basket.png" alt="Изображение корзины" class="basket__img delete-All">
+            </div>
+            <section class="tabs">
+                <input type="radio" name="sorting-places" id="all-places" class="tabs__input tabs__input_all-places all-places" checked hidden>
+                <label for="all-places" class="tabs__label tabs__label_all-places">Все</label>
+                <input type="radio" name="sorting-places" id="unvisited-places" class="tabs__input tabs__input_unvizited-places unvizited-places" hidden>
+                <label for="unvisited-places" class="tabs__label tabs__label_unvizited-places ">Посетить</label>
+                <input type="radio" name="sorting-places" id="visited-places" class="tabs__input tabs__input_vizited-places vizited-places" hidden>
+                <label for="visited-places" class="tabs__label tabs__label_vizited-places">Посещенные</label>
+            </section>
+        </article >
+        <section class="places">
+        </section>
+    </main>
+    <footer class="footer">
+        <time class="footer__time">2008</time>
+        <p class=footer__creator>&copy; dorokhova</p>
+    </footer>
+</body>
+</html>
