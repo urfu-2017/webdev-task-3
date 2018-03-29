@@ -10,11 +10,11 @@
     list-style: none;
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px 100px;
 }
 input[id="toVisit"]:checked ~ .places-list .places-item[visited="true"],
-input[id="visited"]:checked ~ .places-list .places-item[visited="false"]
+input[id="visited"]:checked ~ .places-list .places-item[visited="false"],
+.templates
 {
     display: none;
 }
@@ -29,7 +29,10 @@ input[id="visited"]:checked ~ .places-list .places-item[visited="false"]
     color: #000;
 }
 .places-item .places-item__edit-button,
-.places-item .places-item__delete-button
+.places-item .places-item__delete-button,
+.places-item:first-child .places-item__up-button,
+.places-item:last-child .places-item__down-button,
+.hidden
 {
     visibility: hidden;
 }
@@ -37,9 +40,4 @@ input[id="visited"]:checked ~ .places-list .places-item[visited="false"]
 .places-item:hover .places-item__delete-button
 {
     visibility: visible;
-}
-.places-item:first-child .places-item__up-button,
-.places-item:last-child .places-item__down-button
-{
-    visibility: hidden;
 }

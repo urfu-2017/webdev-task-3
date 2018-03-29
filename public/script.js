@@ -10,6 +10,7 @@ const createButton = document.getElementsByClassName('create__button')[0];
 createButton.addEventListener('click', createPlace);
 const clearButton = document.getElementsByClassName('clear-button')[0];
 clearButton.addEventListener('click', clearPlaces);
+const placesList = document.getElementsByClassName('places-list')[0];
 
 async function loadData() {
     const response = await fetch(`${baseUrl}/places`, {
@@ -20,12 +21,12 @@ async function loadData() {
 }
 
 function searchEvent() {
-    const places = document.getElementsByClassName('places-item');
-    [].forEach.call(places, function (place) {
-        const elemName = place.getElementsByClassName('places-item__name')[0];
-        const hidden = !elemName.value.includes(searchInput.value);
-        place.hidden = hidden;
-    });
+    Array.from(document.getElementsByClassName('places-item'))
+        .forEach(place => {
+            const elemName = place.getElementsByClassName('places-item__name')[0];
+            const hidden = !elemName.value.includes(searchInput.value);
+            place.hidden = hidden;
+        });
 }
 
 function addPlaceToPage(place) {
@@ -33,42 +34,36 @@ function addPlaceToPage(place) {
     const htmlPlace = document.createElement('li');
     htmlPlace.classList.add('places-item');
     htmlPlace.setAttribute('visited', place.visited.toString());
-    htmlPlace.appendChild(getEditButton(), htmlPlace.childNodes[0]);
-    htmlPlace.appendChild(getDeleteButton(place), htmlPlace.childNodes[0]);
-    htmlPlace.appendChild(getPlaceName(place.description));
+    htmlPlace.appendChild(getEditButton());
+    htmlPlace.appendChild(getDeleteButton(place));
+    htmlPlace.appendChild(getPlaceName(place));
     htmlPlace.appendChild(getSaveButton(place));
     htmlPlace.appendChild(getCancelButton());
     htmlPlace.appendChild(getUpButton(place));
     htmlPlace.appendChild(getDownButton(place));
     htmlPlace.appendChild(getVisitedCheckbox(place));
-    document.getElementsByClassName('places-list')[0].appendChild(htmlPlace);
+    placesList.appendChild(htmlPlace);
     searchEvent();
 }
 
 function getEditButton() {
-    const editButton = document.createElement('input');
-    editButton.type = 'button';
-    editButton.className = 'places-item__edit-button';
-    editButton.value = '✎';
+    const editButton = document.querySelector('.places-item__edit-button').cloneNode(false);
     editButton.addEventListener('click', function () {
         const input = this.parentNode.getElementsByClassName('places-item__name')[0];
         input.defaultValue = input.value;
         input.disabled = false;
         input.focus();
         this.parentNode.getElementsByClassName('places-item__save-button')[0]
-            .style.visibility = 'visible';
+            .classList.remove('hidden');
         this.parentNode.getElementsByClassName('places-item__cancel-button')[0]
-            .style.visibility = 'visible';
+            .classList.remove('hidden');
     });
 
     return editButton;
 }
 
 function getDeleteButton(place) {
-    const deleteButton = document.createElement('input');
-    deleteButton.type = 'button';
-    deleteButton.className = 'places-item__delete-button';
-    deleteButton.value = '❌';
+    const deleteButton = document.querySelector('.places-item__delete-button').cloneNode(false);
     deleteButton.addEventListener('click', async function () {
         const response = await fetch(`${baseUrl}/places/${place.id}`, {
             method: 'delete',
@@ -78,8 +73,7 @@ function getDeleteButton(place) {
             })
         });
         if (response.ok) {
-            const index = storage.findIndex(_place => _place.id === place.id);
-            storage.splice(index, 1);
+            storage = storage.filter(_place => _place.id !== place.id);
             deleteButton.parentElement.remove();
         }
     });
@@ -87,28 +81,21 @@ function getDeleteButton(place) {
     return deleteButton;
 }
 
-function getPlaceName(description) {
-    const placeName = document.createElement('input');
-    placeName.type = 'text';
-    placeName.className = 'places-item__name';
-    placeName.value = description;
-    placeName.disabled = true;
+function getPlaceName(place) {
+    const placeName = document.querySelector('.places-item__name').cloneNode(false);
+    placeName.value = place.description;
 
     return placeName;
 }
 
 function getSaveButton(place) {
-    const saveButton = document.createElement('input');
-    saveButton.type = 'button';
-    saveButton.className = 'places-item__save-button';
-    saveButton.value = '✓';
-    saveButton.style.visibility = 'hidden';
+    const saveButton = document.querySelector('.places-item__save-button').cloneNode(false);
     saveButton.addEventListener('click', async function () {
         const input = this.parentNode.getElementsByClassName('places-item__name')[0];
         input.disabled = true;
         input.defaultValue = input.value;
-        this.style.visibility = 'hidden';
-        this.nextSibling.style.visibility = 'hidden';
+        this.classList.add('hidden');
+        this.nextSibling.classList.add('hidden');
         const response = await fetch(`${baseUrl}/places/${place.id}?description=${input.value}`, {
             method: 'PATCH'
         });
@@ -121,27 +108,20 @@ function getSaveButton(place) {
 }
 
 function getCancelButton() {
-    const cancelButton = document.createElement('input');
-    cancelButton.type = 'button';
-    cancelButton.className = 'places-item__cancel-button';
-    cancelButton.value = '✗';
-    cancelButton.style.visibility = 'hidden';
+    const cancelButton = document.querySelector('.places-item__cancel-button').cloneNode(false);
     cancelButton.addEventListener('click', function () {
         const input = this.parentNode.getElementsByClassName('places-item__name')[0];
         input.disabled = true;
         input.value = input.defaultValue;
-        this.style.visibility = 'hidden';
-        this.previousSibling.style.visibility = 'hidden';
+        this.classList.add('hidden');
+        this.previousSibling.classList.add('hidden');
     });
 
     return cancelButton;
 }
 
 function getUpButton(place) {
-    const upButton = document.createElement('input');
-    upButton.type = 'button';
-    upButton.className = 'places-item__up-button';
-    upButton.value = '↑';
+    const upButton = document.querySelector('.places-item__up-button').cloneNode(false);
     upButton.addEventListener('click', async function () {
         const currentPosition = storage.findIndex(_place => _place.id === place.id);
         const nextPosition = currentPosition - 1;
@@ -160,10 +140,7 @@ function getUpButton(place) {
 }
 
 function getDownButton(place) {
-    const downButton = document.createElement('input');
-    downButton.type = 'button';
-    downButton.className = 'places-item__down-button';
-    downButton.value = '↓';
+    const downButton = document.querySelector('.places-item__down-button').cloneNode(false);
     downButton.addEventListener('click', async function () {
         const currentPosition = storage.findIndex(_place => _place.id === place.id);
         const nextPosition = currentPosition + 1;
@@ -173,8 +150,8 @@ function getDownButton(place) {
         if (response.ok) {
             const elementToMove = storage.splice(currentPosition, 1)[0];
             storage.splice(nextPosition, 0, elementToMove);
-            const par = this.parentNode;
-            par.parentNode.insertBefore(par.nextSibling, par);
+            const parentNode = this.parentNode;
+            parentNode.parentNode.insertBefore(parentNode.nextSibling, parentNode);
         }
     });
 
@@ -182,9 +159,7 @@ function getDownButton(place) {
 }
 
 function getVisitedCheckbox(place) {
-    const visitedCheckbox = document.createElement('input');
-    visitedCheckbox.type = 'checkbox';
-    visitedCheckbox.className = 'places-item__visited';
+    const visitedCheckbox = document.querySelector('.places-item__visited').cloneNode(false);
     visitedCheckbox.checked = place.visited;
     visitedCheckbox.addEventListener('click', async function () {
         const method = this.checked ? 'put' : 'delete';
