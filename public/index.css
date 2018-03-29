@@ -72,6 +72,7 @@ h1
 .filterDiv:hover .icons
 {
     visibility: visible;
+    display: flex;
 }
 
 #myDiv

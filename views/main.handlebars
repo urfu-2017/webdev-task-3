@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>{{title}}</title></head>
 
-        <scr{{!}}ipt src="{{ staticBasePath }}mainScripts.js"></scr{{!}}ipt>
 
 <link rel="stylesheet" href="{{ staticBasePath }}index.css" media="screen">
 <header class="header main-page-header">{{header}}</header>
@@ -14,14 +13,14 @@
 <input type="text" id="searchInput" onkeyup="liveSearch()" placeholder="Search for places..">
 <p>
     <input type="text" id="post" placeholder="Add places..">
-    <button type="button" onclick="loadDoc()">Request data</button>
+    <button type="button" onclick="loadDoc()">Add Place</button>
 </p>
 <button type="button" onclick="deleteAll()">Delete All</button>
 
 <div id="btnContainer">
     <button class="btn active" onclick="filterSelection('all')"> Show all</button>
     <button class="btn" onclick="filterSelection('true')"> was</button>
-    <button class="btn" onclick="filterSelection('false')"> wasnt</button>
+    <button class="btn" onclick="filterSelection('false')"> wasn't</button>
 </div>
 <div id="mainDiv">
 
@@ -41,7 +40,7 @@
             {{#if this.mark}}
                 <p class="mark"><input type="checkbox" class="markInput"
                                        onclick="checkStatusofCheckbox(this,{{json this._id}},{{json this.place}})" checked
-                                       title="mark"></p>
+                                          title="mark"></p>
             {{else}}
                 <p class="mark"><input type="checkbox" class="markInput"
                                        onclick="checkStatusofCheckbox(this,{{json this._id}},{{json this.place}})"
@@ -52,6 +51,7 @@
 
     {{/each}}
 </div>
+<scr{{!}}ipt src="{{ staticBasePath }}mainScripts.js"></scr{{!}}ipt>
 
 </body>
 <footer class="footer">

@@ -1,6 +1,21 @@
 /* eslint-disable no-unused-vars,no-undef,max-statements,max-len */
 const url = 'https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/';
 
+async function getData() {
+
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-type': 'application/json; charset=utf-8',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Access-Control-Allow-Origin': '*'
+        }
+    });
+
+    return response.json();
+}
+
 async function checkStatusofCheckbox(n, id, nameOfPlace) {
 
     let x = n.checked;
@@ -14,7 +29,7 @@ async function checkStatusofCheckbox(n, id, nameOfPlace) {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-global.urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body
     });
@@ -124,7 +139,7 @@ async function upload(text, id) {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-global.urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body
     });
@@ -177,12 +192,12 @@ function createPlaceHTML(result, place) {
     const markCheckbox = document.createElement('input');
     markCheckbox.setAttribute('type', 'checkbox');
     markCheckbox.setAttribute('class', 'markInput');
-    markCheckbox.setAttribute('onclick', `checkboxStatus(this,"${id}","${place}")`);
+    markCheckbox.setAttribute('onclick', `checkStatusofCheckbox(this,"${id}","${place}")`);
     mark.appendChild(markCheckbox);
 
     // get it all in one scope
     const element = document.createElement('div');
-    element.className = 'filterDiv false';
+    element.className = 'filterDiv false show';
     element.setAttribute('id', 'filtered');
     element.appendChild(buttons);
     element.appendChild(node);
@@ -190,7 +205,7 @@ function createPlaceHTML(result, place) {
     document.getElementById('mainDiv').appendChild(element);
 }
 
-function liveSearch() {
+async function liveSearch() {
     const input = document.getElementById('searchInput');
     const filter = input.value.toUpperCase();
     const ul = document.getElementById('mainDiv');
@@ -205,6 +220,10 @@ function liveSearch() {
             li[i].style.display = 'none';
         }
     }
+    const info = await getData();
+
+    const setOfData = { info };
+
 }
 
 async function deleteElement(id, n) {
