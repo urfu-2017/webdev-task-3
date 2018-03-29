@@ -272,10 +272,13 @@ class PlacesList {
 
     async addNewPlace() {
         const nameInput = document.querySelector('.place-creator__name-input');
-        const newPlace = { description: nameInput.value, isVisited: false };
-        PlacesApi.addPlace(newPlace);
+        const response = await PlacesApi.addPlace({
+            description: nameInput.value,
+            isVisited: false
+        });
+        const newPlaceInJson = await response.json();
         nameInput.value = '';
-        const place = new Place(newPlace);
+        const place = new Place(newPlaceInJson);
         this.listElement.appendChild(place.element);
     }
 }
