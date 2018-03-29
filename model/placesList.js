@@ -1,11 +1,19 @@
 'use strict';
 
-var Request = require('../model/request');
+const Request = require('../model/request');
 
 class PlacesList {
 
     constructor() {
         this.list = [];
+    }
+
+    get visited() {
+        return this.list.filter(place => place.checked);
+    }
+
+    get unvisited() {
+        return this.list.filter(place => !place.checked);
     }
 
     add(place) {
@@ -16,19 +24,8 @@ class PlacesList {
         return this.list;
     }
 
-    getVisited() {
-        return this.list.filter(place => place.checked);
-    }
-
-    getUnvisited() {
-        return this.list.filter(place => !place.checked);
-
-    }
-
     contains(name) {
-        var findedPlace = this.list.find(place => name === place.name);
-
-        return findedPlace !== undefined;
+        return this.list.find(place => name === place.name) !== undefined;
     }
 
     deleteAll() {
@@ -39,7 +36,7 @@ class PlacesList {
         this.list = this.list.filter(currentPlace => currentPlace !== place);
     }
 
-    getIndex(place) {
+    indexOf(place) {
         return this.list.indexOf(place);
     }
 
@@ -48,11 +45,11 @@ class PlacesList {
     }
 
     async swap(index1, index2) {
-        var place = this.list[index1];
+        const place = this.list[index1];
         this.list[index1] = this.list[index2];
         this.list[index2] = place;
-        var request = new Request(`/places/${ place.id }?id=${ this.list[index1].id }`, 'PUT');
-        var status = await request.sendAndReceiveStatus();
+        const request = new Request(`/places/${ place.id }?id=${ this.list[index1].id }`, 'PUT');
+        const status = await request.sendAndReceiveStatus();
         console.info(`Статус запроса(поменять местами):${status}`);
     }
 }

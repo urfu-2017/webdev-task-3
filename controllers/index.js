@@ -1,199 +1,150 @@
 'use strict';
 
-var Place = require('../model/place');
-var PlacesList = require('../model/PlacesList');
-var globalPlacesList = new PlacesList();
+const Place = require('../model/place');
+const PlacesList = require('../model/placesList');
 
+const PlaceView = require('../views/place');
 
-var places = document.getElementsByClassName('places')[0];
+const places = new PlacesList();
 
-document.addEventListener('DOMContentLoaded', loadingPlacesList);
-var search = document.getElementsByClassName('search')[0];
-search.addEventListener('input', placesSearch);
+const placesElement = document.getElementsByClassName('places')[0];
+document.addEventListener('DOMContentLoaded', loadPlacesList);
 
-var button = document.getElementsByClassName('place-creater__button')[0];
-button.addEventListener('click', onClickAddPlace);
+const search = document.getElementsByClassName('search')[0];
+search.addEventListener('input', searchPlaces);
 
-var basket = document.getElementsByClassName('basket__img')[0];
-basket.addEventListener('click', onClickDelitedAll);
+const button = document.getElementsByClassName('create')[0];
+button.addEventListener('click', handleAddPlace);
 
-var visitedPlaces = document.getElementsByClassName('tabs__input_vizited-places')[0];
-visitedPlaces.addEventListener('click', onClickVisited);
+const basket = document.getElementsByClassName('delete-All')[0];
+basket.addEventListener('click', handleDeletedAll);
 
-var unvisitedPlaces = document.getElementsByClassName('tabs__input_unvizited-places')[0];
-unvisitedPlaces.addEventListener('click', onClickUnvisited);
+const visitedPlaces = document.getElementsByClassName('vizited-places')[0];
+visitedPlaces.addEventListener('click', handleVisited);
 
-var allPlaces = document.getElementsByClassName('tabs__input_all-places')[0];
-allPlaces.addEventListener('click', onClickAllPlaces);
+const unvisitedPlaces = document.getElementsByClassName('unvizited-places')[0];
+unvisitedPlaces.addEventListener('click', handleUnvisited);
 
+const allPlaces = document.getElementsByClassName('all-places')[0];
+allPlaces.addEventListener('click', handleAllPlaces);
 
-async function loadingPlacesList() {
-    var placesList = await Place.getPlacesList();
+const input = document.getElementsByClassName('place')[0];
+
+async function loadPlacesList() {
+    const placesList = await Place.getPlacesList();
     placesList.forEach(place => {
-        globalPlacesList.add(place);
-        renderingPlace(place);
+        places.add(place);
+        renderPlace(place);
     });
 }
 
-async function onClickAddPlace() {
-    var input = document.getElementsByClassName('place-creater__input')[0];
-    var placeName = input.value;
-    if (placeName && !globalPlacesList.contains(placeName)) {
-        var place = await Place.create(placeName);
-        globalPlacesList.add(place);
-        renderingPlace(place);
+async function handleAddPlace() {
+    const placeName = input.value;
+    if (placeName && !places.contains(placeName)) {
+        const place = await Place.create(placeName);
+        places.add(place);
+        renderPlace(place);
     } else {
         input.focus();
     }
 }
 
-function placesSearch() {
-    var name = search.value;
+function searchPlaces() {
+    const name = search.value;
     findByName(name);
 }
 
-function onClickVisited() {
-    var placesList = globalPlacesList.getVisited();
-    renderingPlaces(placesList);
+function handleVisited() {
+    const placesList = places.visited;
+    renderPlaces(placesList);
 }
 
-function onClickUnvisited() {
-    var placesList = globalPlacesList.getUnvisited();
-    renderingPlaces(placesList);
+function handleUnvisited() {
+    const placesList = places.unvisited;
+    renderPlaces(placesList);
 }
 
-function onClickAllPlaces() {
-    var placesList = globalPlacesList.getAll();
-    renderingPlaces(placesList);
+function handleAllPlaces() {
+    const placesList = places.getAll();
+    renderPlaces(placesList);
 }
 
-function renderingPlaces(placesList) {
-    places.innerHTML = '';
-    placesList.forEach(place => {
-        renderingPlace(place);
-    });
+function renderPlaces(placesList) {
+    placesElement.innerHTML = '';
+    placesList.forEach(renderPlace);
 }
 
-function renderingPlace(place) {
-    var checked = place.checked ? 'checked' : '';
-    var article = createArticle(place.name, checked);
-    places.appendChild(article);
-    addDeletedControl(place, article);
-    addVisitedControl(place, article);
-    addEditingControl(place, article);
-    addDisplacementControll(place, article);
+function renderPlace(place) {
+    place.view = new PlaceView();
+    place.view.createArticle(place.name, place.description, place.checked);
+    addDeletedControl(place);
+    addVisitedControl(place);
+    addEditingControl(place);
+    addDisplacementControll(place);
+
+    placesElement.appendChild(place.view.htmlElement);
 }
 
-function createArticle(name, checked) {
-    var article = document.createElement('article');
-    article.setAttribute('class', 'places__item');
-    article.innerHTML = `<div class="places__control control">
-            <div class="control__imgs">
-                <img src="imgs/editing.png" 
-                    alt="Изображение карандаша" class="places__editing-control"> 
-                <img src="imgs/basket.png" 
-                    alt="Изображение корзины" class="places__deleting-control">
-            </div>
-            <p class="control__text">${name}</p>
-        </div>
-        <div class=" places__control places__changes-control control_hidden">
-            <input type="text" value=${name} class="control__text">
-            <span class="save"> &#10004; </span>
-            <span class="close"> &#10008; </span>
-        </div>
-        <div class="places__control">
-            <p class="places__moving-control">
-                <span class="place__arow_bottom place__arow"> &#11015; </span>
-                <span class="place__arow_top place__arow"> &#11014; </span>
-            </p>
-            <input type="checkbox" class="places__checked-control" ${checked}>
-        </div>
-    `;
-
-    return article;
-}
-
-function addDeletedControl(place, article) {
-    var control = article.getElementsByClassName('places__deleting-control')[0];
+function addDeletedControl(place) {
+    const control = place.view.getDeletedControl();
     control.addEventListener('click', async () => {
-        if (await place.isDeleted()) {
-            globalPlacesList.delete(place);
-            places.removeChild(article);
+        if (await place.delete()) {
+            places.delete(places);
+            placesElement.removeChild(place.view.htmlElement);
         }
     });
 }
 
-function addVisitedControl(place, article) {
-    var control = article.lastElementChild.lastElementChild;
-    var text = article.getElementsByClassName('control__text')[0];
-    text.style.textDecoration = control.checked ? 'line-through' : 'none';
+function addVisitedControl(place) {
+    const control = place.view.getVisitedControl();
+    place.view.setTextStyle(control.checked);
     control.addEventListener('change', () => {
         place.changeVisit();
-        text.style.textDecoration = control.checked ? 'line-through' : 'none';
+        place.view.setTextStyle(control.checked);
     });
 }
 
-function addEditingControl(place, article) {
-    var editingControl = article.getElementsByClassName('places__editing-control')[0];
-    editingControl.addEventListener('click', () => {
-        var control = article.getElementsByClassName('control')[0];
-        control.classList.add('control_hidden');
-        var changesControl = article.getElementsByClassName('places__changes-control')[0];
-        changesControl.classList.remove('control_hidden');
-        addRevokingChangesControl(changesControl);
-        addSavingChangesControl(place, changesControl);
-    });
-}
-
-function addDisplacementControll(place, article) {
-    var bottomControl = article.getElementsByClassName('place__arow_bottom')[0];
-    var topControl = article.getElementsByClassName('place__arow_top')[0];
-    var index = globalPlacesList.getIndex(place);
-
-    bottomControl.addEventListener('click', () => {
-        var neighborIndex = index++;
-        globalPlacesList.swap(index, neighborIndex);
-        renderingPlaces(globalPlacesList.getAll());
-    });
-
-    topControl.addEventListener('click', () => {
-        var neighborIndex = index--;
-        globalPlacesList.swap(index, neighborIndex);
-        renderingPlaces(globalPlacesList.getAll());
-    });
-}
-
-function addSavingChangesControl(place, changesControl) {
-    var control = changesControl.getElementsByClassName('save')[0];
+function addEditingControl(place) {
+    place.view.createEditingControl();
+    let control = place.view.getSaveControl();
     control.addEventListener('click', () => {
-        var description = changesControl.getElementsByClassName('control__text')[0].value;
-        changesControl.previousElementSibling.classList.remove('control_hidden');
-        changesControl.classList.add('control_hidden');
+        const changesControl = place.view.getChangesControl();
+        const description = place.view.getDescription();
+        place.view.hideElement(changesControl.previousElementSibling);
+        place.view.showElement(changesControl);
         place.changeDescription(description);
     });
 }
 
-function addRevokingChangesControl(changesControl) {
-    var control = changesControl.getElementsByClassName('close')[0];
-    control.addEventListener('click', () => {
-        changesControl.previousElementSibling.classList.remove('control_hidden');
-        changesControl.classList.add('control_hidden');
+function addDisplacementControll(place) {
+    const bottomControl = place.view.getBottomControl();
+    const topControl = place.view.getTopControl();
+    let index = places.indexOf(place);
+
+    bottomControl.addEventListener('click', () => {
+        const neighborIndex = index++;
+        places.swap(index, neighborIndex);
+        renderPlaces(places.getAll());
+    });
+
+    topControl.addEventListener('click', () => {
+        const neighborIndex = index--;
+        places.swap(index, neighborIndex);
+        renderPlaces(places.getAll());
     });
 }
 
 function findByName(name) {
-    var placesList = [...places.children];
+    const placesList = [...placesElement.children];
     placesList.forEach(place => {
-        var textControl = place.getElementsByClassName('control__text')[0];
+        const textControl = place.getElementsByClassName('text')[0];
         place.style.display = !textControl.textContent.includes(name) ? 'none' : 'flex';
     });
 }
 
-function onClickDelitedAll() {
-    if (Place.isdeleteAll()) {
-        globalPlacesList.deleteAll();
-        renderingPlaces([]);
+function handleDeletedAll() {
+    if (Place.deleteAll()) {
+        places.deleteAll();
+        renderPlaces([]);
     }
 }
-
-

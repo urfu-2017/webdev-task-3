@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('../config');
+const config = require('../config');
 
 class Request {
     constructor(path, method, body) {
@@ -15,9 +15,9 @@ class Request {
     }
 
     async send() {
-        var response = await fetch(`${config.restApiUrl}${this.options.path}`, this.options);
-        var status = await response.status;
-        var body = await response.json();
+        const response = await fetch(`${config.restApiUrl}${this.options.path}`, this.options);
+        const status = await response.status;
+        const body = await response.json();
 
         return {
             body,
@@ -26,8 +26,8 @@ class Request {
     }
 
     async sendAndReceiveStatus() {
-        var response = await fetch(`${config.restApiUrl}${this.options.path}`, this.options);
-        var status = await response.status;
+        const response = await fetch(`${config.restApiUrl}${this.options.path}`, this.options);
+        const status = await response.status;
 
         return status;
     }

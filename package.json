@@ -3,6 +3,7 @@
   "scripts": {
     "lint": "eslint . && stylelint ./public/*.css",
     "test": "npm run lint",
+    "dev" : "webpack -w",
     "build": "webpack",
     "server": "node index.js",
     "start": "npm-run-all build server"

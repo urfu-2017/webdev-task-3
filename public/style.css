@@ -141,6 +141,8 @@ main
     display: none;
 }
 
+.save,
+.close,
 .place__arow
 {
     cursor: default;
@@ -210,7 +212,7 @@ main
     justify-content: space-around;
 }
 
-.control_hidden 
+.hidden 
 {
     display: none;
 }

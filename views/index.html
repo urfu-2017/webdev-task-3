@@ -10,20 +10,20 @@
     <main>
         <input type="text" placeholder="Поиск" class="search">
         <div class="place-creater">
-            <input type="text" placeholder="Название места" class="place-creater__input">
-            <input type="button" value="Создать" class="place-creater__button">
+            <input type="text" placeholder="Название места" class="place-creater__input place">
+            <input type="button" value="Создать" class="place-creater__button create">
         </div>
         <article class="place-editor">
             <div class="basket">
                 <p class="basket__text">Места</p>
-                <img src="imgs/basket.png" alt="Изображение корзины" class="basket__img">
+                <img src="imgs/basket.png" alt="Изображение корзины" class="basket__img delete-All">
             </div>
             <section class="tabs">
-                <input type="radio" name="sorting-places" id="all-places" class="tabs__input tabs__input_all-places" checked hidden>
+                <input type="radio" name="sorting-places" id="all-places" class="tabs__input tabs__input_all-places all-places" checked hidden>
                 <label for="all-places" class="tabs__label tabs__label_all-places">Все</label>
-                <input type="radio" name="sorting-places" id="unvisited-places" class="tabs__input tabs__input_unvizited-places" hidden>
+                <input type="radio" name="sorting-places" id="unvisited-places" class="tabs__input tabs__input_unvizited-places unvizited-places" hidden>
                 <label for="unvisited-places" class="tabs__label tabs__label_unvizited-places ">Посетить</label>
-                <input type="radio" name="sorting-places" id="visited-places" class="tabs__input tabs__input_vizited-places" hidden>
+                <input type="radio" name="sorting-places" id="visited-places" class="tabs__input tabs__input_vizited-places vizited-places" hidden>
                 <label for="visited-places" class="tabs__label tabs__label_vizited-places">Посещенные</label>
             </section>
         </article >
