@@ -1,7 +1,6 @@
-'use strict';
-
-import { api, nameAddedPlace } from './globalVariables';
-import { savePlace } from './savePlace';
+import { api } from '../api';
+import { nameAddedPlace } from '../state';
+import { addTravel } from '../createForm/addPlace';
 
 
 export function postAddedTravel() {
@@ -9,6 +8,6 @@ export function postAddedTravel() {
         return;
     }
     api.postPlace()
-        .then(savePlace)
+        .then(addTravel)
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }

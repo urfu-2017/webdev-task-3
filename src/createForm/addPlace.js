@@ -1,17 +1,14 @@
-'use strict';
-
-import { placesContainer } from './globalVariables';
-import { renderTravel } from './render';
-import { addTitle } from './travelElements/addTitle';
-import { addVisitStatus } from './travelElements/addVisitStatus';
-import { addArrows } from './travelElements/addArrows';
-import { addEditButton } from './travelElements/addEditButton';
-import { addDeleteButton } from './travelElements/addDeleteButton';
-import { addCancelButton } from './travelElements/addCancelButton';
-import { addOkButton } from './travelElements/addOkButton';
+import { renderTravel, placesContainer } from '../state';
+import { addTitle } from './placeElements/addTitle';
+import { addVisitStatus } from './placeElements/addVisitStatus';
+import { addArrows } from './placeElements/addArrows';
+import { addEditButton } from './placeElements/addEditButton';
+import { addDeleteButton } from './placeElements/addDeleteButton';
+import { addCancelButton } from './placeElements/addCancelButton';
+import { addOkButton } from './placeElements/addOkButton';
 
 
-export function savePlace(place) {
+export function addTravel(place) {
     const travel = createListItem(place);
     saveFields(travel, place);
     renderTravel(travel);

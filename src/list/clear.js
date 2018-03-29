@@ -1,6 +1,5 @@
-'use strict';
-
-import { api, placesContainer } from './globalVariables';
+import { api } from '../api';
+import { placesContainer } from '../state';
 
 
 export function clearTravels() {

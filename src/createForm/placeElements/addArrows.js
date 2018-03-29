@@ -1,7 +1,5 @@
-'use strict';
-
-import { directionToNameMethod } from '../globalVariables';
-import { swapTravels } from '../swapTravels';
+import { directionToNameMethod } from '../../state';
+import { swapTravels } from './buttonHandlers/swap';
 
 
 export function addArrows(travel) {

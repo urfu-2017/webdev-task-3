@@ -1,29 +1,5 @@
-'use strict';
-
-import { getIndexTravel } from './getIndexTravel';
-
-
-export const apiUrl = 'https://webdev-task-2-clzvgkakug.now.sh/places';
-export const visitsFilters = {
-    all: () => true,
-    visit: visited => visited === 'false',
-    visited: visited => visited === 'true'
-};
-export const filtration = {
-    soughtForMessage: '',
-    checkVisit: visitsFilters.all
-};
-export const directionToNameMethod = {
-    up: 'previousSibling',
-    down: 'nextSibling'
-};
-
-export const placesContainer = document.querySelector('#places');
-export const messagesSearcher = document.querySelector('#search-string');
-export const nameAddedPlace = document.querySelector('#name-added-place');
-export const visitsChanger = document.querySelectorAll('[name="visit-filter"]');
-export const creatorPlaces = document.querySelector('#create-place');
-export const cleanerPlaces = document.querySelector('#cleaner-places');
+import { apiUrl, nameAddedPlace } from './state';
+import { getIndexTravel } from './utility/getIndexTravel';
 
 
 export const api = {

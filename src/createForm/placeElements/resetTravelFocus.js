@@ -1,5 +1,3 @@
-'use strict';
-
 import { processTravelOnMouseOver, processTravelOnMouseOut } from './mouseEvents';
 
 

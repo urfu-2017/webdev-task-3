@@ -1,6 +1,3 @@
-'use strict';
-
-
 export function processTravelOnMouseOver() {
     const cancelButton = this.querySelector('.travel__cancel-button');
     const okButton = this.querySelector('.travel__ok-button');

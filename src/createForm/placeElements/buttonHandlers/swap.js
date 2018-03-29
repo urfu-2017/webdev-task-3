@@ -1,6 +1,4 @@
-'use strict';
-
-import { api } from './globalVariables';
+import { api } from '../../../api';
 
 
 export function swapTravels(first, second) {

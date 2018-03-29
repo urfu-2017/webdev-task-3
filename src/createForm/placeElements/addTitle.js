@@ -1,6 +1,3 @@
-'use strict';
-
-
 export function addTitle(travel, place) {
     const title = document.createElement('input');
     title.type = 'text';

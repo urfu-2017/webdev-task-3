@@ -1,6 +1,4 @@
-'use strict';
-
-import { changeVisitStatus } from '../filters';
+import { changeVisitStatus } from './buttonHandlers/visit';
 
 
 export function addVisitStatus(travel, place) {

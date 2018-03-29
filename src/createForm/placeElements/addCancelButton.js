@@ -1,5 +1,3 @@
-'use strict';
-
 import { resetTravelFocus } from './resetTravelFocus';
 
 
