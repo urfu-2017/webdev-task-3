@@ -1,5 +1,4 @@
-import { apiUrl, nameAddedPlace } from './state';
-import { getIndexTravel } from './utility/getIndexTravel';
+import { apiUrl } from './state';
 
 
 export const api = {
@@ -8,10 +7,10 @@ export const api = {
             .then(response => response.json());
     },
 
-    postPlace() {
+    postPlace(name) {
         return fetch(apiUrl, {
             method: 'POST',
-            body: JSON.stringify({ name: nameAddedPlace.value }),
+            body: JSON.stringify({ name }),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -29,8 +28,8 @@ export const api = {
             { method: 'POST' });
     },
 
-    postSwapPlaces({ first, second }) {
-        return fetch(`${apiUrl}/swap/${getIndexTravel(first)}/${getIndexTravel(second)}`,
+    postSwapPlaces({ firstIndex, secondIndex }) {
+        return fetch(`${apiUrl}/swap/${firstIndex}/${secondIndex}`,
             { method: 'PUT' });
     },
 

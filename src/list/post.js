@@ -7,7 +7,7 @@ export function postAddedTravel() {
     if (!nameAddedPlace.value) {
         return;
     }
-    api.postPlace()
+    api.postPlace(nameAddedPlace.value)
         .then(place => updateState(false, { addTravel: createTravel(place) }))
         .catch(error => alert(`Произошла ошибка:\n${error.message}`));
 }
