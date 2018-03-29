@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="html" lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Павел слишком занят</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body class="body">
+    <div class="wrapper">
+        <div class="content">
+            <header><h1 class="service-name">Сервис &laquo;Павел слишком занят&raquo;</h1></header>
+            <main class="main">
+                <input id="search-string" class="search-places input_size_m text-input_indents_m"
+                       type="text" placeholder="Поиск">
+                <div class="creating-place">
+                    <input id="name-added-place" class="creating-place__text-area input_size_m text-input_indents_m"
+                           type="text" placeholder="Название места">
+                    <input id="create-place" class="creating-place__button" type="button" value="Создать">
+                </div>
+                <div class="editors">
+                    <span class="editors__title">Места</span>
+                    <img id="cleaner-places" class="editors__clearing" src="pictures/can.ico" alt="Удалить всё">
+                    <table class="editors__filters">
+                        <tr>
+                            <td class="visit-td">
+                                <input id="all" class="hidden input_size_m filters__checkbox_all"
+                                       type="radio" name="visit-filter" checked>
+                                <label class="visit-label" for="all">Все</label>
+                            </td>
+                            <td class="visit-td">
+                                <input id="visit" class="hidden input_size_m filters__checkbox_no-visit" type="radio"
+                                       name="visit-filter">
+                                <label class="visit-label" for="visit">Посетить</label>
+                            </td>
+                            <td class="visit-td">
+                                <input id="visited" class="hidden input_size_m filters__checkbox__visit" type="radio"
+                                       name="visit-filter">
+                                <label class="visit-label" for="visited">Посещённые</label>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr class="editors__underline">
+                </div>
+                <div class="places" id="places"></div>
+            </main>
+        </div>
+        <footer class="footer">
+            <div class="footer__about-service about-service__author">© graf-m-96</div>
+            <div class="footer__about-service about-service__date">2018</div>
+        </footer>
+    </div>
+    <script src="./dom.js"></script>
+</body>
+</html>

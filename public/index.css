@@ -1,0 +1,265 @@
+.service-name
+{
+    font-size: 36px;
+    text-align: center;
+    font-style: italic;
+}
+
+.service-name::first-letter
+{
+    color: #f00;
+}
+
+.main
+{
+    margin: 0 60px;
+}
+
+.input_size_m
+{
+    border: solid #000 1px;
+    height: 30px;
+}
+
+.text-input_indents_m
+{
+    padding: 0 5px;
+}
+
+.creating-place__button,
+.visit-label,
+.editors__clearing
+{
+    cursor: pointer;
+}
+
+.hidden
+{
+    display: none;
+}
+
+.search-places
+{
+    width: 250px;
+}
+
+.creating-place
+{
+    margin-top: 30px;
+    width: 262px;
+}
+
+.creating-place__text-area,
+.creating-place__button
+{
+    vertical-align: middle;
+}
+
+.creating-place__text-area
+{
+    width: 160px;
+}
+
+
+.creating-place__button
+{
+    margin-left: 20px;
+    width: 66px;
+    border-radius: 12px;
+}
+
+.creating-place__button:focus
+{
+    outline: none;
+}
+
+.editors
+{
+    margin-top: 30px;
+    display: inline-block;
+}
+
+.editors__title
+{
+    font-size: 32px;
+}
+
+.editors__clearing
+{
+    margin-left: 10px;
+    height: 25px;
+}
+
+.editors__filters
+{
+    margin-left: 25px;
+    display: inline-block;
+    border-radius: 10px;
+    border: 1px solid #000;
+    border-collapse: collapse;
+}
+
+.editors__filters .visit-td
+{
+    width: 100px;
+    text-align: center;
+    padding: 0;
+}
+
+.editors__filters .visit-label
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.editors__filters .visit-td:nth-child(n + 2)
+{
+    border-left: 1px solid #000;
+}
+
+.filters__checkbox_all:checked + .visit-label,
+.filters__checkbox_no-visit:checked + .visit-label,
+.filters__checkbox__visit:checked + .visit-label
+{
+    background: #98FB98;
+}
+
+.filters__checkbox_all:checked + .visit-label
+{
+    border-radius: 10px 0 0 10px;
+}
+
+.filters__checkbox__visit:checked + .visit-label
+{
+    border-radius: 0 10px 10px 0;
+}
+
+
+.editors__underline
+{
+    margin: 0 -10px;
+}
+
+/* footer */
+.html,
+.body {
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.content {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex: 0 0 auto;
+}
+
+.footer__about-service
+{
+    display: inline-block;
+    font-size: 20px;
+}
+
+.about-service__author
+{
+    padding-left: 15px;
+    float: left;
+}
+
+.about-service__date
+{
+    padding-right: 15px;
+    float: right;
+}
+
+.places
+{
+    margin: 20px 0 100px 10px;
+}
+
+.places__travel
+{
+    position: relative;
+    width: 450px;
+    height: 100px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.travel__button
+{
+    position: absolute;
+    cursor: pointer;
+}
+
+.travel__icon
+{
+    height: 25px;
+}
+
+.travel__title
+{
+    position: absolute;
+    left: 100px;
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: none;
+    outline: none;
+    background: #fff;
+}
+
+.travel__visit-state
+{
+    left: 420px;
+}
+
+.travel__arrow-up
+{
+    left: 345px;
+}
+
+.travel__arrow-down
+{
+    left: 375px;
+}
+
+.travel__change-button
+{
+    left: 10px;
+    display: none;
+}
+
+.travel__delete-button
+{
+    left: 45px;
+    display: none;
+}
+
+.travel__cancel-button
+{
+    left: 275px;
+    display: none;
+}
+
+.travel__ok-button
+{
+    left: 300px;
+    display: none;
+}
+
+
+.places__travel:hover > .travel__change-button,
+.places__travel:hover > .travel__delete-button
+{
+    display: block;
+}
