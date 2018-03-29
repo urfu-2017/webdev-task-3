@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <title>webdev-task-3</title>
+    <meta name="description" content="webdev-task-3">
+    <link rel="stylesheet" href="/index.css" media="screen">
+</head>
+
+<body class="body">
+    <div class="templates">
+        <li class="places-item">
+            <input type="button" value="✎" class="places-item__edit-button">
+            <input type="button" value="❌" class="places-item__delete-button">
+            <input type="text" class="places-item__name" disabled>
+            <input type="button" value="✓" class="places-item__save-button hidden">
+            <input type="button" value="✗" class="places-item__cancel-button hidden">
+            <input type="button" value="↑" class="places-item__up-button">
+            <input type="button" value="↓" class="places-item__down-button">
+            <input type="checkbox" class="places-item__visited">
+        </li>
+    </div>
+    <input type="text" class="search__input" placeholder="Поиск">
+    <div class="create">
+        <input type="text" class="create__input" placeholder="Название места">
+        <input type="button" class="create__button" value="Создать">
+    </div>
+    <span>Места</span>
+    <input type="button" class="clear-button" value="Очистить список мест">
+    <input type="radio" id="all" name="contact" value="Все" checked>
+    <label for="all">Все</label>
+    <input type="radio" id="toVisit" name="contact" value="Посетить">
+    <label for="toVisit">Посетить</label>
+    <input type="radio" id="visited" name="contact" value="Посещённые">
+    <label for="visited">Посещённые</label>
+    <ul class="places-list"></ul>
+    <footer class="footer">2018</footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

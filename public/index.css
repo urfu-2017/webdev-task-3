@@ -1,0 +1,43 @@
+.body
+{
+    font-family: Arial, sans-serif;
+    width: 600px;
+    margin: 0 auto;
+    border: 1px solid #000;
+}
+.places-list
+{
+    list-style: none;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 10px 100px;
+}
+input[id="toVisit"]:checked ~ .places-list .places-item[visited="true"],
+input[id="visited"]:checked ~ .places-list .places-item[visited="false"],
+.templates
+{
+    display: none;
+}
+.places-list .places-item[visited="true"] .places-item__name
+{
+    text-decoration: line-through;
+}
+.places-item__name
+{
+    border: none;
+    background-color: #FFF;
+    color: #000;
+}
+.places-item .places-item__edit-button,
+.places-item .places-item__delete-button,
+.places-item:first-child .places-item__up-button,
+.places-item:last-child .places-item__down-button,
+.hidden
+{
+    visibility: hidden;
+}
+.places-item:hover .places-item__edit-button,
+.places-item:hover .places-item__delete-button
+{
+    visibility: visible;
+}
