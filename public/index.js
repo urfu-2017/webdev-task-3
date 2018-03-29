@@ -1,4 +1,5 @@
-const URL = 'https://webdev-task-2-rmcovhtbdk.now.sh/places';
+import { config } from './config';
+const URL = config.URL;
 
 let allPlaces = true;
 let onlyVisited = true;
