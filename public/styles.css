@@ -1,0 +1,145 @@
+.main-page
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-page__item
+{
+    width: 600px;
+}
+
+.search
+{
+    height: 100px;
+}
+
+.search__input
+{
+    height: 48px;
+    width: 520px;
+    font-size: 24px;
+    margin: 24px 40px;
+}
+
+.create-form
+{
+    height: 100px;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-form__input
+{
+    height: 48px;
+    font-size: 24px;
+    width: 360px;
+}
+
+.create-form__btn
+{
+    height: 48px;
+    width: 120px;
+    border-radius: 24px;
+    background: blue;
+    border-width: 0;
+    color: white;
+    font-size: 18px;
+}
+
+.filter-box
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+    font-size: 20px;
+}
+
+.filter-box__title
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.filter-box__delete-all
+{
+    cursor: pointer;
+}
+
+.place
+{
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    padding: 0 40px;
+    font-size: 24px;
+}
+
+.place__main
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 400px;
+}
+
+.place__main > div
+{
+    padding-left: 20px;
+}
+
+.place__controlls
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 120px;
+}
+
+.place__input-сhange
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 520px;
+    font-size: 24px;
+    display: none;
+    margin-left: 90px;
+}
+
+.place__input
+{
+    width: 300px;
+    height: 60px;
+    font-size: 24px;
+}
+
+.place__change-btn
+{
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.place:hover .place__change-btn
+{
+    visibility: visible;
+}
+
+.place__delete-btn
+{
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.place:hover .place__delete-btn {
+    visibility: visible;
+}

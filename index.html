@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Задание 3</title>
+    <link rel="stylesheet" href="styles.css" type="text/css"/>
+    <script src="logic.js" type="text/javascript"></script>
+    <script src="models.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="main-page">
+        <div class="main-page__item">
+            <div class="search">
+                <input class="search__input" type="text" placeholder="🔍 Поиск"/>
+            </div>
+        </div>
+        <div class="main-page__item">
+            <div class="create-form">
+                <input class="create-form__input" type="text" placeholder="Название">
+                <button class="create-form__btn">Создать</button>
+            </div>            
+        </div>
+        <div class="main-page__item">
+            <div class="place-view">
+                <div class="filter-box">
+                    <div class="filter-box__title">
+                        <span>Места </span>
+                        <div class="filter-box__delete-all">🗑</div>
+                    </div>
+                    <div class="filter-box__tumbs">
+                        <input id="f1" class="filter-box__tumb" type="radio" name="filter" checked/>
+                        <label for="f1">Все</label>
+                        <input id="f2" class="filter-box__tumb" type="radio" name="filter"/>
+                        <label for="f2">Посетить</label>
+                        <input id="f3" class="filter-box__tumb" type="radio" name="filter"/>
+                        <label for="f3">Посещенные</label>
+                    </div>
+                </div>
+                <div class="place-view__places">
+                </div>
+            </div>            
+        </div>
+    </div>
+</body>
+</html>
