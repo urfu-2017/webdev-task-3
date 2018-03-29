@@ -4,17 +4,17 @@
 
 const onSearchChange = function () {
     // Ищу индекс вкл. тумблера
-    let index;
-    const tumbs = document.getElementsByClassName('filter-box_tumb');
-    for (let i = 0; i < tumbs.length; i++) {
-        if (tumbs[i].checked === true) {
-            index = 2 - i;
-        }
-    }
+    const tumbs = document.querySelector('.filter-box__tumb:checked');
+    const index = 3 - Number(tumbs.getAttribute('id').slice(1, 2));
+    // for (let i = 0; i < tumbs.length; i++) {
+    //     if (tumbs[i].checked === true) {
+    //         index = 2 - i;
+    //     }
+    // }
 
-    const query = document.getElementsByClassName('search_input')[0].value.toLowerCase();
-    const list = document.getElementsByClassName('place');
-    const listCheckbox = document.getElementsByClassName('place_checkbox');
+    const query = document.querySelector('.search__input').value.toLowerCase();
+    const list = document.querySelectorAll('.place');
+    const listCheckbox = document.querySelectorAll('.place__checkbox');
     for (let i = 0; i < list.length; i++) {
         // Если элемент СОДЕРЖИТЬ запрос && Его состояние чекбокса true/false/безРазницы
         if (list[i].textContent.toLowerCase().indexOf(query) !== -1 &&
@@ -29,8 +29,8 @@ const onSearchChange = function () {
 const onClickDeleteItem = function (e) {
     const parent = e.target.closest('.place');
     const id = parent.getAttribute('id');
-    const placesList = document.getElementsByClassName('place-view_places')[0];
-    fetch(`https://webdev-task-2-dtwehsnlmw.now.sh/places/${id}`, {
+    const placesList = document.querySelector('.place-view__places');
+    fetch(`https://webdev-task-2-cgybyopdlr.now.sh/places/${id}`, {
         method: 'delete'
     }).then((res) => {
         if (res.status === 200) {
@@ -41,11 +41,11 @@ const onClickDeleteItem = function (e) {
 
 const onChangeCheckbox = function (e) {
     const parent = e.target.closest('.place');
-    const textDiv = parent.getElementsByClassName('place_description')[0];
+    const textDiv = parent.querySelector('.place__description');
     const id = parent.getAttribute('id');
     const now = e.target.checked;
     e.target.checked = !now;
-    fetch(`https://webdev-task-2-dtwehsnlmw.now.sh/places/${id}`, {
+    fetch(`https://webdev-task-2-cgybyopdlr.now.sh/places/${id}`, {
         method: 'PATCH',
         headers: {
             'Accept': 'application/json',
@@ -67,25 +67,21 @@ const onChangeCheckbox = function (e) {
 };
 
 const onClickDeleteAll = function () {
-    fetch('https://webdev-task-2-dtwehsnlmw.now.sh/places', {
+    fetch('https://webdev-task-2-cgybyopdlr.now.sh/places', {
         method: 'DELETE'
     }).then((res) => {
         if (res.status === 200) {
-            const placesList = document.getElementsByClassName('place-view_places')[0];
-            const list = document.getElementsByClassName('place');
-            const howManyTimes = list.length;
-            for (let i = 0; i < howManyTimes; i++) {
-                placesList.removeChild(list[0]);
-            }
+            const placesList = document.querySelector('.place-view__places');
+            placesList.innerHTML = '';
         }
     });
 };
 
 const onClickItemChange = function (e) {
     const parent = e.target.closest('.place');
-    const main = parent.getElementsByClassName('place_main')[0];
-    const controlls = parent.getElementsByClassName('place_controlls')[0];
-    const inputChange = parent.getElementsByClassName('place_input-сhange')[0];
+    const main = parent.querySelector('.place__main');
+    const controlls = parent.querySelector('.place__controlls');
+    const inputChange = parent.querySelector('.place__input-сhange');
 
     main.style.display = 'none';
     controlls.style.display = 'none';
@@ -94,9 +90,9 @@ const onClickItemChange = function (e) {
 
 const onClickHideItemChange = function (e) {
     const parent = e.target.closest('.place');
-    const main = parent.getElementsByClassName('place_main')[0];
-    const controlls = parent.getElementsByClassName('place_controlls')[0];
-    const inputChange = parent.getElementsByClassName('place_input-сhange')[0];
+    const main = parent.querySelector('.place__main');
+    const controlls = parent.querySelector('.place__controlls');
+    const inputChange = parent.querySelector('.place__input-сhange');
 
     main.style.display = 'flex';
     controlls.style.display = 'flex';
@@ -105,10 +101,10 @@ const onClickHideItemChange = function (e) {
 
 const onClickChangeItem = function (e) {
     const parent = e.target.closest('.place');
-    const textInput = parent.getElementsByClassName('place_input')[0];
+    const textInput = parent.querySelector('.place__input');
     const id = parent.getAttribute('id');
     const description = textInput.value;
-    fetch(`https://webdev-task-2-dtwehsnlmw.now.sh/places/${id}`, {
+    fetch(`https://webdev-task-2-cgybyopdlr.now.sh/places/${id}`, {
         method: 'PATCH',
         headers: {
             'Accept': 'application/json',
@@ -119,16 +115,51 @@ const onClickChangeItem = function (e) {
         })
     }).then((res) => {
         if (res.status === 200) {
-            parent.getElementsByClassName('place_description')[0].innerHTML = description;
+            parent.querySelector('.place__description').innerHTML = description;
             onClickHideItemChange(e);
         }
     });
 };
 
+const template = function (description) {
+    return '<div class="place__main">' +
+    '<div class="place__change-btn">🖋</div><div class="place__delete-btn">❌</div>' +
+    `<div class="place__description">${description}</div></div>` +
+    '<div class="place__controlls"><div class="place__dragdrop">🔀</div>' +
+    '<input class="place__checkbox" type="checkbox"/></div>' +
+    '<div class="place__input-сhange">' +
+    `<input class="place__input" type="text" value="${description}"/>` +
+    '<div class="place__cancel-btn">❌</div>' +
+    '<div class="place__confirm-btn">✅</div></div>';
+};
+
+const createElement = function (id, description, visited) {
+    document.querySelector('.create-form__input').value = '';
+    let el = document.createElement('div');
+    el.className = 'place';
+    el.setAttribute('id', id);
+    el.innerHTML = template(description);
+    document.querySelector('.place-view__places').appendChild(el);
+    el.querySelector('.place__delete-btn').addEventListener('click',
+        onClickDeleteItem, false);
+    el.querySelector('.place__checkbox').addEventListener('change',
+        onChangeCheckbox, false);
+    el.querySelector('.place__change-btn').addEventListener('click',
+        onClickItemChange, false);
+    el.querySelector('.place__cancel-btn').addEventListener('click',
+        onClickHideItemChange, false);
+    el.querySelector('.place__confirm-btn').addEventListener('click',
+        onClickChangeItem, false);
+
+    el.querySelector('.place__description').style.textDecoration =
+    visited === true ? 'line-through' : 'none';
+    el.querySelector('.place__checkbox').checked = visited;
+};
+
 const onClickCreateBtn = function () {
-    const descriptionText = document.getElementsByClassName('create-form_input')[0].value;
+    const descriptionText = document.querySelector('.create-form__input').value;
     console.info(descriptionText);
-    fetch('https://webdev-task-2-dtwehsnlmw.now.sh/places', {
+    fetch('https://webdev-task-2-cgybyopdlr.now.sh/places', {
         method: 'post',
         headers: {
             'Accept': 'application/json',
@@ -142,29 +173,6 @@ const onClickCreateBtn = function () {
             return res.json();
         })
         .then((data) => {
-            document.getElementsByClassName('create-form_input')[0].value = '';
-            let el = document.createElement('div');
-            el.className = 'place';
-            el.setAttribute('id', data.id);
-            el.innerHTML = '<div class="place_main">' +
-                '<div class="place_change-btn">🖋</div><div class="place_delete-btn">❌</div>' +
-                `<div class="place_description">${descriptionText}</div></div>` +
-                '<div class="place_controlls"><div class="place_dragdrop">🔀</div>' +
-                '<input class="place_checkbox" type="checkbox"/></div>' +
-                '<div class="place_input-сhange">' +
-                `<input class="place_input" type="text" value="${descriptionText}"/>` +
-                '<div class="place_cancel-btn">❌</div>' +
-                '<div class="place_confirm-btn">✅</div></div>';
-            document.getElementsByClassName('place-view_places')[0].appendChild(el);
-            el.getElementsByClassName('place_delete-btn')[0].addEventListener('click',
-                onClickDeleteItem, false);
-            el.getElementsByClassName('place_checkbox')[0].addEventListener('change',
-                onChangeCheckbox, false);
-            el.getElementsByClassName('place_change-btn')[0].addEventListener('click',
-                onClickItemChange, false);
-            el.getElementsByClassName('place_cancel-btn')[0].addEventListener('click',
-                onClickHideItemChange, false);
-            el.getElementsByClassName('place_confirm-btn')[0].addEventListener('click',
-                onClickChangeItem, false);
+            createElement(data.id, descriptionText, false);
         });
 };

@@ -16,7 +16,7 @@
     height: 100px;
 }
 
-.search_input
+.search__input
 {
     height: 48px;
     width: 520px;
@@ -34,14 +34,14 @@
     align-items: center;
 }
 
-.create-form_input
+.create-form__input
 {
     height: 48px;
     font-size: 24px;
     width: 360px;
 }
 
-.create-form_btn
+.create-form__btn
 {
     height: 48px;
     width: 120px;
@@ -62,13 +62,13 @@
     font-size: 20px;
 }
 
-.filter-box_title
+.filter-box__title
 {
     display: flex;
     flex-direction: row;
 }
 
-.filter-box_delete-all
+.filter-box__delete-all
 {
     cursor: pointer;
 }
@@ -82,7 +82,7 @@
     font-size: 24px;
 }
 
-.place_main
+.place__main
 {
     display: flex;
     flex-direction: row;
@@ -90,12 +90,12 @@
     width: 400px;
 }
 
-.place_main > div
+.place__main > div
 {
     padding-left: 20px;
 }
 
-.place_controlls
+.place__controlls
 {
     display: flex;
     flex-direction: row;
@@ -104,7 +104,7 @@
     width: 120px;
 }
 
-.place_input-сhange
+.place__input-сhange
 {
     display: flex;
     flex-direction: row;
@@ -116,30 +116,30 @@
     margin-left: 90px;
 }
 
-.place_input
+.place__input
 {
     width: 300px;
     height: 60px;
     font-size: 24px;
 }
 
-.place_change-btn
+.place__change-btn
 {
     cursor: pointer;
     visibility: hidden;
 }
 
-.place:hover .place_change-btn
+.place:hover .place__change-btn
 {
     visibility: visible;
 }
 
-.place_delete-btn
+.place__delete-btn
 {
     cursor: pointer;
     visibility: hidden;
 }
 
-.place:hover .place_delete-btn {
+.place:hover .place__delete-btn {
     visibility: visible;
 }
