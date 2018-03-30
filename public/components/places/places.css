@@ -1,0 +1,75 @@
+.places {
+    grid-area: p;
+}
+
+.places__header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
+    border-bottom: 1px solid gray;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.places__name-header {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.places__delete {
+    width: 20px;
+    height: 20px;
+    margin: 0 0 -1px;
+}
+
+.places__button-sort {
+    display: flex;
+    flex-direction: row;
+}
+
+.button-sort__button_all,
+.button-sort__button_visit_true,
+.button-sort__button_visit_false,
+.button-sort__button-active {
+    height: 20px;
+    margin: 0px;
+    background: #66bb6a;
+    border: none;
+    display: block;
+}
+
+.button-sort__button-active {
+    background: #98ee99;
+}
+
+.button-sort__button_all {
+    border-radius: 10px 0 0 10px;
+}
+
+.button-sort__button_visit_false {
+    border-radius: 0 10px 10px 0;
+}
+
+.ripple {
+    background-position: center;
+    transition: background 0.8s;
+}
+
+.ripple:hover {
+    background: #98ee99 radial-gradient(circle, transparent 1%, #98ee99 1%) center/15000%;
+}
+
+.ripple:active {
+    background-color: #66bb6a;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+button {
+    cursor: pointer;
+    box-shadow: 0 0 4px #999;
+    outline: none;
+}
+  
