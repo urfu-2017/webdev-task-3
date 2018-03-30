@@ -29,4 +29,8 @@
 @import './place/place__delete.css';
 @import './place/place__edit.css';
 
+@import './place-edit/place-edit__ipt.css';
+@import './place-edit/place-edit__confirm.css';
+@import './place-edit/place-edit__cancel.css';
+
 @import './footer/footer.css';

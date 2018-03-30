@@ -1,9 +1,8 @@
 .place
 {
-    height: 40px;
     padding: 10px;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     flex-direction: row-reverse;
     list-style-type: none;
