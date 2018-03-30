@@ -7,7 +7,7 @@ function debounce(func, wait, immediate) {
     var timeout;
 
     return function () {
-        var context = this;
+        var context = document.querySelector('.search__input');
         var args = arguments;
         var later = function () {
             timeout = null;
@@ -27,15 +27,15 @@ function debounce(func, wait, immediate) {
 var autocomplete = debounce(function (event) {
     var value = event.target.value;
     if (value === '') {
-        findPlacesGlobal = [];
-        addListPlaceInHtml(activeButton);
+        window.appState.findPlaces = [];
+        window.addListPlaceInHtml(window.appState.activeFilter);
 
         return;
     }
-    findPlacesGlobal = placesGlobal.filter(function (place) {
+    window.appState.findPlaces = window.appState.places.filter(function (place) {
         return place.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
     });
-    addListPlaceInHtml(activeButton);
+    window.addListPlaceInHtml(window.appState.activeFilter);
 }, 300);
 
 inputSearch.addEventListener('keydown', autocomplete);

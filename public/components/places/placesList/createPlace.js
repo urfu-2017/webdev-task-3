@@ -1,5 +1,8 @@
 'use strict';
 
+window.appState.function.createPlace = createPlace;
+window.appState.function.hideCreate = hideCreate;
+
 function createPlace(_this, id) {
     var containerItem = _this.parentElement;
     containerItem.style.display = 'none';
@@ -39,36 +42,19 @@ function addImg(placeCreate, id) {
 }
 
 function createRequest(id, createField) {
-    var url = urlGlobal + '/' + id;
     if (createField.nodeName === 'IMG') {
         createField = createField.previousElementSibling;
     }
-    var data = {};
-    data.name = createField.value;
-    var json = JSON.stringify(data);
-    var XHR = ('onload' in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
-    var xhr = new XHR();
-    xhr.open('PUT', url, true);
-    xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-    xhr.onload = function () {
-        if (this.readyState !== 4) {
-            return;
-        }
-        if (this.status !== 200) {
-            console.error('createPlace -> HTTP: ' + this.status);
 
-            return;
-        }
-        var place = JSON.parse(this.responseText);
-        for (var index = 0; index < placesGlobal.length; index++) {
-            if (placesGlobal[index].id === place.id) {
-                placesGlobal[index].name = place.name;
+    return window.api.createPlace({ name: createField.value }, id).then(place => {
+        for (var index = 0; index < window.appState.places.length; index++) {
+            if (window.appState.places[index].id === place.id) {
+                window.appState.places[index].name = place.name;
             }
         }
-        addListPlaceInHtml(activeButton);
-    };
-    xhr.send(json);
-    createField.value = '';
+        window.addListPlaceInHtml();
+        createField.value = '';
+    });
 }
 
 function hideCreate(_this) {

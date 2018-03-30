@@ -1,39 +1,28 @@
 'use strict';
 
-function placeVisit(_this, id) {
-    var url = urlGlobal + '/visit/' + id;
-    var XHR = ('onload' in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
-    var xhr = new XHR();
-    xhr.open('PUT', url, true);
-    xhr.onload = function () {
-        if (this.readyState !== 4) {
-            return;
-        }
-        if (this.status !== 200 && this.status !== 304) {
-            console.error('placeVisit -> HTTP: ' + this.status);
+window.appState.function.placeVisit = placeVisit;
 
-            return;
-        }
-        var place = JSON.parse(this.responseText);
+function placeVisit(_this) {
+    const id = _this.id;
+
+    return window.api.placeVisit(id).then(place => {
         createCheckbox(place, _this);
-        if (activeButton !== 'all') {
-            addListPlaceInHtml(activeButton);
+        if (window.appState.activeFilter !== 'all') {
+            window.addListPlaceInHtml();
         }
-    };
-    xhr.send(null);
+    });
 }
 
 function createCheckbox(place, checkbox) {
     checkbox.setAttribute('src', `/places/placesList/checkbox_${place.isVisited}.png`);
-    checkbox.setAttribute('onclick', `placeVisit(this, '${place.id}')`);
     if (place.isVisited) {
         checkbox.setAttribute('alt', 'Посещен');
     } else {
         checkbox.setAttribute('alt', 'Не посещен');
     }
-    for (var index = 0; index < placesGlobal.length; index++) {
-        if (placesGlobal[index].id === place.id) {
-            placesGlobal[index].isVisited = place.isVisited;
+    for (var index = 0; index < window.appState.places.length; index++) {
+        if (window.appState.places[index].id === place.id) {
+            window.appState.places[index].isVisited = place.isVisited;
         }
     }
 }

@@ -1,30 +1,19 @@
 'use strict';
 
-function deletePlace(_this, id) {
-    var url = urlGlobal + '/' + id;
-    var XHR = ('onload' in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
-    var xhr = new XHR();
-    xhr.open('DELETE', url, true);
-    xhr.onload = function () {
-        if (this.readyState !== 4) {
-            return;
-        }
-        if (this.status !== 200 && this.status !== 304) {
-            console.error('deletePlace -> HTTP: ' + this.status);
+window.appState.function.deletePlace = deletePlace;
 
-            return;
-        }
-        var place = JSON.parse(this.responseText);
-        dileteNode(_this.parentElement.parentElement);
-        for (var index = 0; index < placesGlobal.length; index++) {
-            if (placesGlobal[index].id === place.id) {
-                placesGlobal.splice(index, 1);
+function deletePlace(_this, id) {
+
+    return window.api.deletePlace(id).then(place => {
+        deleteNode(_this.parentElement.parentElement);
+        for (var index = 0; index < window.appState.places.length; index++) {
+            if (window.appState.places[index].id === place.id) {
+                window.appState.places.splice(index, 1);
             }
         }
-    };
-    xhr.send(null);
+    });
 }
 
-function dileteNode(child) {
+function deleteNode(child) {
     child.parentElement.removeChild(child);
 }
