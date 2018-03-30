@@ -1,0 +1,92 @@
+html {
+    font-size: 24px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 300px;
+}
+
+.main-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-page__search-input {
+    width: 430px;
+    height: 28px;
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.main-page__add-input {
+    width: 360px;
+    height: 28px;
+    font-size: 22px;
+}
+
+.notes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.note {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+    height: 40px;
+}
+
+.note__default {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+}
+
+.note__start {
+    display: flex;
+    flex-direction: row;
+}
+
+.note__redactor {
+    display: none;
+}
+
+.note__input {
+    font-size: 22px;
+}
+
+.note__delete {
+    margin-right: 15px;
+}
+
+.note__end {
+    margin-left: 10px;
+}
+
+.note__delete-img {
+    width: 30px;
+    height: 30px;
+}
+
+.note__change-img {
+    width: 30px;
+    height: 30px;
+}
+
+.note__ok-img {
+    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.note__cancel-img {
+    margin-top: 5px;
+    width: 30px;
+    height: 30px;
+}
