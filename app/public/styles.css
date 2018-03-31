@@ -1,0 +1,179 @@
+html,
+body
+{
+    background-color: #7a919a;
+    font-family: sans-serif;
+    font-weight: 100;
+    font-size: 9pt;
+}
+
+p
+{
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper
+{
+    width: 60%;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .3);
+}
+
+@media only
+    screen and (max-device-width: 720px),
+    screen and (max-width: 720px)
+{
+    .wrapper
+    {
+        width: 90%;
+    }
+}
+
+.searchInput
+{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 16px;
+    margin: 0;
+    outline: none;
+    font-size: 18pt;
+    color: #517f9c;
+    font-family: sans-serif;
+    font-weight: 100;
+}
+
+.createItem
+{
+    padding: 15px;
+}
+
+.titleInput
+{
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    color: #517f9c;
+    font-family: sans-serif;
+    font-weight: 100;
+    font-size: 12pt;
+    outline: none;
+    margin-bottom: 5px;
+}
+
+button
+{
+    width: 100px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #cfdee4;
+    background: #e0eef5;
+    box-shadow: 0 2px 2px 0 #0000000d;
+    padding: 8px 16px;
+}
+
+button:hover
+{
+    background-color: #eeee;
+}
+
+.createButton
+{
+    float: right;
+}
+
+.caption
+{
+    display: flex;
+    flex-direction: row;
+    padding: 15px;
+}
+
+.caption div:first-child
+{
+    width: 100%;
+}
+
+.deleteAllButton
+{
+    height: 35px;
+    margin-top: 25px;
+}
+
+h2
+{
+    font-weight: 200;
+}
+
+.location
+{
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 16px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.stubLocation
+{
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 16px;
+    border-bottom: 1px solid #e6e6e6;
+    opacity: .5;
+}
+
+.location__edit,
+.location__controls
+{
+    flex: 1;
+    margin: 0 10px;
+}
+
+.location__body
+{
+    flex: 1;
+}
+
+.location__body p
+{
+    margin-top: 4px;
+}
+
+.location__body_title
+{
+    font-size: 14pt;
+}
+
+.location__body_type
+{
+    font-size: 12pt;
+    color: #aeaeae;
+}
+
+.location__body_date
+{
+    font-size: 10pt;
+    color: #aeaeae;
+}
+
+.location__edit_title
+{
+    padding: 10px;
+    font-size: 14pt;
+    font-weight: 100;
+    width: 54%;
+    outline: none;
+}
+
+.location__controls_edit,
+.location__controls_delete,
+.location__edit_save,
+.location__edit_cancel
+{
+    float: right;
+    padding: 4px 8px;
+    margin-right: 4px;
+}
