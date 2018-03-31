@@ -52,6 +52,10 @@ class ViewModel {
         return this.creationModel
     }
 
+    isValidCreationModel() {
+        return this.creationModel.title && this.creationModel.type
+    }
+
     clearForms() {
         this.editForms = []
     }

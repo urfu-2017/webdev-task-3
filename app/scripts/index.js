@@ -126,8 +126,14 @@ DOM.titleEditInputText.addEventListener('keyup', () => {
     ViewModel.changeModel({ title: DOM.titleEditInputText.value })
 })
 
-DOM.submitCreateButton.onclick = () => {
-    Repository.createItem(ViewModel.getCreationModel())
+DOM.createForm.onsubmit = (e) => {
+    e.preventDefault()
+
+    if (ViewModel.isValidCreationModel()) {
+        Repository.createItem(ViewModel.getCreationModel())
+    } else {
+        alert('Укажите название и тип локации') // eslint-disable-line
+    }
 }
 
 DOM.submitDeleteButton.onclick = Repository.clear
