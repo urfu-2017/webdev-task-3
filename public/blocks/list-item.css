@@ -58,14 +58,13 @@
 {
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0);
-}
-
-
-
-.list-item__input
-{
     grid-area: input;
 }
+
+.list-item__input_visited {
+    text-decoration: line-through;
+}
+
 
 .list-item__edit
 {
@@ -85,6 +84,12 @@
 .list-item__down
 {
     grid-area: down;
+}
+
+.list-item:last-of-type .list-item__down,
+.list-item:first-of-type .list-item__up
+{
+    display: none;
 }
 
 .list-item__checkbox

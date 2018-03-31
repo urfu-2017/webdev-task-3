@@ -5,11 +5,11 @@ class CustomElement extends HTMLElement {
 
     // eslint-disable-next-line no-empty-function
     init() {
-
     }
 
     connectedCallback() {
         if (!this.isInitialized) {
+            this.elementsCache = new Map();
             this.bemBlockName = this.tagName.toLowerCase();
             this.classList.add(this.bemBlockName);
             this.init();
@@ -44,7 +44,14 @@ class CustomElement extends HTMLElement {
      * @param {String} bemElementName
      */
     getBemElement(bemElementName) {
-        return this.querySelector(`.${this.bemBlockName}__${bemElementName}`);
+        if (this.elementsCache.has(bemElementName)) {
+            return this.elementsCache.get(bemElementName);
+        }
+        const selector = `.${this.bemBlockName}__${bemElementName}`;
+        const element = this.querySelector(selector);
+        this.elementsCache.set(bemElementName, element);
+
+        return element;
     }
 }
 

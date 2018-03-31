@@ -24,7 +24,11 @@ class AddBox extends CustomElement {
 
         this.getBemElement('add').addEventListener('click', () => {
             const input = this.getBemElement('input');
-            PlacesClient.create({ description: input.value })
+            const description = input.value;
+            if (description === '') {
+                return;
+            }
+            PlacesClient.create({ description })
                 .then(item => {
                     const event = new CustomEvent('create', { detail: item });
                     this.dispatchEvent(event);

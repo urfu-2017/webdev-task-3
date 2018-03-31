@@ -12,10 +12,9 @@ class ListItem extends CustomElement {
      * @param {Boolean} visible
      */
     setVisibility(visible) {
-        const state = this.getState();
-        if (state === 'normal' && visible === false) {
+        if (visible === false) {
             this.setState('hidden');
-        } else if (state === 'hidden' && visible === true) {
+        } else if (visible === true) {
             this.setState('normal');
         }
     }
@@ -31,13 +30,14 @@ class ListItem extends CustomElement {
     setIsVisited(isVisited) {
         const checkbox = this.getBemElement('checkbox');
         const input = this.getBemElement('input');
+        const visitedModifier = `${this.bemBlockName}__input_visited`;
 
         if (isVisited) {
             checkbox.checked = true;
-            input.style.textDecoration = 'line-through';
+            input.classList.toggle(visitedModifier, true);
         } else {
             checkbox.checked = false;
-            input.style.textDecoration = 'none';
+            input.classList.toggle(visitedModifier, false);
         }
     }
 
@@ -49,10 +49,12 @@ class ListItem extends CustomElement {
         return this.getBemElement('input').value;
     }
 
-    setDescription(value, readOnly) {
-        const input = this.getBemElement('input');
-        input.value = value;
-        input.readOnly = readOnly;
+    setDescription(value) {
+        this.getBemElement('input').value = value;
+    }
+
+    setReadOnly(value) {
+        this.getBemElement('input').readOnly = value;
     }
 
 
@@ -94,21 +96,22 @@ class ListItem extends CustomElement {
 
         this.getBemElement('edit').addEventListener('click', () => {
             this.setState('editing');
-            this.oldValue = this.getDescription();
-            this.getBemElement('input').readOnly = false;
+            this.oldDescription = this.getDescription();
+            this.setReadOnly(false);
         });
 
         this.getBemElement('accept').addEventListener('click', () => {
             this.placeClient.sendUpdate({ description: this.getDescription() })
                 .then(item => {
                     this.setState('normal');
-                    this.setDescription(item.description, true);
+                    this.setDescription(item.description);
+                    this.setReadOnly(true);
                 });
         });
 
         this.getBemElement('cancel').addEventListener('click', () => {
             this.setState('normal');
-            this.setDescription(this.oldValue, true);
+            this.setDescription(this.oldDescription);
         });
 
         this.addEventListener('mouseenter', () => {
@@ -127,6 +130,7 @@ class ListItem extends CustomElement {
             this.placeClient.sendUpdate({ isVisited: this.getIsVisited() })
                 .then(item => {
                     this.setIsVisited(item.isVisited);
+                    this.dispatchEvent(new CustomEvent('update', { bubbles: true }));
                 });
 
         });

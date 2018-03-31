@@ -1,0 +1,23 @@
+.filtered-list
+{
+
+}
+
+.filtered-list_state_unvisited .filtered-list__unvisited,
+.filtered-list_state_visited .filtered-list__visited,
+.filtered-list_state_all .filtered-list__all
+{
+    background-color: red;
+}
+
+.filtered-list__unvisited,
+.filtered-list__visited,
+.filtered-list__all
+{
+    outline: none;
+    border-radius: .5em;
+}
+
+
+
+

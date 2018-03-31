@@ -10,11 +10,11 @@ class PlacesApp extends CustomElement {
         this.innerHTML = `
             <search-box class="places-app__search"></search-box>
             <add-box class="places-app__add" placeholder="Название места"></add-box>
-            <list-filter title="Места" class="places-app__list"></list-filter>
+            <filtered-list title="Места" class="places-app__list"></filtered-list>
             <app-footer class="places-app__footer"></app-footer>
         `;
 
-        this.getBemElement('add').onCreate((data) => {
+        this.getBemElement('add').onCreate(data => {
             this.getBemElement('list').addItem(data.detail);
         });
 

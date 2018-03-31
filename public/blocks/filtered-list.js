@@ -2,7 +2,7 @@ import CustomElement from '../utils/custom-element.js';
 import ListItem from './list-item.js';
 import { PlacesClient } from '../utils/api.js';
 
-class ListFilter extends CustomElement {
+class FilteredList extends CustomElement {
     constructor() {
         super();
     }
@@ -12,12 +12,12 @@ class ListFilter extends CustomElement {
         this.states = ['all', 'visited', 'unvisited'];
         this.setState('all');
         this.innerHTML = `
-            <span class="list-filter__title">${title}</span>
-            <font-icon icon="trash" class="list-filter__clear"></font-icon>
-            <button class="list-filter__all">Все</button>
-            <button class="list-filter__visited">Посещенные</button>
-            <button class="list-filter__unvisited">Посетить</button>
-            <div class="list-filter__items">
+            <span class="filtered-list__title">${title}</span>
+            <font-icon icon="trash" class="filtered-list__clear"></font-icon>
+            <button class="filtered-list__all">Все</button>
+            <button class="filtered-list__visited">Посещенные</button>
+            <button class="filtered-list__unvisited">Посетить</button>
+            <div class="filtered-list__items">
                 ${this.innerHTML}
             </div>
         `;
@@ -27,7 +27,9 @@ class ListFilter extends CustomElement {
             this.clear();
         });
 
-        this.getBemElement('items').addEventListener('click', () => this.updateListVisibility());
+        this.getBemElement('items').addEventListener('update', () => {
+            this.updateListVisibility();
+        });
         this.registerButtonFilter('all', () => true);
         this.registerButtonFilter('visited', child => child.getIsVisited());
         this.registerButtonFilter('unvisited', child => !child.getIsVisited());
@@ -87,6 +89,6 @@ class ListFilter extends CustomElement {
     }
 }
 
-customElements.define('list-filter', ListFilter);
+customElements.define('filtered-list', FilteredList);
 
-export default ListFilter;
+export default FilteredList;
