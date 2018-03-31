@@ -1,0 +1,15 @@
+.search-box
+{
+    border: solid black 1px;
+    padding: .25em;
+    border-radius: .5em;
+    display: inline-block;
+}
+
+.search-box__input
+{
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+    width: 90%;
+}
