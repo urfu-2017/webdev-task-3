@@ -4,11 +4,7 @@ const config = require('./config/default.json');
 const { error500 } = require('./controllers/errors');
 
 exports.info = (req, res, next) => {
-    res.locals.meta = config.meta;
-    res.locals.lang = config.lang;
-    res.locals.year = config.year;
-    res.locals.title = config.title;
-    res.locals.author = config.author;
+    Object.assign(res.locals, config);
 
     next();
 };
