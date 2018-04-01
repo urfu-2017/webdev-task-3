@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="dist/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>Павел слишком занят</title>
+</head>
+
+<body>
+    <main>
+        <div class="search">
+            <input class="search__input" placeholder="Поиск">
+        </div>
+        <div class="create-place">
+            <input class="create-place__name">
+            <button class="create-place__button">Создать</button>
+        </div>
+        <div class="places">
+            <header class="places__header">
+                <div class="places__header-left">
+                    <div class="places__header-name">Места</div>
+                    <button class="places__delete-all">
+                        <img class="places__delete-all-img" src="images/deleteAll.png" alt="корзина">
+                    </button>
+                </div>
+                <div class="places__header-right">
+                    <div class="places__filters">
+                        <button class="places__button-all btn-filter-selected" data-filter-state="all">Все
+                        </button>
+                        <button class="places__button-not-visited" data-filter-state="notVisited">Посетить
+                        </button>
+                        <button class="places__button-visited" data-filter-state="visited">Посещённые</button>
+                    </div>
+                </div>
+            </header>
+            <hr>
+            <div class="places__list">
+            </div>
+        </div>
+    </main>
+    <footer class="places__footer">
+        <div class="places__footer-year">2018</div>
+        <div class="places__footer-author">Максим Ляпустин</div>
+    </footer>
+</body>
+
+</html>

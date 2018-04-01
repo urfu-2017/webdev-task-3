@@ -1,0 +1,75 @@
+.create-place__name,
+.create-place__button,
+.places__header-name,
+.places__delete-all
+{
+    display: inline-block;
+}
+
+.places__header-name
+{
+    font-size: 30px;
+}
+
+.places__delete-all-img
+{
+    vertical-align: middle;
+}
+
+.search__input
+{
+    width: 400px;
+    margin-bottom: 20px;
+}
+
+.create-place__name
+{
+    width: 330px;   
+}
+
+.search,
+.create-place
+{
+    text-align: center;
+}
+
+.places__delete-all-img
+{
+    width: 50px;
+}
+
+.places__header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.places__list
+{
+    display: inline-block;
+    position: relative;
+}
+
+.places__list
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.places__list-one-place
+{
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+
+}
+
+.places__delete-one-img,
+.places__edit-one-img,
+.places__save-img,
+.places__close-img
+{
+    width: 15px;
+    height: 15px;
+}

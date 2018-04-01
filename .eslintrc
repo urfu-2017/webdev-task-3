@@ -1,3 +1,6 @@
 {
-    "extends": "hrundel/node"
+    "extends": "hrundel/node",
+    "rules": {
+        "no-undef": "off"
+    }
 }
