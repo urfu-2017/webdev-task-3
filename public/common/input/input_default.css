@@ -1,0 +1,13 @@
+.input_default[type='text']
+{
+    height: 95%;
+    padding-left: 5px;
+    outline: none;
+    display: block;
+}
+
+.input_default[type='radio'],
+.input_default[type='checkbox']
+{
+    display: none;
+}

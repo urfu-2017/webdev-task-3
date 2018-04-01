@@ -1,0 +1,8 @@
+.places-menu
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 10px;
+    border-bottom: 2px solid black;
+}

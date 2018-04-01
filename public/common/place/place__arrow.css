@@ -1,0 +1,7 @@
+button.place__arrow
+{
+    height: 42px;
+    font-size: 36px;
+    margin-left: -6px;
+    background: transparent;
+}

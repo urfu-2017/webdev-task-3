@@ -1,0 +1,12 @@
+@import './main/main.css';
+@import './footer/footer.css';
+@import './places/places.css';
+@import './one-line/one-line.css';
+@import './input/input_default.css';
+
+@import './place/index.css';
+@import './button/index.css';
+@import './search/index.css';
+@import './place-edit/index.css';
+@import './places-menu/index.css';
+@import './place-creator/index.css';
