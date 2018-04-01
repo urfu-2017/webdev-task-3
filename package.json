@@ -3,6 +3,7 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm run lint",
+    "build": "webpack",
     "start": "node server.js"
   },
   "devDependencies": {

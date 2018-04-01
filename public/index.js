@@ -1,5 +1,4 @@
-import { config } from './config';
-const URL = config.URL;
+const URL = require('./config').URL;
 
 let allPlaces = true;
 let onlyVisited = true;
