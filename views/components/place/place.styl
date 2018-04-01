@@ -1,0 +1,28 @@
+.place
+    height 50px
+    display flex
+    flex-direction column
+    justify-content center
+    border-bottom 1px solid black
+    &__normal
+        display flex
+        justify-content space-between
+        & > div:first-child
+            width 300px
+        & > div:first-child > span:nth-child(-n + 2)
+            cursor pointer
+            display none
+        & > div:first-child:hover > span:nth-child(-n + 2)
+            display inline
+        &__swap > span
+            cursor pointer
+        &__swap > span:first-child
+            margin-right 20px
+
+    &__edit
+        display none
+        & > span
+            cursor pointer
+
+.hidden
+    display none
