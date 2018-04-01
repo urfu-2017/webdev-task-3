@@ -1,4 +1,9 @@
 .place-edit__cancel
 {
+    width: 42px;
+    height: 42px;
+    color: red;
+    font-size: 34px;
     margin-right: 6%;
+    background: transparent;
 }

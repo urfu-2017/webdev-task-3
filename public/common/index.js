@@ -75,7 +75,7 @@ class PlaceElement {
         this.li = this._defaultLi;
         this.visitCheckbox = this._renderSubElement({
             tag: 'input',
-            className: 'place__visit',
+            className: 'input_default place__visit',
             attributes: { type: 'checkbox', id: `v${this.place.id}` }
         });
         this.visitCheckbox.checked = this.place.visited;
@@ -167,7 +167,7 @@ class PlaceElement {
 
         li.arrowDownButton = this._renderSubElement({
             tag: 'button',
-            className: 'place__arrow btn-place down',
+            className: 'button_default place__arrow down',
             textContent: '↓',
             attributes: { type: 'button' },
             clickCallback: () => this.moveDown()
@@ -175,7 +175,7 @@ class PlaceElement {
 
         li.arrowUpButton = this._renderSubElement({
             tag: 'button',
-            className: 'place__arrow btn-place up',
+            className: 'button_default place__arrow up',
             textContent: '↑',
             attributes: { type: 'button' },
             clickCallback: () => this.moveUp()
@@ -189,14 +189,14 @@ class PlaceElement {
 
         li.removeButton = this._renderSubElement({
             tag: 'button',
-            className: 'place__delete btn-hidden btn-place',
+            className: 'button_hidden button_default place__delete',
             attributes: { type: 'button' },
             clickCallback: () => this.remove()
         });
 
         li.editButton = this._renderSubElement({
             tag: 'button',
-            className: 'place__edit btn-hidden btn-place',
+            className: 'button_hidden button_default place__edit',
             attributes: { type: 'button' },
             clickCallback: () => this.setEditMode()
         });
@@ -217,15 +217,15 @@ class PlaceElement {
 
         li.cancelButton = this._renderSubElement({
             tag: 'button',
-            className: 'place-edit__cancel place-edit__confirm btn-place',
-            textContent: '❌',
+            className: 'place-edit__cancel button_default',
+            textContent: '✘',
             attributes: { type: 'button' },
             clickCallback: () => this.cancelEdit()
         });
 
         li.confirmButton = this._renderSubElement({
             tag: 'button',
-            className: 'place-edit__confirm btn-place',
+            className: 'place-edit__confirm button_default',
             textContent: '✔',
             attributes: { type: 'button' },
             clickCallback: () => this.confirmEdit()
@@ -233,7 +233,7 @@ class PlaceElement {
 
         li.editInput = this._renderSubElement({
             tag: 'input',
-            className: 'place-edit__ipt',
+            className: 'place-edit__input input_default',
             attributes: { type: 'text', value: this.place.description }
         });
 
@@ -264,8 +264,8 @@ class PlaceList {
         this.placeElements = {};
         this.element = document.querySelector('.places__list');
 
-        this._searchInput = document.querySelector('.search__ipt');
-        this._placeCreatorInput = document.querySelector('.place-creator__ipt');
+        this._searchInput = document.querySelector('.search__input');
+        this._placeCreatorInput = document.querySelector('.place-creator__input');
     }
 
     render() {
@@ -326,8 +326,8 @@ class PlaceList {
     }
 
     _registerActions() {
-        const searchButton = document.querySelector('.search__btn');
-        const placeCreatorButton = document.querySelector('.place-creator__btn');
+        const searchButton = document.querySelector('.search__button');
+        const placeCreatorButton = document.querySelector('.place-creator__button');
         const listCleanerButton = document.querySelector('.place__delete[name="cleaner"]');
 
         searchButton.onclick = () => this.filter();

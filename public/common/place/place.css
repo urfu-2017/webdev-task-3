@@ -14,7 +14,7 @@
     visibility: hidden;
 }
 
-.place:hover .btn-hidden
+.place:hover .button_hidden
 {
     visibility: visible;
 }

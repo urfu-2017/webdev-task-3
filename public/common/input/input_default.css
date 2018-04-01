@@ -1,14 +1,13 @@
-input[type='text']
+.input_default[type='text']
 {
     height: 95%;
     padding-left: 5px;
-    font-size: 16px;
     outline: none;
     display: block;
 }
 
-input[type='radio'],
-input[type='checkbox']
+.input_default[type='radio'],
+.input_default[type='checkbox']
 {
     display: none;
 }

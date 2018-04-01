@@ -1,4 +1,4 @@
-.place-creator__btn
+.place-creator__button
 {
     color: #fff;
     height: 100%;
@@ -11,12 +11,12 @@
     background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
 }
 
-.place-creator__btn:hover
+.place-creator__button:hover
 {
     box-shadow: inset 0 0 6px 0 rgba(0, 0, 0, .4);
 }
 
-.place-creator__btn:active
+.place-creator__button:active
 {
     box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, .6);
 }
