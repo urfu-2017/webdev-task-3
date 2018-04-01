@@ -3,6 +3,7 @@
 const path = require('path');
 
 module.exports = {
+    mode: 'development',
     entry: './views/components/index.js',
     output: {
         filename: 'bundle.js',

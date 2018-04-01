@@ -13,14 +13,14 @@ const placesControl = new Places();
 const searchControl = new Search();
 
 createControl.onClick = async () => {
-    if (createControl.input.length && !/^\s+$/.test(createControl.input)) {
+    if (createControl.input.length) {
         const result = await createPlace(createControl.input);
 
         addPlace(result);
     }
 };
 placesControl.onClear = async () => {
-    await fetch('http://localhost:2223/place/clear');
+    await fetch(`${window.apiUrl}place/clear`);
     placesControl.clear();
 };
 
@@ -51,16 +51,7 @@ async function swapPlaces(name1, name2) {
         name2
     };
 
-    await fetch(
-        `${window.apiUrl}place/swap`,
-        {
-            method: 'PATCH',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
+    await fetch(`${window.apiUrl}place/swap`, makeHeader('PATCH', formData));
 }
 
 async function editPlace(control, oldName) {
@@ -73,16 +64,7 @@ async function editPlace(control, oldName) {
         }
     };
 
-    await fetch(
-        `${window.apiUrl}place`,
-        {
-            method: 'PATCH',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
+    await fetch(`${window.apiUrl}place`, makeHeader('PATCH', formData));
 }
 
 async function deletePlace(control) {
@@ -90,16 +72,7 @@ async function deletePlace(control) {
         name: control.name
     };
 
-    await fetch(
-        `${window.apiUrl}place`,
-        {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
+    await fetch(`${window.apiUrl}place`, makeHeader('DELETE', formData))
         .then(resp => resp.json())
         .then(placesControl.remove.bind(placesControl));
 }
@@ -111,14 +84,8 @@ async function visit(control, checked) {
 
     return fetch(
         `${window.apiUrl}place/${checked ? 'visit' : 'unVisit'}`,
-        {
-            method: 'PATCH',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
+        makeHeader('PATCH', formData)
+    );
 }
 
 function loadPlaces() {
@@ -132,15 +99,17 @@ function createPlace(name) {
         name
     };
 
-    return fetch(
-        `${window.apiUrl}place`,
-        {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
+    return fetch(`${window.apiUrl}place`, makeHeader('POST', formData))
         .then(response => response.json());
+}
+
+function makeHeader(method, formData) {
+    return {
+        method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    };
 }

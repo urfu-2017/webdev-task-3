@@ -57,13 +57,14 @@ class Place {
     }
 
     _switchToNormal() {
-        this._normal.style.display = 'flex';
-        this._edit.style.display = 'none';
+        this._normal.classList.remove('hidden');
+        this._edit.classList.add('hidden');
     }
 
     _switchToEdit() {
-        this._normal.style.display = 'none';
-        this._edit.style.display = 'block';
+        this._normal.classList.add('hidden');
+        this._edit.classList.remove('hidden');
+
         this._editInput.value = this.name;
     }
 

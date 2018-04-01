@@ -3,7 +3,7 @@
 
 class Create {
     get input() {
-        return this._input.value;
+        return this._input.value.trim();
     }
 
     constructor() {

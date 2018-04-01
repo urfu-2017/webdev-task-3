@@ -5,5 +5,5 @@ module.exports = {
     siteName: 'Places',
     staticBasePath: '/',
     charset: 'utf-8',
-    apiUrl: 'http://localhost:2223/'
+    apiUrl: 'https://webdev-task-2-cklrihxmhy.now.sh/'
 };
