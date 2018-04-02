@@ -9,22 +9,23 @@
 <body>
 <main>
     <section class="search">
-        <input class="search__input" placeholder="Поиск">
+        <input class="search__input" id="search" placeholder="Поиск">
     </section>
     <section class="create">
-        <input class="create__input" placeholder="Название места">
-        <button class="create__button">Создать</button>
+        <input class="create__input" id="create_input" placeholder="Название места">
+        <button class="create__button" id="create_button">Создать</button>
     </section>
     <section class="filter">
         <h2 class="filter__title">Места</h2>
-        <div class="filter__buttons">
-            <button>
+        <button class="filter__trash" id="trash"></button>
+        <div class="visit-buttons">
+            <button class="visit-buttons__all" id="all">
                 Все
             </button>
-            <button>
+            <button class="visit-buttons__to-visit" id="to-visit">
                 Посетить
             </button>
-            <button>
+            <button class="visit-buttons__visited" id="visited">
                 Посещённые
             </button>
         </div>
