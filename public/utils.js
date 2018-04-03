@@ -58,10 +58,13 @@ const createElement = ({ name, classes = [], title = null, text = null, cls = nu
 }
 
 const setSubmitButton = (node, btnOk, btnCancel) => {
+    const ENTER_CODE = 13
+    const ESC_CODE = 27
+
     node.onkeydown = e => {
-        if (btnOk && e.keyCode === 13) {
+        if (btnOk && e.keyCode === ENTER_CODE) {
             btnOk.click()
-        } else if (btnCancel && e.keyCode === 27) {
+        } else if (btnCancel && e.keyCode === ESC_CODE) {
             btnCancel.click()
         }
     }
