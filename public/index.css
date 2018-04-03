@@ -1,9 +1,6 @@
 @font-face {
     font-family: 'icofont';
-    src: url('icofont.eot');
-    src: url('icofont.eot') format('embedded-opentype'),
-    url('icofont.ttf') format('truetype'),
-    url('icofont.woff') format('woff');
+    src: url('icofont.woff');
     font-weight: normal;
     font-style: normal;
 }
