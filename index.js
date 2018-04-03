@@ -19,7 +19,7 @@ app.get('/', listPlaces);
 
 const port = 8080;
 hbs.registerPartials(partialsDir, () => {
-    app.listen(8080, () => {
+    app.listen(port, () => {
         console.info(`Listening on http://localhost:${port}`);
     });
 });

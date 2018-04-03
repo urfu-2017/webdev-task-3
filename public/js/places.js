@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use strict';
 
 const apiUrl = 'https://webdev-task-2-xiufbrjvdv.now.sh/places';
@@ -14,30 +15,28 @@ class Place {
     createElement() {
         this.element = document.createElement('div');
         this.element.classList.add('place');
-        this.element.innerHTML = '' +
-            '<div class="place__item place__item--hidden place__edit">\n' +
-            '    <span class="far fa-edit clickable"></span>\n' +
-            '</div>\n' +
-            '<div class="place__item place__item--hidden place__delete">\n' +
-            '    <span class="far fa-trash-alt clickable"></span>\n' +
-            '</div>\n' +
-            `<span class="place__item place__description">${this.description}</span>\n` +
-            '<input type="text" ' +
-            'class="place__item place__item--hidden place__edit-description">\n' +
-            '<div class="place__item place__order--up">\n' +
-            '    <span class="fas fa-angle-up clickable"></span>\n' +
-            '</div>\n' +
-            '<div class="place__item place__order--down">\n' +
-            '    <span class="fas fa-angle-down clickable"></span>\n' +
-            '</div>\n' +
-            '<div class="place__item place__save place__item--hidden">\n' +
-            '    <span class="fas fa-check clickable"></span>\n' +
-            '</div>\n' +
-            '<div class="place__item place__cancel place__item--hidden">\n' +
-            '    <span class="fas fa-times clickable"></span>\n' +
-            '</div>\n' +
-            '<input type="checkbox" class="place__item place__visited">\n' +
-            '</div>';
+        this.element.innerHTML = `<div class="place__item place__item_hidden place__edit">
+                <span class="far fa-edit clickable"></span>
+            </div>
+            <div class="place__item place__item_hidden place__delete">
+                <span class="far fa-trash-alt clickable"></span>
+            </div>
+            <span class="place__item place__description">${this.description}</span>
+            <input type="text" class="place__item place__item_hidden place__edit-description">
+            <div class="place__item place__order_up">
+                <span class="fas fa-angle-up clickable"></span>
+            </div>
+            <div class="place__item place__order_down">
+                <span class="fas fa-angle-down clickable"></span>
+            </div>
+            <div class="place__item place__save place__item_hidden">
+                <span class="fas fa-check clickable"></span>
+            </div>
+            <div class="place__item place__cancel place__item_hidden">
+                <span class="fas fa-times clickable"></span>
+            </div>
+            <input type="checkbox" class="place__item place__visited">
+            </div>`;
     }
 
     getComponents() {
@@ -45,8 +44,8 @@ class Place {
         this.deleteButton = this.element.querySelector('.place__delete');
         this.descriptionElem = this.element.querySelector('.place__description');
         this.descriptionEditor = this.element.querySelector('.place__edit-description');
-        this.upButton = this.element.querySelector('.place__order--up');
-        this.downButton = this.element.querySelector('.place__order--down');
+        this.upButton = this.element.querySelector('.place__order_up');
+        this.downButton = this.element.querySelector('.place__order_down');
         this.saveButton = this.element.querySelector('.place__save');
         this.cancelButton = this.element.querySelector('.place__cancel');
         this.visitedCheckbox = this.element.querySelector('.place__visited');
@@ -57,13 +56,13 @@ class Place {
     }
 
     showEditButtons() {
-        this.editButton.classList.remove('place__item--hidden');
-        this.deleteButton.classList.remove('place__item--hidden');
+        this.editButton.classList.remove('place__item_hidden');
+        this.deleteButton.classList.remove('place__item_hidden');
     }
 
     hideEditButtons() {
-        this.editButton.classList.add('place__item--hidden');
-        this.deleteButton.classList.add('place__item--hidden');
+        this.editButton.classList.add('place__item_hidden');
+        this.deleteButton.classList.add('place__item_hidden');
     }
 
     startEditing() {
@@ -94,11 +93,11 @@ class Place {
     }
 
     _showComponent(component) {
-        component.classList.remove('place__item--hidden');
+        component.classList.remove('place__item_hidden');
     }
 
     _hideComponent(component) {
-        component.classList.add('place__item--hidden');
+        component.classList.add('place__item_hidden');
     }
 }
 
@@ -112,8 +111,7 @@ class PlacesContainer {
 
     async fetchPlaces() {
         this._places = [];
-        const resp = await fetch(apiUrl);
-        const data = await resp.json();
+        const data = await request.get(apiUrl);
         const places = data.places;
         for (const place of places) {
             this.createPlace(place);
@@ -135,12 +133,7 @@ class PlacesContainer {
         const field = document.querySelector('.create__title-input');
         const description = field.value;
         field.value = '';
-        const resp = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ description })
-        });
-        const data = await resp.json();
+        const data = await request.post(apiUrl, { description });
         this.createPlace(data.place);
         this.rerenderList();
     }
@@ -161,10 +154,7 @@ class PlacesContainer {
 
     async clear() {
         try {
-            const resp = await fetch(apiUrl, {
-                method: 'DELETE'
-            });
-            const data = await resp.json();
+            const data = await request.delete(apiUrl);
             if (!data.ok) {
                 throw new Error('Unable to clear list');
             }
@@ -178,12 +168,7 @@ class PlacesContainer {
     async toggleVisited(place) {
         try {
             place.visited = !place.visited;
-            const resp = await fetch(`${apiUrl}/${place.id}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ visited: place.visited })
-            });
-            const data = await resp.json();
+            const data = await request.patch(`${apiUrl}/${place.id}`, { visited: place.visited });
             if (!data.ok) {
                 throw new Error('unable to toggle visited');
             }
@@ -198,11 +183,7 @@ class PlacesContainer {
         try {
             const index = this._places.findIndex(elem => elem === place);
             this._places.splice(index, 1);
-            const resp = await fetch(`${apiUrl}/${place.id}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await resp.json();
+            const data = await request.delete(`${apiUrl}/${place.id}`);
             if (!data.ok) {
                 throw new Error('Unable to delete place');
             }
@@ -215,12 +196,8 @@ class PlacesContainer {
     async changeDescription(place) {
         try {
             place.saveDescription();
-            const resp = await fetch(`${apiUrl}/${place.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ description: place.description })
-            });
-            const data = await resp.json();
+            const data = await request.put(`${apiUrl}/${place.id}`,
+                { description: place.description });
             if (!data.ok) {
                 throw new Error('Unable to change description');
             }
@@ -233,11 +210,7 @@ class PlacesContainer {
         try {
             const index = this._places.findIndex(elem => elem === place);
             const neighbor = this._places[index + direction];
-            const resp = await fetch(`${apiUrl}/${place.id}/${neighbor.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await resp.json();
+            const data = await request.put(`${apiUrl}/${place.id}/${neighbor.id}`);
             if (!data.ok) {
                 throw new Error('Unable to swap places');
             }
@@ -252,10 +225,10 @@ class PlacesContainer {
     }
 
     changeFilter(event) {
-        document.querySelector('.filter__button--active')
+        document.querySelector('.filter__button_active')
             .classList
             .remove('filter__button--active');
-        event.target.classList.add('filter__button--active');
+        event.target.classList.add('filter__button_active');
         const filter = event.target.dataset.filter;
         this.setFilterFunc(filter);
         this.rerenderList();

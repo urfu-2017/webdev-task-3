@@ -98,23 +98,23 @@ input{
     text-align: center;
 }
 
-.filter__button--rounded-left
+.filter__button_rounded-left
 {
     border-radius: 10px 0 0 10px;
 }
 
-.filter__button--rounded-right
+.filter__button_rounded-right
 {
     border-radius: 0 10px 10px 0;
 }
 
-.filter__button:not(.filter__button--active):hover,
+.filter__button:not(.filter__button_active):hover,
 .create__submit:hover
 {
     background-color: rgba(194, 197, 255, 0.81);
 }
 
-.filter__button--active
+.filter__button_active
 {
     background-color: #8f8fc4;
 }
@@ -165,25 +165,25 @@ input{
     grid-area: description;
 }
 
-.place__order--up,
+.place__order_up,
 .place__cancel
 {
     grid-area: control1;
 }
 
-.place__order--down,
+.place__order_down,
 .place__save
 {
     grid-area: control2;
 }
 
-.place__item--hidden
+.place__item_hidden
 {
     visibility: hidden;
 }
 
-.place:first-child .place__order--up,
-.place:last-child .place__order--down
+.place:first-child .place__order_up,
+.place:last-child .place__order_down
 {
     visibility: hidden;
 }
