@@ -9,7 +9,7 @@ const queryToString = obj => Object.entries(obj)
     .map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(v))
     .join('&')
 
-const jetch = (url, method = 'GET', body = null, query = null) => {
+const jetch = async (url, method = 'GET', body = null, query = null) => {
     if (query !== null) {
         url += '?' + queryToString(query)
     }
@@ -18,7 +18,12 @@ const jetch = (url, method = 'GET', body = null, query = null) => {
         options.body = JSON.stringify(body)
     }
 
-    return fetch(url, options)
+    const response = await fetch(url, options)
+    if (response.status != 200) {
+        alert('Не удалось выполнить запрос')
+        throw new Error(`Request failed: ${method} ${response.url}, code=${response.status}`)
+    }
+    return response
 }
 
 
