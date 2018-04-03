@@ -68,9 +68,9 @@ class PlaceEditor {
         element.innerHTML = `<input class="place-editor__input" type="text"
                              value="${place.description.innerHTML.trim()}">
                              <input class="place-editor__accept-button"
-                            type="image" src="./icons./001-check.svg" alt="accept">
+                            type="image" src="./icons/001-check.svg" alt="accept">
                             <input class="place-editor__cancel-button"
-                            type="image" src="./icons./007-close.svg" alt="cancel">`;
+                            type="image" src="./icons/007-close.svg" alt="cancel">`;
 
         return element;
     }
