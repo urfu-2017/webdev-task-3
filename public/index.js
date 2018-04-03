@@ -146,12 +146,8 @@ function showRedactor(e) {
     const def = selectedEl.querySelector('.note__default');
     const redactor = selectedEl.querySelector('.note__redactor');
 
-    console.log(def)
-
     def.className = 'note__default display_none';
     redactor.className = 'note__redactor display_flex';
-
-    console.log(def)
 }
 
 function closeRedactor(e) {
