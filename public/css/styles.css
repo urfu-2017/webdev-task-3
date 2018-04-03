@@ -1,0 +1,200 @@
+body
+{
+    background-color: #edeef0;
+    font: 16px Roboto, Helvetica, sans-serif;
+}
+
+input{
+    font:inherit;
+}
+
+.main
+{
+    width: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #e3e4e8;
+    padding: 10px 5%;
+    box-sizing: border-box;
+}
+
+.clickable
+{
+    cursor: pointer;
+}
+
+.search
+{
+    width: 100%;
+    margin: auto;
+}
+
+.search__input
+{
+    width: 100%;
+    height: 40px;
+    margin: auto;
+    border: none;
+    border-bottom: 1px solid #0000b3;
+
+}
+
+.create
+{
+    width: 100%;
+    margin: 10px auto;
+}
+
+.create__title-input
+{
+    width: 60%;
+    height: 40px;
+    margin: auto;
+    border: none;
+    border-bottom: 1px solid #0000b3;
+}
+
+.create__submit
+{
+    background-color: #c2c5ff;
+    border: none;
+    width: 100px;
+    height: 40px;
+    border-radius: 10%;
+}
+
+.places-header
+{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.places__title
+{
+    margin: 0;
+}
+
+.places__clear
+{
+    margin-left: 5px;
+}
+
+.filter
+{
+    margin-left: auto;
+}
+
+.filter__button
+{
+    margin: 0;
+    background-color: #c2c5ff;
+    float: left;
+    border: 1px solid #000;
+    padding: 5px;
+    width: 70px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.filter__button_rounded-left
+{
+    border-radius: 10px 0 0 10px;
+}
+
+.filter__button_rounded-right
+{
+    border-radius: 0 10px 10px 0;
+}
+
+.filter__button:not(.filter__button_active):hover,
+.create__submit:hover
+{
+    background-color: rgba(194, 197, 255, 0.81);
+}
+
+.filter__button_active
+{
+    background-color: #8f8fc4;
+}
+
+.place
+{
+    padding: 17px 10px;
+    box-sizing: border-box;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 5% 5% 75% 5% 5% 5%;
+    grid-template-rows: auto;
+    grid-template-areas: 'edit delete description control1 control2 visited';
+    min-height: 50px;
+    border: 1px solid #e3e4e8;
+    vertical-align: middle;
+}
+
+.place:not(:first-child)
+{
+    border-top: none;
+}
+
+.place__edit
+{
+    grid-area: edit;
+}
+
+.place__delete
+{
+    grid-area: delete;
+}
+
+.place__description
+{
+    grid-area: description;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.place__visited
+{
+    grid-area: visited;
+}
+
+.place__edit-description
+{
+    grid-area: description;
+}
+
+.place__order_up,
+.place__cancel
+{
+    grid-area: control1;
+}
+
+.place__order_down,
+.place__save
+{
+    grid-area: control2;
+}
+
+.place__item_hidden
+{
+    visibility: hidden;
+}
+
+.place:first-child .place__order_up,
+.place:last-child .place__order_down
+{
+    visibility: hidden;
+}
+
+.footer
+{
+    display: flex;
+    align-content: space-between;
+}
+
+.footer__copyright
+{
+    margin-left: auto;
+}
