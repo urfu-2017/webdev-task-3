@@ -1,0 +1,11 @@
+.place-selectors {
+    border: thin solid black;
+    overflow: hidden;
+    border-radius: 10px;
+    height: 25px;
+    width: 240px;
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    align-self: center;
+}

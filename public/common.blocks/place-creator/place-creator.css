@@ -1,0 +1,7 @@
+.place-creator {
+    position: relative;
+    display: flex;
+    width: 80%;
+    margin: 20px auto;
+    height: 36px;
+}

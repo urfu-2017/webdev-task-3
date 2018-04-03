@@ -1,0 +1,5 @@
+.place-creator__name-input {
+    border: thin solid black;
+    width: 60%;
+    padding: 5px;
+}
