@@ -31,32 +31,6 @@ const ofClass = classname => Array.from(document.querySelectorAll(`.${classname}
 
 const nop = () => {}
 
-const createElement = ({ name, classes = [], title = null, text = null, cls = null, attrs = {}, children = [] }) => {
-    const result = document.createElement(name)
-    if (cls !== null) {
-        result.classList.add(cls)
-    } else {
-        classes.forEach(cls => result.classList.add(cls))
-    }
-    if (title !== null) {
-        result.setAttribute('title', title)
-    }
-    if (text !== null) {
-        if (name === 'input') {
-            result.value = text
-        } else {
-            result.innerText = text
-        }
-    }
-    for (let [attrName, attrValue] of Object.entries(attrs))
-        if (attrValue !== false) {
-            result.setAttribute(attrName, attrValue)
-        }
-    children.forEach(child => result.appendChild(child))
-
-    return result
-}
-
 const setSubmitButton = (node, btnOk, btnCancel) => {
     const ENTER_CODE = 13
     const ESC_CODE = 27

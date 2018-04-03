@@ -1,7 +1,17 @@
 'use strict'
 
-const createEmptyListNode = () => createElement({ name: 'p', cls: 'spot-list-empty', text: 'Список пуст' })
-const createSpotList = () => createElement({ name: 'ul', cls: 'spot-list' })
+const createElement = (selector, attrs = {}, children = []) => {
+    const node = document.querySelector(`.node-list > ${selector}`).cloneNode(true)
+    for (let [attrName, attrValue] of Object.entries(attrs))
+        if (attrValue !== false) {
+            node.setAttribute(attrName, attrValue)
+        }
+    children.forEach(child => node.appendChild(child))
+    return node
+}
+
+const createEmptyListNode = () => createElement('.spot-list-empty')
+const createSpotList = () => createElement('.spot-list')
 
 const renderSpots = spots => {
     clearChildren(spotListContainer)
@@ -28,14 +38,14 @@ class SpotListItemBuilder {
         this.current = current
         this.prev = prev
         this.next = next
-        this.editButton = createElement({ name: 'button', classes: ['spot-edit', 'edit-button'], title: 'Изменить описание'  })
-        this.removeButton = createElement({ name: 'button', classes: ['spot-remove', 'remove-button'], title: 'Удалить место' })
-        this.input = createElement({ name: 'input', cls: 'spot-desc-input', text: this.current.desc, attrs: { readonly: true } })
-        this.accept = createElement({ name: 'button', classes: ['spot-accept', 'accept-button', 'hidden'], title: 'Сохранить изменения' })
-        this.decline = createElement({ name: 'button', classes: ['spot-decline', 'decline-button', 'hidden'], title: 'Отменить изменения' })
-        this.up = createElement({ name: 'button', classes: ['spot-up', 'up-button'] })
-        this.down = createElement({ name: 'button', classes: ['spot-down', 'down-button'] })
-        this.checkbox = createElement({ name: 'input', title: 'Пометить посещенным', attrs: { type: 'checkbox', checked: this.current.visited } })
+        this.editButton = createElement('.spot-edit.edit-button')
+        this.removeButton = createElement('.spot-remove.remove-button')
+        this.input = createElement('.spot-desc-input', { value: this.current.desc })
+        this.accept = createElement('.spot-accept.accept-button')
+        this.decline = createElement('.spot-decline.decline-button')
+        this.up = createElement('.spot-up.up-button')
+        this.down = createElement('.spot-down.down-button')
+        this.checkbox = createElement('[type="checkbox"]', { checked: this.current.visited })
         this.beforeDesc = this.input.value
     }
 
@@ -54,10 +64,10 @@ class SpotListItemBuilder {
     }
 
     build() {
-        return createElement({ name: 'li', cls: 'spot-list-item', children: [
+        return createElement('.spot-list-item', {}, [
             this.editButton, this.removeButton, this.input, this.accept, this.decline,
-            createElement({ name: 'div', cls: 'spot-list-item-right', children: [this.up, this.down, this.checkbox] })
-        ]})    
+            createElement('.spot-list-item-right', {}, [ this.up, this.down, this.checkbox ])
+        ])
     }
 
     onInputClick() {
