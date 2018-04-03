@@ -22,14 +22,7 @@ const jetch = (url, method = 'GET', body = null, query = null) => {
 }
 
 
-const ofClass = classname => {
-    const elements = document.getElementsByClassName(classname)
-    const result = []
-    for (let i = 0; i < elements.length; i++)
-        result.push(elements.item(i))
-
-    return result
-}
+const ofClass = classname => Array.from(document.querySelectorAll(`.${classname}`))
 
 const nop = () => {}
 
