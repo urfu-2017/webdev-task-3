@@ -1,5 +1,5 @@
 <div class="note" data-status={{ visited }} data-id={{ id }}>
-    <div class="note__default">
+    <div class="note__default display_flex">
         <div class="note__start">
             <div class="note__change">
                 <img class="note__change-img" src="images/red.png" alt="Редактировать">
@@ -16,7 +16,7 @@
             <input class="note__checkbox" type="checkbox" {{ visited }}/>
         </div>
     </div>
-    <div class="note__redactor">
+    <div class="note__redactor display_none">
         <input class="note__input" value="{{ description }}" type="text"/>
         <div class="note__cancel">
             <img class="note__cancel-img" src="images/close.png" alt="Удалить">

@@ -43,18 +43,21 @@ main {
 }
 
 .note__default {
-    display: flex;
     flex-direction: row;
     margin-top: 5px;
+}
+
+.display_flex {
+    display: flex;
+}
+
+.display_none {
+    display: none;
 }
 
 .note__start {
     display: flex;
     flex-direction: row;
-}
-
-.note__redactor {
-    display: none;
 }
 
 .note__input {

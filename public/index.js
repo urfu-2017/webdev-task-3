@@ -4,8 +4,8 @@ const url = 'https://webdev-task-2-cgybyopdlr.now.sh/places';
 
 function checkFilter() {
     let filter;
-    const radiobtnAll = document.getElementsByClassName('main-page__radiobtn-all')[0];
-    const radiobtnVisit = document.getElementsByClassName('main-page__radiobtn-visit')[0];
+    const radiobtnAll = document.querySelector('.main-page__radiobtn-all');
+    const radiobtnVisit = document.querySelector('.main-page__radiobtn-visit');
 
     if (radiobtnAll.checked) {
         filter = 2;
@@ -22,9 +22,9 @@ function search() {
 
     const filter = checkFilter();
 
-    let searchValue = document.getElementsByClassName('main-page__search-input')[0].value;
-    let notes = document.getElementsByClassName('notes')[0].children
-        ? document.getElementsByClassName('notes')[0].children
+    let searchValue = document.querySelector('.main-page__search-input').value;
+    let notes = document.querySelectorAll('.notes > .note')
+        ? document.querySelectorAll('.notes > .note')
         : null;
     searchValue = String(searchValue).toLowerCase();
 
@@ -35,7 +35,7 @@ function search() {
         } else {
             status = 1;
         }
-        const noteName = String(note.getElementsByClassName('note__name')[0].innerHTML)
+        const noteName = String(note.querySelector('.note__name').innerHTML)
             .toLowerCase();
         if (noteName.indexOf(searchValue) !== -1 &&
             (filter === 2 || status === 1 - filter)) {
@@ -47,7 +47,7 @@ function search() {
 }
 
 function add() {
-    const addInput = document.getElementsByClassName('main-page__add-input')[0];
+    const addInput = document.querySelector('.main-page__add-input');
     const addInputValue = addInput.value;
     fetch(url, {
         method: 'POST',
@@ -67,12 +67,16 @@ function add() {
         .then(data => {
             let newNote = document.createElement('div');
             newNote.className = 'note';
-            newNote.dataStatus = data.visited;
-            newNote.dataId = data.id;
+            newNote.setAttribute('data-status', data.visited);
+            newNote.setAttribute('data-id', data.id);
             newNote.innerHTML = `<div class="note__default">
                     <div class="note__start">
-                    <img class="note__change-img" src="images/red.png" alt="Редактировать">
-                    <img class="note__delete-img" src="images/close.png" alt="Удалить">
+                    <div class="note__change">
+                        <img class="note__change-img" src="images/red.png" alt="Редактировать">
+                    </div>
+                    <div class="note__delete">
+                        <img class="note__delete-img" src="images/close.png" alt="Удалить">
+                    </div>
                     <span 
                         class="note__name">
                         ${ data.description }
@@ -84,19 +88,25 @@ function add() {
             </div>
             <div class="note__redactor">
                 <input class="note__input" value="${ data.description }" type="text"/>
-                <img class="note__cancel-img" src="images/close.png" alt="Удалить">
-                <img class="note__ok-img" src="images/ok.png" alt="Ok">
+                <div class="note__cancel">
+                    <img class="note__cancel-img" src="images/close.png" alt="Удалить">
+                </div>
+                <div class="note__ok">
+                    <img class="note__ok-img" src="images/ok.png" alt="Ok">
+                </div>
             </div>`;
-            document.getElementsByClassName('notes')[0].appendChild(newNote);
-            newNote.getElementsByClassName('note__name')[0].addEventListener('click',
+            document.querySelector('.notes').appendChild(newNote);
+            newNote.querySelector('.note__change').addEventListener('click',
                 showRedactor, false);
-            newNote.getElementsByClassName('note__cancel-img')[0].addEventListener('click',
+            newNote.querySelector('.note__name').addEventListener('click',
+                showRedactor, false);
+            newNote.querySelector('.note__cancel').addEventListener('click',
                 closeRedactor, false);
-            newNote.getElementsByClassName('note__ok-img')[0].addEventListener('click',
+            newNote.querySelector('.note__ok').addEventListener('click',
                 changeNote, false);
-            newNote.getElementsByClassName('note__delete-img')[0].addEventListener('click',
+            newNote.querySelector('.note__delete').addEventListener('click',
                 deleteOne, false);
-            newNote.getElementsByClassName('note__checkbox')[0].addEventListener('change',
+            newNote.querySelector('.note__checkbox').addEventListener('change',
                 changeStatus, false);
         });
     addInput.value = '';
@@ -108,8 +118,8 @@ function deleteAll() {
     })
         .then(res => {
             if (res.status === 200) {
-                const notes = document.getElementsByClassName('notes')[0];
-                const notesArray = notes.children;
+                const notes = document.querySelector('.notes');
+                const notesArray = document.querySelectorAll('.notes > .note');
                 for (const el of notesArray) {
                     notes.removeChild(el);
                 }
@@ -119,7 +129,7 @@ function deleteAll() {
 
 function deleteOne(e) {
     const selectEl = e.target.closest('.note');
-    const notes = document.getElementsByClassName('notes')[0];
+    const notes = document.querySelector('.notes');
     const id = selectEl.dataset.id;
     fetch(url + `/${id}`, {
         method: 'DELETE'
@@ -133,25 +143,29 @@ function deleteOne(e) {
 
 function showRedactor(e) {
     const selectedEl = e.target.closest('.note');
-    const def = selectedEl.getElementsByClassName('note__default')[0];
-    const redactor = selectedEl.getElementsByClassName('note__redactor')[0];
+    const def = selectedEl.querySelector('.note__default');
+    const redactor = selectedEl.querySelector('.note__redactor');
 
-    def.style.display = 'none';
-    redactor.style.display = 'flex';
+    console.log(def)
+
+    def.className = 'note__default display_none';
+    redactor.className = 'note__redactor display_flex';
+
+    console.log(def)
 }
 
 function closeRedactor(e) {
     const selectedEl = e.target.closest('.note');
-    const def = selectedEl.getElementsByClassName('note__default')[0];
-    const redactor = selectedEl.getElementsByClassName('note__redactor')[0];
+    const def = selectedEl.querySelector('.note__default');
+    const redactor = selectedEl.querySelector('.note__redactor');
 
-    def.style.display = 'flex';
-    redactor.style.display = 'none';
+    def.className = 'note__default display_flex';
+    redactor.className = 'note__redactor display_none';
 }
 
 function changeNote(e) {
     const selectEl = e.target.closest('.note');
-    let newName = selectEl.getElementsByClassName('note__input')[0].value;
+    let newName = selectEl.querySelector('.note__input').value;
     const id = selectEl.dataset.id;
     fetch(url + `/${id}`, {
         method: 'PATCH',
@@ -169,7 +183,7 @@ function changeNote(e) {
             }
         })
         .then(data => {
-            selectEl.getElementsByClassName('note__name')[0].innerHTML = data.description;
+            selectEl.querySelector('.note__name').innerHTML = data.description;
             newName = '';
             closeRedactor(e);
         });
@@ -198,48 +212,48 @@ function changeStatus(e) {
 }
 
 const noteListeners = function () {
-    const noteNames = document.getElementsByClassName('note__name');
+    const noteNames = document.querySelectorAll('.note__name');
     for (const name of noteNames) {
         name.addEventListener('click', showRedactor, false);
     }
 
-    const redactorCansel = document.getElementsByClassName('note__cancel');
+    const redactorCansel = document.querySelectorAll('.note__cancel');
     for (const btn of redactorCansel) {
         btn.addEventListener('click', closeRedactor, false);
     }
 
-    const redactorOk = document.getElementsByClassName('note__ok');
+    const redactorOk = document.querySelectorAll('.note__ok');
     for (const btn of redactorOk) {
         btn.addEventListener('click', changeNote, false);
     }
 
-    const noteDelete = document.getElementsByClassName('note__delete');
+    const noteDelete = document.querySelectorAll('.note__delete');
     for (const btn of noteDelete) {
         btn.addEventListener('click', deleteOne, false);
     }
 
-    const noteStatus = document.getElementsByClassName('note__checkbox');
+    const noteStatus = document.querySelectorAll('.note__checkbox');
     for (const btn of noteStatus) {
-        btn.addEventListener('click', changeStatus, false);
+        btn.addEventListener('change', changeStatus, false);
     }
 };
 
 window.onload = async () => {
-    const filters = document.getElementsByClassName('main-page__status-filter')[0].children;
+    const filters = document.querySelectorAll('.main-page__status-filter');
     for (const filter of filters) {
         filter.addEventListener('click', search, false);
     }
 
-    const searchInput = document.getElementsByClassName('main-page__search-input')[0];
+    const searchInput = document.querySelector('.main-page__search-input');
     searchInput.addEventListener('keyup', search, false);
 
-    const addButton = document.getElementsByClassName('main-page__add-button')[0];
+    const addButton = document.querySelector('.main-page__add-button');
     addButton.addEventListener('click', add, false);
 
-    const deleteButton = document.getElementsByClassName('main-page__delete-all')[0];
+    const deleteButton = document.querySelector('.main-page__delete-all');
     deleteButton.addEventListener('click', deleteAll, false);
 
-    const notePen = document.getElementsByClassName('note__change');
+    const notePen = document.querySelectorAll('.note__change');
     for (const btn of notePen) {
         btn.addEventListener('click', showRedactor, false);
     }
