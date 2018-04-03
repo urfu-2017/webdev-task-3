@@ -40,12 +40,15 @@ class SpotListItemBuilder {
     }
 
     addInitialStyling() {
-        if (this.current.visited)
+        if (this.current.visited) {
             this.input.classList.add('line-thru')
-        if (this.prev === null)
+        }
+        if (this.prev === null) {
             this.up.classList.add('hidden')
-        if (this.next === null)
+        }
+        if (this.next === null) {
             this.down.classList.add('hidden')
+        }
 
         return this
     }
@@ -168,8 +171,9 @@ newSpotButton.onclick = async () => {
 setSubmitButton(newSpotInput, newSpotButton)
 ofClass('pill').forEach(pill => pill.onclick = onPillClick(pill))
 ofClass('spots-clear-button')[0].onclick = async () => {
-    if (!confirm('Вы действительно хотите очистить весь список?'))
+    if (!confirm('Вы действительно хотите очистить весь список?')) {
         return
+    }
     await jetch('/api/spots/all', 'DELETE')
     jetch('/api/spots/all', 'DELETE')
     renderedSpots = []
