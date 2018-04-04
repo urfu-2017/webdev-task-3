@@ -15,6 +15,10 @@
                             "🐰 🐰 🐻";
 }
 
+.place_hidden
+{
+    display: none;
+}
 
 .place:hover .place__edit,
 .place:hover .place__delete,
@@ -49,28 +53,28 @@
     display: none;
 }
 
-.place__name-edit_field
+.place__name_edit
 {
     height: var(--height-for-input-text);
     box-sizing: border-box;
     font-size: 100%;
     font-family: Antipasto;
-    width: 250px;
+    width: 180px;
     border: 1px solid rgba(0, 0, 0, 0);
     border-bottom: 1px solid var(--border-color);
     outline: none;
     background-color: transparent;
 }
 
-.place__name-edit_field:focus
+.place__name_edit:focus
 {
     border: 1px solid var(--border-color);
 }
 
 .place__edit,
 .place__delete,
-.place__name-edit_cancel,
-.place__name-edit_accept
+.place__cancel,
+.place__accept
 {
     width: var(--pic-size);
     height: var(--pic-size);
@@ -78,16 +82,16 @@
     outline: none;
 }
 
-.place__name-edit_cancel:hover,
-.place__name-edit_cancel:focus
+.place__cancel:hover,
+.place__cancel:focus
 
 {
     box-shadow: 0 0 4px 2px #F008;
     transition: .3s;
 }
 
-.place__name-edit_accept:hover,
-.place__name-edit_accept:focus
+.place__accept:hover,
+.place__accept:focus
 {
     box-shadow: 0 0 4px 2px #0F07;
     transition: .3s;
@@ -149,7 +153,7 @@
     height: 48px;
     border: 1px solid var(--border-color);
     border-radius: 20%;
-    background: radial-gradient(farthest-side at 5px 5px, #fff, #60a0ffbb);
+    background: radial-gradient(farthest-side at 5px 5px, #fff, #999b);
     visibility: hidden;
 }
 
@@ -163,7 +167,7 @@
 
 .place__change-order:active
 {
-    background: radial-gradient(farthest-side at 12px 12px, #fff, #60a0ffbb);
+    background: radial-gradient(farthest-side at 12px 12px, #fff, #999b);
 }
 
 .place__create-date
@@ -184,9 +188,10 @@
 .place__visited
 {
     grid-area: 🐼;
+    justify-self: flex-end;
     width: 38px;
     height: 38px;
-    margin: 1px 20px;
+    margin: 1px 5px;
     box-sizing: border-box;
     background-image: url(/pics/check-none.svg);
     background-size: 42px 42px;
@@ -216,4 +221,19 @@
 .place__visited_checkbox:focus + .place__visited
 {
     box-shadow: 0 0 4px 2px var(--border-color);
+}
+
+.place__text-hide
+{
+    display: none;
+}
+
+.place__text-block
+{
+    display: block;
+}
+
+.place__text-flex
+{
+    display: flex;
 }

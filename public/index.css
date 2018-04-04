@@ -12,18 +12,21 @@
 
 html
 {
-    --body-width: 600px;
+    --body-width: 465px;
     --margin-for-content: 25px;
     --height-for-input-text: 35px;
     --standard-margin-from-hr: 10px;
     --global-font-size: 24px;
-    --border-color: #60a0ff;
-    --text-color: #CCC;
+    --border-color: #888;
+    --text-color: #555;
+    overflow-y: scroll;
+    /* margin-left: calc(100vw - 100%);
+    margin-right: 0; */
 }
 
 body
 {
-    margin: 3px 0 auto calc((100% - var(--body-width)) / 2);
+    margin: 105px 0 auto calc((100% - var(--body-width)) / 3.65);
     font-family: Antipasto;
     font-size: var(--global-font-size);
     width: var(--body-width);
@@ -31,8 +34,28 @@ body
     border-radius: 3px;
     color: var(--text-color);
     background-image: url(pics/background.jpg);
+    background-size: 107%;
     background-attachment: fixed;
-    background-size: cover;
+    background-position-x: -40px;
+    background-position-y: -20px;
+}
+
+.eclipse
+{
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    padding-left: calc((100% - var(--body-width)) / 3.65);
+    border-right: calc(var(--body-width) * 4.65 / 3.65 + 40px) solid transparent;
+    width: calc(var(--body-width) + 4px);
+    height: 105px;
+    background-image: url(pics/background.jpg);
+    background-origin: border-box;
+    background-size: 107%;
+    background-attachment: fixed;
+    background-position-x: -40px;
+    background-position-y: -20px;
 }
 
 input,
@@ -43,7 +66,7 @@ textarea
 
 ::placeholder
 {
-    color: #CCC7;
+    color: #5557;
 }
 
 hr
@@ -75,7 +98,7 @@ hr
     50%
     {
         background-color: var(--border-color);
-        box-shadow: inset -150px 0 75px -75px #60a0ffcc;
+        box-shadow: inset -150px 0 75px -75px #555c;
     }
 }
 
