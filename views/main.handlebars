@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title></head>
+
+
+<link rel="stylesheet" href="{{ staticBasePath }}index.css" media="screen">
+<header class="header main-page-header">{{header}}</header>
+
+<body>
+
+<input type="text" id="searchInput" onkeyup="liveSearch()" placeholder="Search for places..">
+<p>
+    <input type="text" id="post" placeholder="Add places..">
+    <button type="button" onclick="loadDoc()">Add Place</button>
+</p>
+<button type="button" onclick="deleteAll()">Delete All</button>
+
+<div id="btnContainer">
+    <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+    <button class="btn" onclick="filterSelection('true')"> was</button>
+    <button class="btn" onclick="filterSelection('false')"> wasn't</button>
+</div>
+<div id="mainDiv">
+
+    {{data.info.description}}
+    {{#each data.info}}
+        <div class="filterDiv {{this.mark}}" id="filtered">
+            <p class="icons">
+                <img
+                    src="https://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png"
+                    onclick="deleteElement({{json this._id}},this) ">
+                <img onclick="editElement(this,{{json this._id}})"
+                     src="https://cdn.iconscout.com/public/images/icon/free/png-512/pencil-art-draw-design-sketch-stationary-tool-3b225aa02dd4e31d-512x512.png">
+            </p>
+            <p class="places"><span>{{this.place}}</span></p>
+            {{#if this.mark}}
+                <p class="mark"><input type="checkbox" class="markInput"
+                                       onclick="setCheckboxStatus(this,{{json this._id}},{{json this.place}})" checked
+                                          title="mark"></p>
+            {{else}}
+                <p class="mark"><input type="checkbox" class="markInput"
+                                       onclick="setCheckboxStatus(this,{{json this._id}},{{json this.place}})"
+                                       title="mark"></p>
+            {{/if}}
+        </div>
+    {{/each}}
+</div>
+<scr{{!}}ipt src="{{ staticBasePath }}mainScripts.js"></scr{{!}}ipt>
+</body>
+<footer class="footer">
+    <div class="footer__copyright">{{ copyright }}</div>
+    <div class="footer__year">{{ year }}</div>
+</footer>
+</html>

@@ -1,0 +1,136 @@
+body
+{
+    background-color: #ffdead;
+}
+
+.footer
+{
+    position: relative;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: row;
+
+    padding: 30px;
+
+    justify-content: space-between;
+}
+
+h1
+{
+    text-align: center;
+
+    color: teal;
+}
+
+.header
+{
+    font-size: 24px;
+
+    padding: 30px;
+}
+
+.main-page-header
+{
+    font-size: 36px;
+}
+
+.places
+{
+    position: relative;
+
+    grid-area: places;
+}
+
+.shuffle
+{
+    position: relative;
+
+    grid-area: shuffle;
+}
+
+.mark
+{
+    position: relative;
+
+    grid-area: mark;
+}
+
+.icons
+{
+    position: absolute;
+
+    visibility: hidden;
+
+    text-align: center;
+
+    grid-area: icons;
+}
+
+.filterDiv:hover .icons
+{
+    visibility: visible;
+    display: flex;
+}
+
+img
+{
+    width: 20px;
+    height: 20px;
+}
+
+.container
+{
+    overflow: hidden;
+}
+
+.filterDiv
+{
+    position: relative;
+
+    display: grid;
+    visibility: hidden; /* Hidden by default */
+
+    margin: 2px;
+
+    text-align: center;
+
+    color: #fff;
+    background-color: #2196f3;
+
+    grid-template-areas: 'icons places shuffle mark';
+    grid-template-columns: .07fr .2fr .1fr .1fr;
+}
+
+/* The "show" class is added to the filtered elements */
+.show
+{
+    visibility: visible;
+}
+
+/* Style the buttons */
+.btn
+{
+    padding: 12px 16px;
+
+    cursor: pointer;
+
+    border: none;
+    outline: none;
+    background-color: #f1f1f1;
+}
+
+/* Add a light grey background on mouse-over */
+.btn:hover
+{
+    background-color: #ddd;
+}
+
+/* Add a dark background to the active button */
+.btn.active
+{
+    color: white;
+    background-color: #666;
+}
