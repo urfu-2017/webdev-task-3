@@ -3,6 +3,7 @@
 (function () {
     const baseUrl = 'https://webdev-task-2-xnedsgkmww.now.sh';
     const placesElement = document.getElementsByClassName('places')[0];
+    const templatePlace = document.getElementsByClassName('place__template')[0];
 
     function shortFetch(method, path, data) {
         const options = {
@@ -52,23 +53,17 @@
     }
 
     function createPlaceDiv(place) {
-        let div = document.createElement('div');
-        div.className = 'place place_search_matched';
-        div.className += place.visited ? ' place_visited' : '';
+        let div = document.importNode(templatePlace.content, true).firstElementChild;
         div.dataset.index = place.index;
-        div.innerHTML = `
-            <label class="place__wrapper">
-                <button class="place__edit"></button>
-                <button class="place__rubbish"></button>
-                <input type="text" class="place__name" value="${place.name}"
-                    data-description="${place.description}" disabled/>
-                <button class="place__cancel"></button>
-                <button class="place__apply"></button>
-            </label>
-            <button class="place__arrow place__arrow_direction_up"></button>
-            <button class="place__arrow place__arrow_direction_down"></button>
-            <input class="place__state" type="checkbox" ${place.visited ? 'checked' : ''}>
-        `;
+        if (place.visited) {
+            div.classList.add('place_visited');
+        }
+        let placeNameNode = div.getElementsByClassName('place__name')[0];
+        placeNameNode.value = place.name;
+        placeNameNode.dataset.description = place.description;
+        if (place.visited) {
+            div.getElementsByClassName('place__state')[0].setAttribute('checked', '');
+        }
 
         return div;
     }
@@ -98,14 +93,14 @@
 
     function editPlace(event) {
         let editNode = event.target;
-        let nameNode = editNode.nextElementSibling.nextElementSibling;
+        let nameNode = editNode.parentElement.getElementsByClassName('place__name')[0];
         nameNode.removeAttribute('disabled');
         nameNode.setAttribute('data-old', nameNode.value);
     }
 
     function cancelEditPlace(event) {
         let cancelNode = event.target;
-        let nameNode = cancelNode.previousElementSibling;
+        let nameNode = cancelNode.parentElement.getElementsByClassName('place__name')[0];
         nameNode.setAttribute('disabled', true);
         nameNode.value = nameNode.dataset.old;
         nameNode.removeAttribute('data-old');
@@ -113,8 +108,7 @@
 
     function applyEditPlace(event) {
         let applyNode = event.target;
-        let nameNode = applyNode.previousElementSibling
-            .previousElementSibling;
+        let nameNode = applyNode.parentElement.getElementsByClassName('place__name')[0];
         nameNode.setAttribute('disabled', true);
         let oldName = nameNode.dataset.old;
         shortFetch('PATCH', `/${oldName}`, {
@@ -126,7 +120,7 @@
 
     function deletePlace(event) {
         let rubbishNode = event.target;
-        let nameNode = rubbishNode.nextElementSibling;
+        let nameNode = rubbishNode.parentElement.getElementsByClassName('place__name')[0];
         shortFetch('DELETE', `/${nameNode.dataset.old || nameNode.value}`)
             .then(res => console.info(res));
         let placeNode = rubbishNode.parentElement.parentElement;
@@ -154,13 +148,11 @@
 
     function filterPlacesHandler(event) {
         let filterPlacesNode = event.target;
-        if (!Array.from(filterPlacesNode.classList)
-            .some(className => className === 'filter-places__button')) {
+        if (!filterPlacesNode.classList.contains('filter-places__button')) {
             return;
         }
         let filter = filterPlacesNode.dataset.filter;
-        placesElement.className = 'places';
-        placesElement.classList.add(`places_filter_${filter}`);
+        placesElement.className = `places places_filter_${filter}`;
         Array.from(filterPlacesNode.parentElement.children).forEach(button => {
             button.classList.remove('filter-places__button_selected');
         });
@@ -169,18 +161,16 @@
 
     function searchHandler(event) {
         let searchNode = event.target;
-        let placeNameNodes = Array.from(document.getElementsByClassName('place__name'));
-        placeNameNodes
-            .forEach(placeNameNode => {
-                let placeNode = placeNameNode.parentElement.parentElement;
-                placeNode.classList.remove('place_search_matched');
-            });
-        placeNameNodes
-            .filter(placeNameNode => placeNameNode.value.indexOf(searchNode.value) !== -1)
-            .forEach(placeNameNode => {
-                let placeNode = placeNameNode.parentElement.parentElement;
+        let placeNodes = Array.from(document.getElementsByClassName('place'));
+        placeNodes.forEach(placeNode => {
+            placeNode.classList.remove('place_search_matched');
+        });
+        placeNodes.forEach(placeNode => {
+            let placeNameNode = placeNode.getElementsByClassName('place__name')[0];
+            if (placeNameNode.value.indexOf(searchNode.value) !== -1) {
                 placeNode.classList.add('place_search_matched');
-            });
+            }
+        });
     }
 
     function debounce(func, wait, immediate) {

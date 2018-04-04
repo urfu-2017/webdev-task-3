@@ -42,6 +42,21 @@
             <span class="footer__contributor">@whoe</span>
         </div>
 
+        <template class="place__template">
+            <div class="place place_search_matched">
+                <label class="place__wrapper">
+                    <button class="place__edit"></button>
+                    <button class="place__rubbish"></button>
+                    <input type="text" class="place__name" disabled/>
+                    <button class="place__cancel"></button>
+                    <button class="place__apply"></button>
+                </label>
+                <button class="place__arrow place__arrow_direction_up"></button>
+                <button class="place__arrow place__arrow_direction_down"></button>
+                <input class="place__state" type="checkbox">
+            </div>
+        </template>
+
         <script src="js/ui.js"></script>
     </body>
 </html>
