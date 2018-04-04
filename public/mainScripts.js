@@ -23,10 +23,13 @@ async function setCheckboxStatus(n, id, nameOfPlace) {
 filterSelection('all');
 
 function filterSelection(c) {
+    window.state = c;
+
     let x = document.getElementsByClassName('filterDiv');
     if (c === 'all') {
         c = '';
     }
+    console.info(c);
     // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
     for (let i = 0; i < x.length; i++) {
         w3RemoveClass(x[i], 'show');
@@ -34,6 +37,8 @@ function filterSelection(c) {
             w3AddClass(x[i], 'show');
         }
     }
+
+    return c;
 }
 
 // Show filtered elements
@@ -149,7 +154,7 @@ async function loadDoc() {
 }
 
 function createPlaceHTML(result, place) {
-
+    console.info(window.state);
     // get id of element
     const id = result.insertedIds[0];
 
@@ -182,7 +187,12 @@ function createPlaceHTML(result, place) {
 
     // get it all in one scope
     const element = document.createElement('div');
-    element.className = 'filterDiv false show';
+    if (window.state !== 'true') {
+        console.info(window.state);
+        element.className = 'filterDiv false show';
+    } else {
+        element.className = 'filterDiv false ';
+    }
     element.setAttribute('id', 'filtered');
     element.appendChild(buttons);
     element.appendChild(node);

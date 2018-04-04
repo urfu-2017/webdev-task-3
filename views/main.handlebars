@@ -37,11 +37,11 @@
             <p class="places"><span>{{this.place}}</span></p>
             {{#if this.mark}}
                 <p class="mark"><input type="checkbox" class="markInput"
-                                       onclick="checkStatusofCheckbox(this,{{json this._id}},{{json this.place}})" checked
+                                       onclick="setCheckboxStatus(this,{{json this._id}},{{json this.place}})" checked
                                           title="mark"></p>
             {{else}}
                 <p class="mark"><input type="checkbox" class="markInput"
-                                       onclick="checkStatusofCheckbox(this,{{json this._id}},{{json this.place}})"
+                                       onclick="setCheckboxStatus(this,{{json this._id}},{{json this.place}})"
                                        title="mark"></p>
             {{/if}}
         </div>

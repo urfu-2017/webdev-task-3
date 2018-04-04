@@ -75,13 +75,6 @@ h1
     display: flex;
 }
 
-#myDiv
-{
-    overflow: auto;
-
-    height: 50%;
-}
-
 img
 {
     width: 20px;
