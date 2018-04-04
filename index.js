@@ -6,7 +6,7 @@ const app = express();
 const exphbs = require('express-handlebars');
 const Handlebars = require('handlebars');
 const path = require('path');
-const info = require('./fetch');
+const Info = require('./fetch');
 
 
 app.engine('handlebars', exphbs({
@@ -30,9 +30,8 @@ Handlebars.registerHelper('json', function (content) {
 app.set('view engine', 'handlebars');
 
 app.get('/', async (req, res) =>{
-// eslint-disable-next-line new-cap
-    const tempData = new info();
-    res.locals.data = await tempData.getInfo();
+    const getData = new Info();
+    res.locals.data = await getData.getInfo();
     res.render('main', frontPage);
 });
 

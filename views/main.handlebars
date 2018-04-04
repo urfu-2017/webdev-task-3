@@ -24,10 +24,8 @@
 </div>
 <div id="mainDiv">
 
-
     {{data.info.description}}
     {{#each data.info}}
-
         <div class="filterDiv {{this.mark}}" id="filtered">
             <p class="icons">
                 <img
@@ -46,13 +44,10 @@
                                        onclick="checkStatusofCheckbox(this,{{json this._id}},{{json this.place}})"
                                        title="mark"></p>
             {{/if}}
-
         </div>
-
     {{/each}}
 </div>
 <scr{{!}}ipt src="{{ staticBasePath }}mainScripts.js"></scr{{!}}ipt>
-
 </body>
 <footer class="footer">
     <div class="footer__copyright">{{ copyright }}</div>

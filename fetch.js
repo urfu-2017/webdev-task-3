@@ -20,9 +20,8 @@ class Info {
 
     async getInfo() {
         const info = await fetchResults();
-        const data = { info };
 
-        return data;
+        return { info };
     }
 }
 

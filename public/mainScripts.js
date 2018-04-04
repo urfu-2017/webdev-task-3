@@ -1,22 +1,7 @@
 /* eslint-disable no-unused-vars,no-undef,max-statements,max-len */
 const url = 'https://cors-anywhere.herokuapp.com/https://webdev-task-2-fbhqywymzl.now.sh/notes/';
 
-async function getData() {
-
-    const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-            'Content-type': 'application/json; charset=utf-8',
-            'X-Requested-With': 'XMLHttpRequest',
-            'Access-Control-Allow-Origin': '*'
-        }
-    });
-
-    return response.json();
-}
-
-async function checkStatusofCheckbox(n, id, nameOfPlace) {
+async function setCheckboxStatus(n, id, nameOfPlace) {
 
     let x = n.checked;
     let body = '';
@@ -166,19 +151,19 @@ async function loadDoc() {
 function createPlaceHTML(result, place) {
 
     // get id of element
-    id = result.insertedIds[0];
+    const id = result.insertedIds[0];
 
     // create buttons for delete and edit
     const buttons = document.createElement('p');
     buttons.className = 'icons';
-    const trash = document.createElement('img');
-    trash.setAttribute('src', 'https://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png');
-    trash.setAttribute('onclick', `deleteElement("${id}",this)`);
-    buttons.appendChild(trash);
-    const edit = document.createElement('img');
-    edit.setAttribute('src', 'https://cdn.iconscout.com/public/images/icon/free/png-512/pencil-art-draw-design-sketch-stationary-tool-3b225aa02dd4e31d-512x512.png');
-    edit.setAttribute('onclick', `edit(this,"${id}")`);
-    buttons.appendChild(edit);
+    const deleteButton = document.createElement('img');
+    deleteButton.setAttribute('src', 'https://findicons.com/files/icons/1580/devine_icons_part_2/128/trash_recyclebin_empty_closed.png');
+    deleteButton.setAttribute('onclick', `deleteElement("${id}",this)`);
+    buttons.appendChild(deleteButton);
+    const editButton = document.createElement('img');
+    editButton.setAttribute('src', 'https://cdn.iconscout.com/public/images/icon/free/png-512/pencil-art-draw-design-sketch-stationary-tool-3b225aa02dd4e31d-512x512.png');
+    editButton.setAttribute('onclick', `edit(this,"${id}")`);
+    buttons.appendChild(editButton);
 
     // create element places and mark
     const node = document.createElement('p');
@@ -192,7 +177,7 @@ function createPlaceHTML(result, place) {
     const markCheckbox = document.createElement('input');
     markCheckbox.setAttribute('type', 'checkbox');
     markCheckbox.setAttribute('class', 'markInput');
-    markCheckbox.setAttribute('onclick', `checkStatusofCheckbox(this,"${id}","${place}")`);
+    markCheckbox.setAttribute('onclick', `setCheckboxStatus(this,"${id}","${place}")`);
     mark.appendChild(markCheckbox);
 
     // get it all in one scope
@@ -220,9 +205,6 @@ async function liveSearch() {
             li[i].style.display = 'none';
         }
     }
-    const info = await getData();
-
-    const setOfData = { info };
 
 }
 
