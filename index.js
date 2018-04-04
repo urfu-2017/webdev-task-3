@@ -11,11 +11,7 @@ const Info = require('./fetch');
 
 app.engine('handlebars', exphbs({
     extname: 'handlebars',
-    layoutDir: './views/layouts',
-    partialsDir: [
-        //  path to your partials
-        './views/partials'
-    ]
+    layoutDir: './views/layouts'
 }));
 app.use(express.static(path.join(__dirname, 'public'), {
     dotfiles: 'ignore', etag: false,
