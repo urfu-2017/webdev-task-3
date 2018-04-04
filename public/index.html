@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/search.css">
+        <link rel="stylesheet" href="css/create-place.css">
+        <link rel="stylesheet" href="css/filter-places.css">
+        <link rel="stylesheet" href="css/places.css">
+        <link rel="stylesheet" href="css/footer.css">
+    </head>
+    <body>
+        <div class="wrapper">
+
+            <div class="search">
+                <input class="search__input" type="text" name="search" placeholder="Поиск"/>
+            </div>
+
+            <div class="create-place">
+                <input class="create-place__input" type="text" name="create-place" placeholder="Название места"/>
+                <button class="create-place__button">Создать</button>
+            </div>
+
+            <div class="filter-places">
+                <span class="filter-places__label">Места</span>
+                <button class="filter-places__clear"></button>
+                <ul class="filter-places__control">
+                    <li data-filter="all" class="filter-places__button filter-places__button_border-radius_left filter-places__button_selected">Все</li>
+                    <li data-filter="unvisited" class="filter-places__button">Посетить</li>
+                    <li data-filter="visited" class="filter-places__button filter-places__button_border-radius_right">Посещённые</li>
+                </ul>
+            </div>
+
+            <div class="places places_filter_all">
+
+            </div>
+
+        </div>
+        <div class="footer">
+            <span class="footer__year">2018</span>
+            <span class="footer__contributor">@whoe</span>
+        </div>
+
+        <template class="place__template">
+            <div class="place place_search_matched">
+                <label class="place__wrapper">
+                    <button class="place__edit"></button>
+                    <button class="place__rubbish"></button>
+                    <input type="text" class="place__name" disabled/>
+                    <button class="place__cancel"></button>
+                    <button class="place__apply"></button>
+                </label>
+                <button class="place__arrow place__arrow_direction_up"></button>
+                <button class="place__arrow place__arrow_direction_down"></button>
+                <input class="place__state" type="checkbox">
+            </div>
+        </template>
+
+        <script src="js/ui.js"></script>
+    </body>
+</html>
