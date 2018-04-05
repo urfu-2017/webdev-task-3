@@ -18,6 +18,10 @@ main {
     padding-left: 10px;
 }
 
+.place__name_hidden {
+    display: none;
+}
+
 .visibility-selectors {
     font-size: 0;
     display: inline;
@@ -25,6 +29,11 @@ main {
     position: absolute;
     right: 10px;
     top: 10px;
+}
+
+.visibility-selectors__button {
+    background: #ccc;
+    border: 1px solid black;
 }
 
 .visibility-selectors__button_selected {
@@ -56,14 +65,14 @@ main {
     min-height: 300px;
 }
 
-.places__header {
+.places-header {
     border-bottom: 2px solid black;
     padding-bottom: 2px;
     margin-bottom: 20px;
     position: relative;
 }
 
-.places__header__text {
+.places-header__text {
     font-size: 2em;
 }
 
@@ -77,9 +86,17 @@ main {
     padding-right: 20px;
 }
 
-.place__edit__input {
+.place_hidden {
+    display: none;
+}
+
+.place-edit__input {
     font-size: 1em;
     width: 200px;
+}
+
+.place-edit_hidden {
+    display: none;
 }
 
 .icon_hidden {
@@ -102,6 +119,10 @@ i:hover {
 .place__swap {
     float: right;
     padding-right: 10px;
+}
+
+.place-swap-arrow_hidden {
+    visibility: hidden;
 }
 
 .place__visited {
@@ -138,7 +159,7 @@ i:hover {
     padding-left: 5px;
 }
 
-.place__edit {
+.place-edit {
     padding: 0 5px;
 }
 
@@ -146,6 +167,6 @@ i:hover {
     padding: 0 5px;
 }
 
-.place__edit__cancel {
+.place-edit__cancel {
     padding: 0 10px;
 }

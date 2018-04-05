@@ -4,8 +4,9 @@ const apiUrl = 'https://places.now.sh';
 let places = [];
 document.querySelector('.add-place__button').addEventListener('click', addButtonClick);
 document.querySelector('.places__delete').addEventListener('click', deletePlacesClick);
-document.querySelector('.search-field').addEventListener('input', drawPlaces);
-for (let button of document.querySelectorAll('.visibility-selectors__button')) {
+document.querySelector('.search-field').addEventListener('input', filterOnSearch);
+document.querySelector('.add-place__name').addEventListener('keyup', enterInField);
+for (const button of document.querySelectorAll('.visibility-selectors__button')) {
     button.addEventListener('click', selectVisitingState);
 }
 updatePlaces();
@@ -13,7 +14,7 @@ updatePlaces();
 
 function selectVisitingState(event) {
     const { target } = event;
-    for (let button of document.querySelectorAll('.visibility-selectors__button')) {
+    for (const button of document.querySelectorAll('.visibility-selectors__button')) {
         button.classList.remove('visibility-selectors__button_selected');
     }
     target.classList.add('visibility-selectors__button_selected');
@@ -29,31 +30,51 @@ function updatePlaces() {
         .then(drawPlaces);
 }
 
+function filterOnSearch() {
+    const filterValue = document.querySelector('.search-field').value;
+    const placesHtml = document.querySelector('.places__container').querySelectorAll('.place');
+
+    for (let i = 0; i < places.length; i++) {
+        const place = places[i];
+        const placeHtml = placesHtml[i];
+        if (place.name.includes(filterValue)) {
+            placeHtml.classList.remove('place_hidden');
+        } else {
+            placeHtml.classList.add('place_hidden');
+        }
+    }
+}
+
 function deletePlacesClick() {
     sendRequest('/places', 'DELETE');
 }
 
 function addButtonClick() {
-    let textField = document.querySelector('.add-place__name');
-    let placeName = textField.value;
+    const textField = document.querySelector('.add-place__name');
+    const placeName = textField.value;
     if (placeName === '') {
         return;
     }
     textField.value = '';
-    let placeObject = { name: placeName };
+    const placeObject = { name: placeName };
     sendRequest('/places', 'POST', placeObject);
 }
 
 function drawPlaces() {
-    const filterValue = document.querySelector('.search-field').value;
-    let contentDiv = document.getElementById('places__container');
+    const contentDiv = document.querySelector('.places__container');
+
     contentDiv.innerHTML = '';
-    let filteredPlaces = places.filter(place => place.name.includes(filterValue));
-    filteredPlaces = filteredPlaces.filter(filterByVisitedSelector);
+    const filteredPlaces = places.filter(filterByVisitedSelector);
     for (let i = 0; i < filteredPlaces.length; i++) {
-        let place = filteredPlaces[i];
-        let placeHtml = createPlaceHtml(place, i);
+        const place = filteredPlaces[i];
+        const placeHtml = createPlaceHtml(place, i);
         contentDiv.appendChild(placeHtml);
+        if (i === 0) {
+            placeHtml.querySelector('.place-swap-up').classList.add('place-swap-arrow_hidden');
+        }
+        if (i === filteredPlaces.length - 1) {
+            placeHtml.querySelector('.place-swap-down').classList.add('place-swap-arrow_hidden');
+        }
     }
 }
 
@@ -71,11 +92,11 @@ function filterByVisitedSelector(place) {
 }
 
 function createPlaceHtml(place, index) {
-    let block = createHtmlElement('article', 'place');
-    let deleteIcon = createDeletePlaceIcon(place);
-    let name = createPlaceNameHtml(place);
-    let editBlock = createEditBlock(place, name);
-    let editIcon = createEditIcon(place, name, editBlock);
+    const block = createHtmlElement('article', 'place');
+    const deleteIcon = createDeletePlaceIcon(place);
+    const name = createPlaceNameHtml(place);
+    const editBlock = createEditBlock(place, name);
+    const editIcon = createEditIcon(place, name, editBlock);
     block.addEventListener('mouseover', () => {
         changeIconVisibility(deleteIcon);
         changeIconVisibility(editIcon);
@@ -88,7 +109,7 @@ function createPlaceHtml(place, index) {
     block.appendChild(deleteIcon);
     block.appendChild(name);
     block.appendChild(editBlock);
-    block.appendChild(createVisitedIcon(place));
+    block.appendChild(createVisitedIcon(place, block));
     block.appendChild(createSwapArrows(place, index));
 
     return block;
@@ -96,11 +117,11 @@ function createPlaceHtml(place, index) {
 
 function createSwapArrows(place, index) {
     const block = createHtmlElement('span', 'place__swap');
-    const upIcon = createIcon('fas fa-long-arrow-alt-up');
+    const upIcon = createIcon('fas fa-long-arrow-alt-up place-swap-up');
     upIcon.addEventListener('click', () => {
         sendRequest(`/places/${place.id}`, 'PATCH', { moveTo: index - 1 });
     });
-    const downIcon = createIcon('fas fa-long-arrow-alt-down');
+    const downIcon = createIcon('fas fa-long-arrow-alt-down place-swap-down');
     downIcon.addEventListener('click', () => {
         sendRequest(`/places/${place.id}`, 'PATCH', { moveTo: index + 1 });
     });
@@ -111,7 +132,7 @@ function createSwapArrows(place, index) {
 }
 
 function createPlaceNameHtml(place) {
-    let name = createHtmlElement('span', 'place__name');
+    const name = createHtmlElement('span', 'place__name');
     name.innerHTML = place.name;
     if (place.visited) {
         name.classList.add('place__name_visited');
@@ -121,31 +142,39 @@ function createPlaceNameHtml(place) {
 }
 
 function createEditBlock(place, nameBlock) {
-    let block = createHtmlElement('span', 'place__edit');
-    let input = createHtmlElement('input', 'place__edit__input');
+    const block = createHtmlElement('span', 'place-edit');
+    const input = createHtmlElement('input', 'place-edit__input');
     input.value = place.name;
     input.type = 'text';
-    let cancelButton = createIcon('fas fa-times');
+    const cancelButton = createIcon('fas fa-times');
     cancelButton.addEventListener('click', () => {
-        toggle(nameBlock);
-        toggle(block);
+        nameBlock.classList.remove('place__name_hidden');
+        block.classList.add('place-edit_hidden');
     });
-    cancelButton.classList.add('place__edit__cancel');
-    let okButton = createIcon('fas fa-check');
+    cancelButton.classList.add('place-edit__cancel');
+    const okButton = createIcon('fas fa-check');
     okButton.addEventListener('click', () => {
         sendRequest(`/places/${place.id}`, 'PATCH', { name: input.value });
+        place.name = input.value;
+        updatePlace(place, nameBlock.closest('.place'));
     });
 
     block.appendChild(input);
     block.appendChild(cancelButton);
     block.appendChild(okButton);
-    block.style.display = 'none';
+    block.classList.add('place-edit_hidden');
 
     return block;
 }
 
+function enterInField(e) {
+    if (e.keyCode === 13) {
+        addButtonClick();
+    }
+}
+
 function createDeletePlaceIcon(place) {
-    let icon = createTrashcanIcon();
+    const icon = createTrashcanIcon();
     icon.addEventListener('click', () => {
         sendRequest(`/places/${place.id}`, 'DELETE');
     });
@@ -156,24 +185,15 @@ function createDeletePlaceIcon(place) {
 }
 
 function createEditIcon(place, nameBlock, editBlock) {
-    let icon = createIcon('fas fa-pencil-alt');
+    const icon = createIcon('fas fa-pencil-alt');
     icon.classList.add('icon_hidden');
     icon.classList.add('place__edit');
     icon.addEventListener('click', () => {
-        toggle(nameBlock);
-        toggle(editBlock);
+        nameBlock.classList.add('place__name_hidden');
+        editBlock.classList.remove('place-edit_hidden');
     });
 
     return icon;
-}
-
-function toggle(element) {
-    console.info(element.style);
-    if (element.style.display === 'none') {
-        element.style.display = 'inline-block';
-    } else {
-        element.style.display = 'none';
-    }
 }
 
 function changeIconVisibility(icon) {
@@ -194,16 +214,24 @@ function sendRequest(relativeUrl, method, body) {
     }).then(updatePlaces);
 }
 
-function createVisitedIcon(place) {
+function createVisitedIcon(place, placeHtmlElement) {
     let visitedIcon = createIcon('far fa-circle place__visited');
     if (place.visited) {
         visitedIcon = createIcon('far fa-check-circle place__visited');
     }
     visitedIcon.addEventListener('click', () => {
-        sendRequest(`/places/${place.id}`, 'PATCH', { visited: !place.visited });
+        place.visited = !place.visited;
+        sendRequest(`/places/${place.id}`, 'PATCH', { visited: place.visited });
+        updatePlace(place, placeHtmlElement);
     });
 
     return visitedIcon;
+}
+
+function updatePlace(place, placeHtmlElement) {
+    const newPlaceHtml = createPlaceHtml(place, place.id);
+    document.querySelector('.places__container').insertBefore(newPlaceHtml, placeHtmlElement);
+    placeHtmlElement.remove();
 }
 
 function createTrashcanIcon() {
@@ -215,7 +243,7 @@ function createIcon(classes) {
 }
 
 function createHtmlElement(tag, classes) {
-    let result = document.createElement(tag);
+    const result = document.createElement(tag);
     result.className = classes;
 
     return result;

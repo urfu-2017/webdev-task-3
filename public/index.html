@@ -9,13 +9,13 @@
 <body>
 <main>
     <input type="text" placeholder="Поиск" class="search-field">
-    <form id="add-place" class="add-place">
+    <div class="add-place">
         <input class="add-place__name" type="text" placeholder="Добавить место" required>
         <input class="add-place__button" type="button" value="Создать">
-    </form>
+    </div>
     <div class="places">
-        <header class="places__header">
-            <span class="places__header__text">Места</span>
+        <header class="places-header">
+            <span class="places-header__text">Места</span>
             <i class="fas fa-trash-alt places__delete"></i>
             <div class="visibility-selectors">
                 <input type="button" class="visibility-selectors__all visibility-selectors__button visibility-selectors__button_selected" value="Все">
@@ -23,7 +23,7 @@
                 <input type="button" class="visibility-selectors__visited visibility-selectors__button" value="Посещенные">
             </div>
         </header>
-        <div id="places__container" class="places__container">
+        <div class="places__container">
         </div>
     </div>
     <footer class="footer">
