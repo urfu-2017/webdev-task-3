@@ -141,7 +141,6 @@ const setSortListHandler = (sortType) => {
         // console.log(sortList)
         document.querySelectorAll('.list')[0].innerHTML = '';
         sortList.forEach(place => {
-            console.log(place.querySelectorAll('.place__name')[0].innerHTML);
             const placeIn = {
                 id: place.querySelectorAll('.place__id')[0].value,
                 name: place.querySelectorAll('.place__name')[0].innerHTML,
