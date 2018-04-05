@@ -1,0 +1,161 @@
+.search
+{
+    --height: 75px;
+    margin: calc(var(--margin-for-content)/2) var(--margin-for-content) var(--standard-margin-from-hr);
+    display: flex;
+    justify-content: space-between;
+    height: calc(1.2*var(--height));
+}
+
+.search__field
+{
+    --padding-for-pic: 40px;
+    width: calc(
+                    var(--body-width)
+                    - 10px
+                    - 2*var(--margin-for-content)
+                    - 150px
+                    - var(--padding-for-pic)
+                    - 50px
+                );
+    height: var(--height-for-input-text);
+    font-size: 110%;
+    font-family: Antipasto;
+    margin-top: calc(
+                        (
+                            var(--height)
+                            + var(--standard-margin-from-hr)
+                            + var(--margin-for-content)
+                            - var(--height-for-input-text)
+                        ) / 2  - var(--margin-for-content)
+                    );
+    margin-left: 20px;
+    background-image: url(/pics/search.svg);
+    background-repeat: no-repeat;
+    background-size: var(--height-for-input-text);
+    background-color: transparent;
+    padding-left: var(--padding-for-pic);
+    border: 3px solid rgba(0, 0, 0, 0);
+    border-bottom: 3px solid var(--border-color);
+    outline: none;
+}
+
+.search__field:hover
+{
+    border: 3px solid #5553;
+    border-bottom: 3px solid var(--border-color);
+    border-radius: 3px;
+    transition: .25s;
+}
+
+.search__field:focus
+{
+    border: 3px solid var(--border-color);
+    border-radius: 3px;
+    transition: .25s;
+    transform: scale(1.05);
+}
+
+.search__triggers
+{
+    text-align: center;
+    margin: 0 0 0 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 150px;
+    font-size: 80%;
+}
+
+.search_type_nameOnly:checked + .search__trigger,
+.search_type_descrOnly:checked + .search__trigger,
+.search_type_anywhere:checked + .search__trigger
+{
+    background-position-x: 0;
+    background-color: #5550;
+    box-shadow: inset -150px 0 75px -75px #555c;
+    border-radius: 13px;
+}
+
+.search__trigger
+{
+    width: 80%;
+    cursor: pointer;
+    height: 20px;
+    border: 1px solid #0000;
+}
+
+.search_type_nameOnly,
+.search_type_descrOnly,
+.search_type_anywhere
+{
+    position: absolute;
+    opacity: 0;
+    z-index: -1;
+}
+
+.search_type_nameOnly + .search__trigger,
+.search_type_descrOnly + .search__trigger,
+.search_type_anywhere + .search__trigger
+{
+    position: relative;
+    padding: 5px 0 0 35px;
+    cursor: pointer;
+}
+
+.search_type_nameOnly + .search__trigger::before,
+.search_type_descrOnly + .search__trigger::before,
+.search_type_anywhere + .search__trigger::before
+{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 25px;
+    height: 25px;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+.search_type_nameOnly + .search__trigger::after,
+.search_type_descrOnly + .search__trigger::after,
+.search_type_anywhere + .search__trigger::after
+{
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #555;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+    opacity: 0;
+    transition: .2s;
+}
+
+.search_type_nameOnly:checked + .search__trigger::after,
+.search_type_descrOnly:checked + .search__trigger::after,
+.search_type_anywhere:checked + .search__trigger::after
+{
+    opacity: 1;
+}
+
+.search_type_nameOnly:hover + .search__trigger::before,
+.search_type_descrOnly:hover + .search__trigger::before,
+.search_type_anywhere:hover + .search__trigger::before
+{
+    box-shadow: 0 0 2px 1px var(--border-color);
+    transition: .3s;
+}
+
+.search_type_nameOnly:focus + .search__trigger,
+.search_type_descrOnly:focus + .search__trigger,
+.search_type_anywhere:focus + .search__trigger
+{
+    border: 1px dotted var(--border-color);
+    animation: gradient-blink 0.7s linear infinite;
+}

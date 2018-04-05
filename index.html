@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Pavel is very busy</title>
+    <link rel="stylesheet" href="index.css" media="screen">
+</head>
+<body>
+    <main id="mainId">
+        <div class="eclipse"></div>
+        <div class="search">
+            <input type="text" class="search__field" placeholder="Поиск..." name="search">
+            <div class="search__triggers">
+                <input type="radio" name="searchType" id="nameOnly" value="nameOnly"
+                class="search_type_nameOnly js-radiobuttons-for-search">
+                <label for="nameOnly" class="search__trigger">по названию</label>
+                <input type="radio" name="searchType" id="descrOnly" value="descrOnly"
+                class="search_type_descrOnly js-radiobuttons-for-search" checked>
+                <label for="descrOnly" class="search__trigger">по описанию</label>
+                <input type="radio" name="searchType" id="anywhere" value="anywhere"
+                class="search_type_anywhere js-radiobuttons-for-search">
+                <label for="anywhere" class="search__trigger">везде</label>
+            </div>
+        </div>
+        <hr>
+        <div class="new-place">
+            <input type="text" name="name" class="new-place__name" placeholder="Введите название места...">
+            <textarea name="description" class="new-place__description"
+            placeholder="Введите описание..."></textarea>
+            <input type="button" class="new-place__create-button" value="Создать">
+        </div>
+        <hr>
+        <div class="control-panel">
+            <span class="control-panel__title">Места</span>
+            <input type="image" class="control-panel__delete" src="pics/delete.svg" width="32px">
+            <div class="control-panel__sorting">
+                <input type="radio" name="sortType" class="control-panel__sorting-input_abc" id="name" checked>
+                <label for="name" class="control-panel__sorting_type_abc">
+                    <img src="/pics/sort-by-abc.svg" class="control-panel__sorting-icon" width="31px">
+                </label>
+                <input type="radio" name="sortType" class="control-panel__sorting-input_date" id="date">
+                <label for="date" class="control-panel__sorting_type_date">
+                    <img src="/pics/sort-by-date.png" class="control-panel__sorting-icon" width="31px">
+                </label>
+            </div>
+            <div class="control-panel__view-filter">
+                <input type="radio" name="viewType" id="listAll" class="control-panel__view-filter_input" checked>
+                <label for="listAll" class="control-panel__view-filter_type"><div>все</div></label>
+                <input type="radio" name="viewType" id="listWish" class="control-panel__view-filter_input">
+                <label for="listWish" class="control-panel__view-filter_type"><div>посетить</div></label>
+                <input type="radio" name="viewType" id="listDone" class="control-panel__view-filter_input">
+                <label for="listDone" class="control-panel__view-filter_type"><div>посещенные</div></label>
+            </div>
+        </div>
+        <hr>
+        <div class="list"></div>
+    </main>
+    <hr class="hr-main">
+    <footer class="footer">
+        <div class="year">2018</div>
+        <div class="editor">&copy;spt30</div>
+    </footer>
+    <script src="handlers.js"></script>
+</body>
+</html>
