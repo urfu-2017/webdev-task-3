@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Сервис мест</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<main>
+    <input type="text" placeholder="Поиск" class="search-field">
+    <div class="add-place">
+        <input class="add-place__name" type="text" placeholder="Добавить место" required>
+        <input class="add-place__button" type="button" value="Создать">
+    </div>
+    <div class="places">
+        <header class="places-header">
+            <span class="places-header__text">Места</span>
+            <i class="fas fa-trash-alt places__delete"></i>
+            <div class="visibility-selectors">
+                <input type="button" class="visibility-selectors__all visibility-selectors__button visibility-selectors__button_selected" value="Все">
+                <input type="button" class="visibility-selectors__not-visited visibility-selectors__button" value="Посетить">
+                <input type="button" class="visibility-selectors__visited visibility-selectors__button" value="Посещенные">
+            </div>
+        </header>
+        <div class="places__container">
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer__year">2018</div>
+        <div class="footer__author">@admirallll</div>
+    </footer>
+</main>
+</body>
+<script src="index.js"></script>
+</html>
