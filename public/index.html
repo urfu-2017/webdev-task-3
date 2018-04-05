@@ -41,6 +41,25 @@
 		<span class="footer__year">2018</span>
 		<span class="footer__developer">©dosha</span>
 	</footer>
+	<template class="template">
+		<div class="list__item">
+			<div class="list__control-place">
+			    <input type="image" src="/pic/edit.svg" class="list__item_edit" width = 25px>
+			    <input type="image" src="/pic/delete.png" class="list__item_delete" width = 25px>
+			    <div class="list__item_name"></div>
+			    <input type="image" src="/pic/save.png" class="list__item-save-button" width = 25px>
+			    <input type="image" src="/pic/remove.png" class="list__item-cancel-button" width = 25px>
+			    <input type="image" src="/pic/up.png" class="list__item_moveup" width = 25px>
+			    <input type="image" src="/pic/down.png" class="list__item_movedown" width = 25px>
+			    <input type="checkbox" class="list__item_tick">
+			    <label for="checkbox"></label>
+			    <input type="hidden" class="list__item_date" value="">
+			</div>
+			<input class="list__item_description-input" type="text" value="">
+			<div class="list__item_description-div" disabled></div>
+			<hr class="list__place-line"/>
+		</div>
+	</template>
 	<script src="script/app.js"></script>
 </body>
 </html>
