@@ -22,30 +22,24 @@ function createPlace() {
                 } else {
                     data.isVisited = '';
                 }
-                var div = document.createElement('div');
-                div.className = 'place';
-                div.setAttribute('id', data.id);
-                div.innerHTML = `
-            <img onclick="removePlace(${data.id})" class="place__img" 
-            src="http://www.iconsearch.ru/uploads/icons/futurosoft_icons/16x16/trashcan_full.png" 
-            alt="удалить">
-            <img onclick="change(${data.id})" class="place__img" 
-            src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984696edit8.png" alt="изменить">
-            <p class="place__p" >${data.description}</p>
-            <input class="place__changeInput" type="text" value="${data.description}">
-            <img class="place__image" onclick="move(${data.id},'down')" 
-            src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984675down8.png" alt="вниз">
-            <img class="place__image" onclick="move(${data.id},'up')" 
-            src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984855up8.png" alt="вверх">
-            <img onclick="acceptChange(${data.id})" class="place__changeImg" 
-            src="http://s1.iconbird.com/ico/2013/12/517/w16h161386955471success7.png" alt="галочка">
-            <img onclick="undoChange(${data.id})" class="place__undoImg" 
-            src="http://s1.iconbird.com/ico/2013/9/448/w16h16138044427114Delete16x16.png" 
-            alt="крест">
-            <input class="place__checkbox" type="checkbox"  name=""  ${data.isVisited} disabled>`;
-                parent.appendChild(div);
-
+                
+                var hiddenPlace = document.getElementsByClassName("place_hidden")[0];
+                var place = hiddenPlace.cloneNode(true);
+                place.setAttribute('id', data.id);
+                var placeChilds = place.children;
+                placeChilds[0].addEventListener("click", ()=>{removePlace(data.id)});
+                placeChilds[1].addEventListener("click", ()=>{change(data.id)});
+                placeChilds[2].innerHTML = data.description;
+                placeChilds[3].value = data.description;
+                placeChilds[4].addEventListener("click", ()=>{move(data.id,'down')});
+                placeChilds[5].addEventListener("click", ()=>{move(data.id,'up')});
+                placeChilds[6].addEventListener("click", ()=>{acceptChange(data.id)});
+                placeChilds[7].addEventListener("click", ()=>{undoChange(data.id)});
+                data.isVisited === 'checked'? placeChilds[8].checked =true: "";
+                place.className="place";
+                parent.appendChild(place);
             });
+            
     }
 }
 
@@ -133,9 +127,12 @@ function move(id, type) {
 
     var number;
 
+
     for (let i = 0; i < places.length; i++) {
+
         if (Number(places[i].id) === id) {
             number = i;
+            break;
         }
     }
     if (elementToChange !== null) {

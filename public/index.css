@@ -87,6 +87,10 @@
     position: relative;
 }
 
+.place_hidden {
+    display: none !important;
+}
+
 .place:hover  .place__img{
     visibility: visible;
 }
