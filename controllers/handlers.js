@@ -1,9 +1,9 @@
 'use strict';
 // заполнен сразу для удобства тестирования
-// const SERVER = 'https://webdev-task-2-ehhlckxzzz.now.sh/';
+const SERVER = 'https://webdev-task-2-ehhlckxzzz.now.sh/';
 
 // пустой, заполняется руками для удобства использования
-const SERVER = 'https://webdev-task-2-cmkclfwkjm.now.sh/';
+// const SERVER = 'https://webdev-task-2-cmkclfwkjm.now.sh/';
 
 // const SERVER = 'http://localhost:3000/';
 
@@ -28,11 +28,11 @@ const fetchPlacesDB = async ({ method, headers, body }, relativePath) => {
 const setViewHandler = () => {
     document.querySelectorAll('.control-panel__view-filter_input').forEach(radioButton => {
         radioButton.addEventListener('click', () => {
-            let places = document.getElementsByClassName('place');
+            let places = document.querySelectorAll('.place');
             const typeOfView = radioButton.id;
-            Array.prototype.forEach.call(places, place => {
+            places.forEach(place => {
                 place.classList.remove('place_hidden');
-                let checkbox = place.getElementsByClassName('place__visited_checkbox')[0];
+                let checkbox = place.querySelectorAll('.place__visited_checkbox')[0];
                 switch (typeOfView) {
                     case 'listWish':
                         if (checkbox.checked) {
@@ -55,12 +55,13 @@ const setViewHandler = () => {
     });
 };
 
-const debounce = (func, delay) => {
+// настройка поиска без общения с сервером
+const debounceSearch = (func, field, searchType, delay) => {
     let timer = null;
 
-    return function (...args) {
+    return function () {
         const onComplete = () => {
-            func.apply(this, args);
+            func.apply(this, [field, searchType]);
             timer = null;
         };
         if (timer) {
@@ -70,31 +71,31 @@ const debounce = (func, delay) => {
     };
 };
 
-// настройка поиска без общения с сервером
 const setSearchHandler = () => {
-    const field = document.getElementsByClassName('search__field')[0];
-    const find = debounce(() => {
-        let currentString = document.getElementsByClassName('search__field')[0].value;
+    const field = document.querySelectorAll('.search__field')[0];
+    const searchType = document.querySelectorAll('.js-radiobuttons-for-search');
+    const find = debounceSearch(() => {
+        let currentString = document.querySelectorAll('.search__field')[0].value;
         currentString = currentString.toLowerCase();
 
-        let places = document.getElementsByClassName('place');
+        let places = document.querySelectorAll('.place');
         places = Array.prototype.slice.call(places, 0);
 
-        let searchType = document.getElementsByClassName('js-radiobuttons-for-search');
-        searchType = Array.prototype.slice.call(searchType, 0);
-        searchType = searchType.filter(elem => elem.checked);
-        searchType = searchType[0].value;
+        let searchTypeValue = Array.prototype.slice.call(searchType, 0);
+        searchTypeValue = searchTypeValue.filter(elem => elem.checked);
+        searchTypeValue = searchTypeValue[0].value;
 
-        viewAppropriatePlaces(places, searchType, currentString);
-    }, 300);
-    field.addEventListener('keypress', find);
+        viewAppropriatePlaces(places, searchTypeValue, currentString);
+    }, field, searchType, 300);
+    field.addEventListener('input', find);
+    searchType.forEach(btn => btn.addEventListener('click', find));
 };
 
 const viewAppropriatePlaces = (places, searchType, currentString) => {
-    Array.prototype.forEach.call(places, place => {
-        const name = place.getElementsByClassName('place__name')[0]
+    places.forEach(place => {
+        const name = place.querySelectorAll('.place__name')[0]
             .innerHTML.toLowerCase();
-        const description = place.getElementsByClassName('place__description')[0]
+        const description = place.querySelectorAll('.place__description')[0]
             .innerHTML.toLowerCase();
 
         let props = [];
@@ -120,26 +121,43 @@ const viewAppropriatePlaces = (places, searchType, currentString) => {
 
 // настройка сортировки по алфавиту и по дате
 const setSortListHandler = (sortType) => {
-    Array.prototype.forEach.call(sortType, radioButton => {
-        radioButton.addEventListener('click', async () => {
-            const fetchParams = {
-                method: 'GET'
-            };
-            const sortList = await fetchPlacesDB(fetchParams, 'places?sortType=' + radioButton.id)
-                .then(response => response.json());
+    sortType.addEventListener('click', () => {
+        const sortList = Array.from(document.querySelectorAll('.place'));
+        if (sortType.id === 'date') {
+            sortList.sort((a, b) => {
+                const timeA = a.querySelectorAll('.place__time')[0].value;
+                const timeB = b.querySelectorAll('.place__time')[0].value;
 
-            document.getElementsByClassName('list')[0].innerHTML = '';
-
-            Array.prototype.forEach.call(sortList, place => {
-                appendPlace(place);
+                return timeA > timeB;
             });
+        } else if (sortType.id === 'name') {
+            sortList.sort((a, b) => {
+                const nameA = a.querySelectorAll('.place__name')[0].innerHTML.toLowerCase();
+                const nameB = b.querySelectorAll('.place__name')[0].innerHTML.toLowerCase();
+
+                return nameA > nameB;
+            });
+        }
+        // console.log(sortList)
+        document.querySelectorAll('.list')[0].innerHTML = '';
+        sortList.forEach(place => {
+            console.log(place.querySelectorAll('.place__name')[0].innerHTML);
+            const placeIn = {
+                id: place.querySelectorAll('.place__id')[0].value,
+                name: place.querySelectorAll('.place__name')[0].innerHTML,
+                description: place.querySelectorAll('.place__description')[0].innerHTML,
+                created: place.querySelectorAll('.place__create-date-value')[0].innerHTML,
+                isVisited: place.querySelectorAll('.place__visited_checkbox')[0].checked,
+                unixTimeStamp: place.querySelectorAll('.place__time')[0].value
+            };
+            appendPlace(placeIn);
         });
     });
 };
 
 // настройка кнопки "удалить все"
 const setDeleteAllHandler = () => {
-    const deleteAllButton = document.getElementsByClassName('control-panel__delete')[0];
+    const deleteAllButton = document.querySelectorAll('.control-panel__delete')[0];
     deleteAllButton.addEventListener('click', async () => {
         deleteAllButton.blur();
         const fetchParams = {
@@ -148,19 +166,21 @@ const setDeleteAllHandler = () => {
         const isClear = await fetchPlacesDB(fetchParams, 'places')
             .then(response => response.status);
         if (isClear === 200) {
-            document.getElementsByClassName('list')[0].innerHTML = '';
+            document.querySelectorAll('.list')[0].innerHTML = '';
         }
     });
 };
 
 // настройка создания места
 const setCreatePlaceHandler = () => {
-    const createButton = document.getElementsByClassName('new-place__create-button')[0];
+    const createButton = document.querySelectorAll('.new-place__create-button')[0];
+    const descriptionField = document.querySelectorAll('.new-place__description')[0];
+    const nameField = document.querySelectorAll('.new-place__name')[0];
     createButton.addEventListener('click', async () => {
-        const description = document.getElementsByClassName('new-place__description')[0].value;
-        const name = document.getElementsByClassName('new-place__name')[0].value;
-        document.getElementsByClassName('new-place__name')[0].value = '';
-        document.getElementsByClassName('new-place__description')[0].value = '';
+        const description = descriptionField.value;
+        const name = nameField.value;
+        nameField.value = '';
+        descriptionField.value = '';
         const fetchParams = {
             method: 'POST',
             body: JSON.stringify({
@@ -178,7 +198,7 @@ const setCreatePlaceHandler = () => {
 
 // посещение
 const setVisitCheckboxHandler = async (place, id) => {
-    const visitButton = place.getElementsByClassName('place__visited_checkbox')[0];
+    const visitButton = place.querySelectorAll('.place__visited_checkbox')[0];
     visitButton.addEventListener('click', async () => {
         const method = visitButton.checked ? 'PUT' : 'DELETE';
         const fetchParams = { method };
@@ -188,17 +208,17 @@ const setVisitCheckboxHandler = async (place, id) => {
 
 // редактирование
 const setEditViewHandler = place => {
-    const editButton = place.getElementsByClassName('place__edit')[0];
+    const editButton = place.querySelectorAll('.place__edit')[0];
     editButton.addEventListener('click', async () => {
-        const descriptionEdit = place.getElementsByClassName('place__description-edit')[0];
-        const nameEdit = place.getElementsByClassName('place__name-edit')[0];
+        const descriptionEdit = place.querySelectorAll('.place__description-edit')[0];
+        const nameEdit = place.querySelectorAll('.place__name-edit')[0];
 
-        const description = place.getElementsByClassName('place__description')[0];
-        const name = place.getElementsByClassName('place__name')[0];
+        const description = place.querySelectorAll('.place__description')[0];
+        const name = place.querySelectorAll('.place__name')[0];
 
-        descriptionEdit.value = description.childNodes[0].data;
-        let nameField = nameEdit.getElementsByClassName('place__name_edit')[0];
-        nameField.value = name.childNodes[0].data;
+        descriptionEdit.value = description.innerHTML;
+        let nameField = nameEdit.querySelectorAll('.place__name_edit')[0];
+        nameField.value = name.innerHTML;
 
         descriptionEdit.classList.remove('place__text-hide');
         nameEdit.classList.remove('place__text-hide');
@@ -212,14 +232,14 @@ const setEditViewHandler = place => {
 };
 
 const setEditAcceptHandler = async (place, id) => {
-    const acceptButton = place.getElementsByClassName('place__accept')[0];
+    const acceptButton = place.querySelectorAll('.place__accept')[0];
     acceptButton.addEventListener('click', async () => {
-        const descriptionEdit = place.getElementsByClassName('place__description-edit')[0];
-        const nameEdit = place.getElementsByClassName('place__name-edit')[0];
+        const descriptionEdit = place.querySelectorAll('.place__description-edit')[0];
+        const nameEdit = place.querySelectorAll('.place__name-edit')[0];
         const fetchParams = {
             method: 'PATCH',
             body: JSON.stringify({
-                name: nameEdit.getElementsByClassName('place__name_edit')[0].value,
+                name: nameEdit.querySelectorAll('.place__name_edit')[0].value,
                 description: descriptionEdit.value
             })
         };
@@ -230,13 +250,13 @@ const setEditAcceptHandler = async (place, id) => {
 };
 
 const setEditCancelHandler = (place) => {
-    const cancelButton = place.getElementsByClassName('place__cancel')[0];
+    const cancelButton = place.querySelectorAll('.place__cancel')[0];
     cancelButton.addEventListener('click', () => {
-        const descriptionEdit = place.getElementsByClassName('place__description-edit')[0];
-        const nameEdit = place.getElementsByClassName('place__name-edit')[0];
+        const descriptionEdit = place.querySelectorAll('.place__description-edit')[0];
+        const nameEdit = place.querySelectorAll('.place__name-edit')[0];
 
-        const description = place.getElementsByClassName('place__description')[0];
-        const name = place.getElementsByClassName('place__name')[0];
+        const description = place.querySelectorAll('.place__description')[0];
+        const name = place.querySelectorAll('.place__name')[0];
 
         description.classList.remove('place__text-hide');
         name.classList.remove('place__text-hide');
@@ -251,7 +271,7 @@ const setEditCancelHandler = (place) => {
 
 // удаление
 const setDeletePlaceHandler = (place, id) => {
-    const deleteButton = place.getElementsByClassName('place__delete')[0];
+    const deleteButton = place.querySelectorAll('.place__delete')[0];
     deleteButton.addEventListener('click', async () => {
         const fetchParams = {
             method: 'DELETE'
@@ -267,9 +287,25 @@ const setDeletePlaceHandler = (place, id) => {
 // смена места
 let dragElementId;
 let dropElementId;
+const dragging = (e) => {
+    const place = document.getElementById(`visit_checkbox_${dragElementId}`).parentElement;
+    place.style.visibility = 'visible';
+    const draggableElement = place.cloneNode(true);
+    place.style.visibility = 'hidden';
+    document.body.appendChild(draggableElement);
+    draggableElement.style.position = 'fixed';
+    draggableElement.style.top = `${e.clientY - 70}px`;
+    draggableElement.style.left = `${e.clientX - 335}px`;
+    draggableElement.style.width = '415px';
+    draggableElement.style['z-index'] = '30';
+    setTimeout(() => {
+        draggableElement.remove();
+    }, 1);
+};
+
 const callbackMouseUp = async (e) => {
     let targetPlace = e.target.closest('.place');
-    dropElementId = targetPlace.getElementsByClassName('place__id')[0].value;
+    dropElementId = targetPlace.querySelectorAll('.place__id')[0].value;
     const fetchParams = {
         method: 'PATCH'
     };
@@ -282,11 +318,12 @@ const callbackMouseUp = async (e) => {
         updatePlace(newList[1], forDrag1);
         updatePlace(newList[0], forDrag2);
     }
+    document.removeEventListener('mousemove', dragging);
     document.removeEventListener('mouseup', callbackMouseUp);
 };
 
 const setChangeOrderHandler = (place, id) => {
-    const dragButton = place.getElementsByClassName('place__change-order')[0];
+    const dragButton = place.querySelectorAll('.place__change-order')[0];
 
     let dragObject = {};
     dragButton.addEventListener('mousedown', (e) => {
@@ -295,6 +332,7 @@ const setChangeOrderHandler = (place, id) => {
         dragObject.downX = e.pageX;
         dragObject.downY = e.pageY;
         dragObject.avatar = place;
+        document.addEventListener('mousemove', dragging);
         document.addEventListener('mouseup', callbackMouseUp);
     });
 };
@@ -302,33 +340,31 @@ const setChangeOrderHandler = (place, id) => {
 /* ----------------------------------ONLOAD(CALL ALL)---------------------------------- */
 
 document.addEventListener('DOMContentLoaded', async () => {
-    let sortType = [];
-    sortType.push(document.getElementsByClassName('control-panel__sorting-input_abc')[0]);
-    sortType.push(document.getElementsByClassName('control-panel__sorting-input_date')[0]);
-    sortType = Array.prototype.slice.call(sortType, 0);
-    setSortListHandler(sortType);
-    sortType = sortType.filter(elem => elem.checked);
-    sortType = sortType[0].id;
+    const sortByAbc = document.querySelectorAll('.control-panel__sorting-input_abc')[0];
+    const sortByDate = document.querySelectorAll('.control-panel__sorting-input_date')[0];
+    const sortType = [sortByAbc, sortByDate];
+    setSortListHandler(sortByAbc);
+    setSortListHandler(sortByDate);
+    const sortTypeRes = sortType.filter(elem => elem.checked)[0].id;
     const fetchParams = {
         method: 'GET'
     };
-    let newList = await fetchPlacesDB(fetchParams, 'places?sortType=' + sortType)
+    let newList = await fetchPlacesDB(fetchParams, 'places?sortType=' + sortTypeRes)
         .then(response => response.json());
     // console.log(newList)
-    Array.prototype.forEach.call(newList, place => {
-        appendPlace(place);
-    });
+    newList.forEach(place => appendPlace(place));
     setViewHandler();
     setSearchHandler();
     setDeleteAllHandler();
     setCreatePlaceHandler();
 });
 
-function generatePlace({ id, name, description, created }) {
+function generatePlace({ id, name, description, created, unixTimeStamp }) {
     let newPlace = document.createElement('section');
     newPlace.className = 'place';
     newPlace.innerHTML = `
     <input type="hidden" value="${id}" class="place__id">
+    <input type="hidden" value="${unixTimeStamp}" class="place__time">
     <div class="place__title">
         <input type="image" src="/pics/edit.svg" alt="" class="place__edit">
         <input type="image" src="/pics/delete.svg" alt="" class="place__delete">
@@ -344,7 +380,7 @@ function generatePlace({ id, name, description, created }) {
     <img src='pics/drag.png' class="place__change-order">
     <div class="place__create-date">
         <div>Добавлено</div>
-        <div>${created}</div>
+        <div class="place__create-date-value">${created}</div>
     </div>
     <input type="checkbox" name="isVisit" tabindex=-1
     id="visit_checkbox_${id}" class="place__visited_checkbox">
@@ -353,9 +389,9 @@ function generatePlace({ id, name, description, created }) {
     return newPlace;
 }
 
-const appendPlace = ({ id, name, description, created, isVisited }) => {
-    let list = document.getElementsByClassName('list')[0];
-    const newPlace = generatePlace({ id, name, description, created });
+const appendPlace = ({ id, name, description, created, isVisited, unixTimeStamp }) => {
+    let list = document.querySelectorAll('.list')[0];
+    const newPlace = generatePlace({ id, name, description, created, unixTimeStamp });
 
     list.appendChild(newPlace);
 
@@ -367,11 +403,11 @@ const appendPlace = ({ id, name, description, created, isVisited }) => {
     setAllPlaceHandlers(newPlace, id);
 };
 
-const updatePlace = ({ id, name, description, created, isVisited }, insertInsteadOf) => {
-    let list = document.getElementsByClassName('list')[0];
-    const newPlace = generatePlace({ id, name, description, created });
+const updatePlace = ({ id, name, description, created, isVisited, unixTimeStamp }, Instead) => {
+    let list = document.querySelectorAll('.list')[0];
+    const newPlace = generatePlace({ id, name, description, created, unixTimeStamp });
 
-    list.replaceChild(newPlace, insertInsteadOf);
+    list.replaceChild(newPlace, Instead);
 
     if (isVisited) {
         const inputIdStr = `visit_checkbox_${id}`;
