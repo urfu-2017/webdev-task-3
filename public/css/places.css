@@ -1,0 +1,173 @@
+.list__item_description-input:focus
+{
+    background-color: white;
+    outline-color: #3b2751;
+}
+
+.list__item
+{
+    margin: 10px;
+    padding: 10px;
+    z-index: 100;
+}
+
+.list__item_block
+{
+    display: block;
+    margin: 10px;
+    padding: 10px;
+    z-index: 100;
+}
+
+.list__items
+{
+    margin: 10px 10px 10px 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    width: 430px;
+    max-width: calc(420px * 1.07);
+    height: 300px;
+}
+
+::-webkit-scrollbar
+{
+    width: 2px;
+}
+
+::-webkit-scrollbar-thumb
+{
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color:#a675b3;
+}
+
+.list__unit-line
+{
+    border-width: .7px;
+    border-color: black;
+}
+
+.list__place-line
+{
+    border-color: #a675b3;
+    border-width: .7px;
+    border: 1px solid #a675b3;
+}
+
+.list__item:hover
+{
+    transform: scale(1.07);
+    background: linear-gradient(90deg, #a675b33f, #c675b33f);
+    border-radius: 7px;
+    transition: .2s;
+}
+
+
+.list__control-place
+{
+    display: grid;
+    grid-template-columns: 40px 40px auto 20px 30px 30px;
+}
+
+.list__control-place_edit
+{
+    display: grid;
+    grid-template-columns: 40px 40px auto 40px 40px 20px 30px 30px;
+}
+.list__item-save-button,
+.list__item-cancel-button
+{
+    display: none;
+}
+
+.list__item-save-button_block,
+.list__item-cancel-button_block
+{
+    display: block;
+}
+
+.list__item_moveup,
+.list__item_movedown,
+.list__item_tick,
+.list__item_delete,
+.list__item_edit,
+.list__item-cancel-button,
+.list__item-save-button
+{
+    outline-color: #a675b3;
+}
+
+.list__item_moveup:hover,
+.list__item_movedown:hover,
+.list__item_tick:hover,
+.list__item_delete:hover,
+.list__item_edit:hover,
+.list__item-cancel-button:hover,
+.list__item-save-button:hover
+{
+    transform: scale(1.2);
+}
+
+.list__item_moveup:active,
+.list__item_movedown:active,
+.list__item_tick:active,
+.list__item_delete:active,
+.list__item_edit:active
+{
+    transform: scale(1.1);
+}
+
+.list__item_description
+{
+    margin-top: 10px;
+    width: 100%;
+    max-height: 170px;
+}
+
+.list__item_date
+{
+    display: none;
+}
+
+.list__item_description-input,
+.list__item_description-input_block
+{
+    font: 18px 'Amatic SC';
+    margin: 10px 0;
+    padding: 5px;
+    outline-color: indigo;
+    background: rgb(232, 220, 240);
+    border: none;
+    display: none;
+    width: 380px;
+}
+
+.list__item_description-input_block
+{
+    display: block;
+}
+
+
+
+.list__item_description-div
+{
+    font: 18px 'Amatic SC';
+    margin: 10px 0;
+    display: block;
+}
+
+.none
+{
+    display: none;
+}
+
+.list__item_name_none
+{
+    text-decoration: none;
+}
+
+.list__item_name_line
+{
+    text-decoration: line-through;
+}
+

@@ -1,0 +1,48 @@
+
+.list__filter-buttons_visit
+{
+    margin: 0 3px;
+}
+
+.list__filter-buttons_all,
+.list__filter-buttons_visit,
+.list__filter-buttons_visited
+{
+    border: none;
+    width: 90px;
+    height: 30px;
+    color: #a675b3;
+    font: 18px 'Amatic SC';
+}
+
+.list__filter-buttons_all:not(.active),
+.list__filter-buttons_visit:not(.active),
+.list__filter-buttons_visited:not(.active)
+{
+    background-color: transparent;
+    border: 2px solid  #3b2751;
+    color: #3b2751;
+    border-radius: 2px;
+}
+
+.list__filter-buttons_all:hover,
+.list__filter-buttons_visited:hover,
+.list__filter-buttons_visit:hover,
+.list__filter-buttons_all:focus,
+.list__filter-buttons_visit:focus,
+.list__filter-buttons_visited:focus,
+.list__abc-button:focus,
+.list__date-button:focus,
+.list__delete-button:focus
+{
+    cursor: pointer;
+    color: #fff;
+    outline-color: #c3a3e6;
+}
+
+.list__header
+{
+    display: flex;
+    justify-content: space-between;
+    margin: var(--global-margin);
+}

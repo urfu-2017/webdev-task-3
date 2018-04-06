@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Доша помогает Паше</title>
+	<link rel="stylesheet" href="css/control.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="css/places.css">
+	<link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+</head>
+<body>
+	<header class="header">Помощь Билли</header>
+	<main class="main">
+		<div class="search">
+			<input placeholder="Поиск" type="text" class="search__place">
+			<input  type="button" value="Найти" class="search__button">
+		</div>
+		<div class="create">
+			<input placeholder="Название места" type="text" name="" class="create__place">
+			<input  type="button" value="Создать" class="create__button">
+		</div>
+		<div class="list">
+			<div class="list__header">
+				<span class="list__places">Места</span>
+				<input type="image" src="/pic/delete.png" class="list__delete-button" width=23 height=25>
+				<input type="image" src="/pic/date.png" class="list__date-button" width=20 height=25>
+				<input type="image" src="/pic/abc.svg" class="list__abc-button" width=20 height=25>
+				<div class="list__filter-buttons">
+					<input type="button" value="Все" class="list__filter-buttons_all">
+					<input type="button" value="Посетить" class="list__filter-buttons_visit">
+					<input type="button" value="Посещенные" class="list__filter-buttons_visited">
+				</div>
+			</div>
+			<hr class="list__unit-line"/>
+			<div class="list__items"></div>
+		</div>
+	</main>
+	<footer class="footer">
+		<span class="footer__year">2018</span>
+		<span class="footer__developer">©dosha</span>
+	</footer>
+	<template class="template">
+		<div class="list__item">
+			<div class="list__control-place">
+			    <input type="image" src="/pic/edit.svg" class="list__item_edit" width = 25px>
+			    <input type="image" src="/pic/delete.png" class="list__item_delete" width = 25px>
+			    <div class="list__item_name"></div>
+			    <input type="image" src="/pic/save.png" class="list__item-save-button" width = 25px>
+			    <input type="image" src="/pic/remove.png" class="list__item-cancel-button" width = 25px>
+			    <input type="image" src="/pic/up.png" class="list__item_moveup" width = 25px>
+			    <input type="image" src="/pic/down.png" class="list__item_movedown" width = 25px>
+			    <input type="checkbox" class="list__item_tick">
+			    <label for="checkbox"></label>
+			    <input type="hidden" class="list__item_date" value="">
+			</div>
+			<input class="list__item_description-input" type="text" value="">
+			<div class="list__item_description-div" disabled></div>
+			<hr class="list__place-line"/>
+		</div>
+	</template>
+	<script src="script/app.js"></script>
+</body>
+</html>
