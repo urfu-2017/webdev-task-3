@@ -299,10 +299,10 @@ const helpToControl = (alltems, el) => {
         el.className === 'list__filter-buttons_all' ||
         tick.checked && el.className === 'list__filter-buttons_visited') {
             alltems[i].classList.remove('none');
-            alltems[i].classList.add('list__item_block')
+            alltems[i].classList.add('list__item_block');
         } else {
             alltems[i].classList.add('none');
-            alltems[i].classList.remove('list__item_block')
+            alltems[i].classList.remove('list__item_block');
         }
     }
 };
