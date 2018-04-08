@@ -69,7 +69,7 @@ function add() {
             newNote.className = 'note';
             newNote.setAttribute('data-status', data.visited);
             newNote.setAttribute('data-id', data.id);
-            newNote.innerHTML = `<div class="note__default">
+            newNote.innerHTML = `<div class="note__default display_flex">
                     <div class="note__start">
                     <div class="note__change">
                         <img class="note__change-img" src="images/red.png" alt="Редактировать">
@@ -86,7 +86,7 @@ function add() {
                     <input class="note__checkbox" type="checkbox" />
                 </div>
             </div>
-            <div class="note__redactor">
+            <div class="note__redactor display_none">
                 <input class="note__input" value="${ data.description }" type="text"/>
                 <div class="note__cancel">
                     <img class="note__cancel-img" src="images/close.png" alt="Удалить">
@@ -145,7 +145,6 @@ function showRedactor(e) {
     const selectedEl = e.target.closest('.note');
     const def = selectedEl.querySelector('.note__default');
     const redactor = selectedEl.querySelector('.note__redactor');
-
     def.className = 'note__default display_none';
     redactor.className = 'note__redactor display_flex';
 }
