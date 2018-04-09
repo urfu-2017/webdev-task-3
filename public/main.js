@@ -5,7 +5,7 @@ var FILTER_NOT_VISITED = 'NOT_VISITED';
 var places = [];
 var filter = FILTER_ALL;
 var query = '';
-var apiUrl = 'https://webdev-task-2-tvrpmeaffn.now.sh/api/v1/places';
+var apiUrl = 'https://webdev-task-2-ddpjnicrzn.now.sh/api/v1/places';
 
 var onVisitedCheckboxClick = function () {
     var idx = this.parentNode.dataset.idx;
@@ -49,7 +49,7 @@ var onEditSave = function () {
     var idx = this.parentNode.dataset.idx;
     var newDescription = this.parentNode.getElementsByClassName('place__edit')[0].value;
     var xhr = new XMLHttpRequest();
-    xhr.open('PUT', apiUrl, true);
+    xhr.open('PATCH', apiUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onerror = function () {
         console.error('Error!');
@@ -127,7 +127,7 @@ function renderList(newFilter, newQuery) {
 
 function changeOrder(idx, order) {
     var xhr = new XMLHttpRequest();
-    xhr.open('PUT', apiUrl + '/' + order, true);
+    xhr.open('PATCH', apiUrl + '/' + order, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onerror = function () {
         console.error('Error!');
@@ -141,7 +141,7 @@ function changeOrder(idx, order) {
 
 function markVisited(placeIdx, visited) {
     var xhr = new XMLHttpRequest();
-    xhr.open('PUT', apiUrl, true);
+    xhr.open('PATCH', apiUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onerror = function () {
         console.error('Error!');
@@ -172,7 +172,7 @@ function createPlace(description) {
 
 function deletePlace(placeIdx) {
     var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', apiUrl + places[placeIdx].id, true);
+    xhr.open('DELETE', apiUrl + '/' + places[placeIdx].id, true);
     xhr.onerror = function () {
         console.error('Error!');
     };
