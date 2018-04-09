@@ -1,0 +1,107 @@
+.search {
+    margin: 3px;
+    height: 30px;
+    border: 1px solid black;
+}
+
+.search__input {
+    width: 91%;
+    vertical-align: top;
+    height: 30px;
+    font-size: 25px;
+}
+
+.search__button {
+    margin: 6px;
+}
+
+.creator {
+    margin: 3px;
+    height: 30px;
+    border: 1px solid black;
+}
+
+.creator__input {
+    width: 91%;
+    vertical-align: top;
+    height: 30px;
+    font-size: 25px;
+}
+
+.creator__button {
+    margin: 6px;
+}
+
+.selector {
+    margin: 3px;
+    margin-bottom: 20px;
+    height: 30px;
+    text-align: center;
+}
+
+.selector__item {
+    font-size: 23px;
+    border: 1px solid black;
+    display: inline-block;
+    width: 100px;
+    margin: 3px;
+    text-align: center;  
+}
+
+.selector__item > input:checked + span {
+    font-weight: 600;
+}
+
+.place {
+    border: 1px solid black;
+    padding: 3px;
+    font-size: 25px;
+    height: 30px;
+    margin: 3px;
+}
+
+.place__controls {
+    width: 18%;
+    display: inline-block;
+}
+
+.place__title {
+    vertical-align: top;
+    width: 70%;
+    display: inline-block;
+}
+
+.place__visit {
+    vertical-align: top;
+    text-align: center;
+    width: 10%;
+    display: inline-block;
+    height: 30px;
+}
+
+.place__checkbox {
+    margin-top: 7px;
+    font-size: 2em;
+}
+
+.place__btn {
+    margin: 7px;
+}
+
+.place__input {
+    width: 100%;
+    vertical-align: top;
+    height: 30px;
+    font-size: 25px;
+}
+
+.main {
+    width: 400px;
+    border: 1px solid black;
+}
+
+
+.footer {
+    margin: 3px;
+    text-align: right;
+}
