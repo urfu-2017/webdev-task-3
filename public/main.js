@@ -5,7 +5,7 @@ var FILTER_NOT_VISITED = 'NOT_VISITED';
 var places = [];
 var filter = FILTER_ALL;
 var query = '';
-var apiUrl = 'https://webdev-task-2-ddpjnicrzn.now.sh/api/v1/places';
+var apiUrl = 'https://webdev-task-2-htkkmevmbd.now.sh/api/v1/places';
 
 var onVisitedCheckboxClick = function () {
     var idx = this.parentNode.dataset.idx;
