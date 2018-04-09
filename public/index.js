@@ -1,4 +1,4 @@
-const requestUrl = 'https://webdev-task-2-iqishmvhyf.now.sh/places';
+const requestUrl = 'http://localhost:8080/places';
 
 let catcher = err => console.error(err.message);
 let placesContainer = document.getElementById('container');
@@ -12,10 +12,14 @@ addCreateListener();
 addFilterListeners();
 
 function addFilterListeners() {
-    let filterRadios = document.querySelectorAll('.places__sort-option');
+    let placesSortOption = document.querySelector('.places__sort-options');
     let search = document.querySelector('.header__search');
 
-    filterRadios.forEach(radio => radio.addEventListener('change', filter));
+    placesSortOption.addEventListener('click', function (event) {
+        if (event.target.type === 'radio') {
+            filter();
+        }
+    });
 
     search.addEventListener('input', filter);
 
@@ -25,7 +29,7 @@ function addFilterListeners() {
         }
 
         let searchValue = new RegExp(search.value, 'i');
-        let checkedOption = document.querySelector('.places__sort-option:checked');
+        let checkedOption = placesSortOption.querySelector('.places__sort-option:checked');
 
         let isAll = checkedOption.value === 'all';
         let isVisited = checkedOption.value === 'visited';
@@ -73,7 +77,7 @@ function addDeleteAllListener() {
 }
 
 function addCreateListener() {
-    let createForm = document.querySelector('.create');
+    let createForm = document.querySelector('.create-form');
     createForm.addEventListener('submit', function (event) {
         event.preventDefault();
         let placeName = this.firstElementChild.value;
@@ -81,10 +85,16 @@ function addCreateListener() {
             this.firstElementChild.value = '';
             addLoader(placesContainer);
 
-            fetch(`${requestUrl}/${placeName}`, { method: 'POST' })
+            fetch(requestUrl, {
+                method: 'POST',
+                body: JSON.stringify({ name: placeName }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
                 .then(response => {
                     removeLoader(placesContainer);
-                    if (response.status === 200) {
+                    if (response.status === 201) {
                         return response.json();
                     }
                     throw new Error('Произошла ошибка при добавлении');
@@ -273,19 +283,29 @@ function makePlace(place) {
             return false;
         }, false);
 
-        placeContainer.addEventListener('dragleave', function () {
+        placeContainer.addEventListener('dragleave', function (event) {
+            event.preventDefault();
+
             this.classList.remove('over');
         }, false);
 
-        placeContainer.addEventListener('dragend', function () {
+        placeContainer.addEventListener('dragend', function (event) {
+            event.preventDefault();
+
             this.style.opacity = '';
             [...placesContainer.querySelectorAll('.over')]
                 .forEach(p => p.classList.remove('over'));
         }, false);
 
         placeContainer.addEventListener('drop', function (event) {
+            event.preventDefault();
+
             let indexTo = places.findIndex(p => p === place);
             let [name, indexFrom] = event.dataTransfer.getData('text').split('/');
+
+            if (indexTo === Number(indexFrom)) {
+                return;
+            }
 
             addLoader(placesContainer);
             fetch(`${requestUrl}/${name}`, {
@@ -298,7 +318,7 @@ function makePlace(place) {
                 .then(response => {
                     removeLoader(placesContainer);
                     if (response.status === 204) {
-                        places.splice(indexTo, 0, places.splice(indexFrom, 1)[0]);
+                        places.splice(indexTo, 0, places.splice(Number(indexFrom), 1)[0]);
                         mountElementInContainer(makePlacesList(places));
 
                         return;

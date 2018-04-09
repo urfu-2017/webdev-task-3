@@ -63,7 +63,7 @@
     }
 }
 
-.create {
+.create-form {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
@@ -110,17 +110,15 @@
         align-self: center;
 
         outline: none;
-        background: none;
+        background: url("./media/delete.svg") no-repeat;
+        background-size: contain;
         cursor: pointer;
+        border-radius: 3px;
 
-        .st0 {
-            fill: @main-color;
+        transition: background-color 0.2s;
 
-            transition: fill 0.5s;
-        }
-
-        :hover .st0 {
-            fill: #f00;
+        &:hover {
+            background-color: @hover-color;
         }
     }
 
