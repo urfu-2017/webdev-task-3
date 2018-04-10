@@ -171,22 +171,22 @@ function makePlace(place) {
 
     addListeners();
 
-    appendChildren();
+    appendAll();
 
     return placeContainer;
 
     function changeState() {
         placeName.disabled = !placeName.disabled;
-        confirmButton.switchDisplayBlock();
-        cancelButton.switchDisplayBlock();
-        changeButton.switchDisplayBlock();
-        deleteButton.switchDisplayBlock();
+        switchDisplayBlock(confirmButton);
+        switchDisplayBlock(cancelButton);
+        switchDisplayBlock(changeButton);
+        switchDisplayBlock(deleteButton);
     }
 
-    function appendChildren() {
-        checkHolder.appendChildren(placeCheck, placeLabel);
-        buttonGroup.appendChildren(changeButton, deleteButton, confirmButton, cancelButton);
-        placeContainer.appendChildren(buttonGroup, placeName, checkHolder);
+    function appendAll() {
+        appendChildren(checkHolder, placeCheck, placeLabel);
+        appendChildren(buttonGroup, changeButton, deleteButton, confirmButton, cancelButton);
+        appendChildren(placeContainer, buttonGroup, placeName, checkHolder);
     }
 
     function addListeners() {
@@ -200,7 +200,7 @@ function makePlace(place) {
         confirmButton.addEventListener('click', function () {
             changeState();
             addLoader(placesContainer);
-            fetch(`${requestUrl}/${place.name}`, {
+            fetch(`${requestUrl}/${place.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
@@ -222,11 +222,11 @@ function makePlace(place) {
 
         deleteButton.addEventListener('click', function () {
             addLoader(placesContainer);
-            fetch(`${requestUrl}/${place.name}`, { method: 'DELETE' })
+            fetch(`${requestUrl}/${place.id}`, { method: 'DELETE' })
                 .then(response => {
                     removeLoader(placesContainer);
                     if (response.status === 204) {
-                        let indexToDelete = places.findIndex(({ name }) => name === place.name);
+                        let indexToDelete = places.findIndex(({ id }) => id === place.id);
                         places.splice(indexToDelete, 1);
                         mountElementInContainer(makePlacesList(places));
 
@@ -241,7 +241,7 @@ function makePlace(place) {
 
         placeCheck.addEventListener('change', function () {
             addLoader(placesContainer);
-            fetch(`${requestUrl}/${place.name}`, {
+            fetch(`${requestUrl}/${place.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
@@ -271,7 +271,7 @@ function makePlace(place) {
             event.dataTransfer.effectAllowed = 'move';
             event.dataTransfer.setData(
                 'text/plain',
-                `${place.name}/${places.findIndex(p => p === place)}`
+                `${place.id}/${places.findIndex(p => p === place)}`
             );
         }, false);
 
@@ -301,14 +301,14 @@ function makePlace(place) {
             event.preventDefault();
 
             let indexTo = places.findIndex(p => p === place);
-            let [name, indexFrom] = event.dataTransfer.getData('text').split('/');
+            let [id, indexFrom] = event.dataTransfer.getData('text').split('/');
 
             if (indexTo === Number(indexFrom)) {
                 return;
             }
 
             addLoader(placesContainer);
-            fetch(`${requestUrl}/${name}`, {
+            fetch(`${requestUrl}/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
@@ -356,14 +356,14 @@ function createElement(tag, attributes) {
     return element;
 }
 
-HTMLElement.prototype.appendChildren = function (...children) {
-    children.forEach(child => this.appendChild(child));
-};
+function appendChildren(element, ...children) {
+    children.forEach(child => element.appendChild(child));
+}
 
-HTMLElement.prototype.switchDisplayBlock = function () {
-    if (getComputedStyle(this).display === 'none') {
-        this.style.display = 'block';
+function switchDisplayBlock(element) {
+    if (getComputedStyle(element).display === 'none') {
+        element.style.display = 'block';
     } else {
-        this.style.display = 'none';
+        element.style.display = 'none';
     }
-};
+}
