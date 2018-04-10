@@ -1,0 +1,19 @@
+.footer {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+
+    color: #fff;
+    background: #111;
+
+    font-size: 18px;
+    font-weight: 200;
+}
+
+.footer__copyright-name,
+.footer__current-year {
+    margin: 16px 24px;
+}

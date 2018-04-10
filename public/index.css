@@ -1,0 +1,138 @@
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 200;
+    color: #111;
+}
+
+.main-layout {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    width: 100%;
+
+    flex-grow: 2;
+
+    font-size: 18px;
+}
+
+.search-box {
+    margin: 24px;
+}
+
+.search-box__title {
+    display: block;
+
+    margin: 0 0 4px;
+}
+
+.search-box__input {
+    font-size: 24px;
+
+    width: 100%;
+}
+
+.create-box {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin: 24px;
+}
+
+.create-box__input {
+    flex-grow: 2;
+
+    font-size: 24px;
+}
+
+.create-box__button {
+    display: block;
+    margin: 0 0 0 24px;
+
+    padding: 7px 20px;
+
+    background: #0dcaa1;
+    color: #fff;
+
+    box-shadow: 0 1px 4px #bbb;
+    border-radius: 16px;
+    border: 0;
+
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 200;
+    font-size: 16px;
+}
+
+.create-box__button:focus {
+    outline-width: 0;
+}
+
+.create-box__button:active {
+    box-shadow: 0 0;
+}
+
+.list {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    margin: 0 24px 8px;
+}
+
+.list__header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 0 16px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.list__title {
+    margin: 0 16px 0 0;
+}
+
+.list__radio {
+    display: none;
+}
+
+.list__radio-label {
+    color: #777;
+    font-weight: 200;
+}
+
+.list__radio:checked ~ span {
+    color: #111;
+    font-weight: 600;
+}
+
+.list__clear {
+    color: #ddd;
+
+    width: 24px;
+    height: 24px;
+}
+
+.list__clear:active {
+    color: #333;
+}
+
+.list__header-blank-space {
+    flex-grow: 2;
+}
+
