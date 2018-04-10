@@ -99,8 +99,10 @@ async function onCreateElement() {
     createBox.input.value = '';
 
     const response = await requestCreate({ name });
+
     if (!response.ok) {
         return;
+    }
 
     const place = await response.json();
 
@@ -187,7 +189,7 @@ function onChangeVisited({ id, input, checkbox }) {
         input.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
         filterList();
 
-        const result = await requestEdit({ id, visited: checkbox.checked });
+        await requestEdit({ id, visited: checkbox.checked });
     };
 }
 
