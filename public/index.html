@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
+    <title>Places!</title>
+</head>
+<body>
+<section class="app">
+    <header class="header">
+        <h1 class="header__heading">Мои планы</h1>
+        <input type="search" class="header__search" placeholder="Поиск...">
+    </header>
+    <main class="main">
+        <form class="create-form">
+            <input type="text" class="create-form__input" placeholder="Название места...">
+            <button type="submit" class="create-form__btn">Создать</button>
+        </form>
+        <section class="places">
+            <header class="places__header">
+                <div class="places__wrapper">
+                    <h2 class="places__heading">Места</h2>
+                    <button class="places__delete" title="Удалить все..."></button>
+                </div>
+                <div class="places__sort-options">
+                    <input type="radio" name="sort" value="all" id="opt-1" class="places__sort-option" checked>
+                    <label for="opt-1" class="places__sort-option-label">Все</label>
+                    <input type="radio" name="sort" value="unvisited" id="opt-2" class="places__sort-option">
+                    <label for="opt-2" class="places__sort-option-label">Посетить</label>
+                    <input type="radio" name="sort" value="visited" id="opt-3" class="places__sort-option">
+                    <label for="opt-3" class="places__sort-option-label">Посещено</label>
+                </div>
+            </header>
+            <section id="container" class="places__container">
+                <div id="loading">
+
+                </div>
+            </section>
+        </section>
+    </main>
+    <footer class="footer">
+        <span class="footer__date">2018</span>
+        <span class="footer__copy">&copy; kvas</span>
+    </footer>
+</section>
+<script src="index.js"></script>
+</body>
+</html>
