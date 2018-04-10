@@ -19,7 +19,7 @@ const list = {
     getAllItems: () => document.querySelectorAll('.list-item'),
     getVisibleItems: () => {
         return Array.from(document.querySelectorAll('.list-item'))
-            .filter(element => element.style.display !== 'none');
+            .filter(element => !element.classList.contains('list-item_hidden'));
     }
 };
 const getListItem = wrapper => {
@@ -99,6 +99,9 @@ async function onCreateElement() {
     createBox.input.value = '';
 
     const response = await requestCreate({ name });
+    if (!response.ok) {
+        return;
+
     const place = await response.json();
 
     const newItem = makeListItemElement(place);
@@ -156,7 +159,11 @@ function onMoveUpItem({ wrapper, id }) {
 
         refreshArrows();
 
-        await requestSwap({ id1: id, id2: neigbour.id });
+        const result = await requestSwap({ id1: id, id2: neigbour.id });
+
+        if (!result.ok) {
+            wrapper.parentNode.insertBefore(neigbour.wrapper, wrapper);
+        }
     };
 }
 
@@ -167,7 +174,11 @@ function onMoveDownItem({ wrapper, id }) {
 
         refreshArrows();
 
-        await requestSwap({ id1: id, id2: neigbour.id });
+        const result = await requestSwap({ id1: id, id2: neigbour.id });
+
+        if (!result.ok) {
+            wrapper.parentNode.insertBefore(wrapper, neigbour.wrapper);
+        }
     };
 }
 
@@ -176,7 +187,7 @@ function onChangeVisited({ id, input, checkbox }) {
         input.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
         filterList();
 
-        await requestEdit({ id, visited: checkbox.checked });
+        const result = await requestEdit({ id, visited: checkbox.checked });
     };
 }
 
@@ -231,13 +242,11 @@ function filterList(query = '') {
         const name = item.querySelector('.list-item__name');
         const visited = item.querySelector('.list-item__checkbox');
 
-        item.style.display =
-            name.value.toLowerCase().includes(lowerQuery) &&
-            (mode === 'all' ||
+        item.classList.toggle('list-item_hidden',
+            !name.value.toLowerCase().includes(lowerQuery) ||
+            !(mode === 'all' ||
             (mode === 'visited' && visited.checked) ||
-            (mode === 'unvisited' && !visited.checked))
-                ? 'flex'
-                : 'none';
+            (mode === 'unvisited' && !visited.checked)));
     });
 }
 
@@ -247,16 +256,12 @@ function enterEditMode({ item }) {
     previousValues[item.id] = item.input.value;
 
     item.input.disabled = false;
-    item.input.style.border = '1px solid #aaa';
-    item.getConfirmEdit().style.display = 'block';
-    item.getCancelEdit().style.display = 'block';
+    item.wrapper.classList.remove('list-item_active');
 }
 
 function exitEditMode({ item, edited }) {
     item.input.disabled = true;
-    item.input.style.border = '1px solid #ffffff00';
-    item.getConfirmEdit().style.display = 'none';
-    item.getCancelEdit().style.display = 'none';
+    item.wrapper.classList.remove('list-item_active');
 
     if (!edited) {
         item.input.value = previousValues[item.id];

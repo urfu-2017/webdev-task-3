@@ -7,6 +7,10 @@
     padding: 16px 0;
 }
 
+.list-item_hidden {
+    display: none;
+}
+
 .list-item:hover > .list-item__edit,
 .list-item:hover > .list-item__delete {
     visibility: visible;
@@ -15,6 +19,15 @@
 .list-item__edit,
 .list-item__delete {
     visibility: hidden;
+}
+
+.list-item_active .list-item__name {
+    border: 1px solid #aaa;
+}
+
+.list-item_active .list-item__confirm-edit,
+.list-item_active .list-item__cancel-edit {
+    display: block;
 }
 
 .list-item__edit,
@@ -78,6 +91,11 @@
     margin: 0 8px 0 0;
 
     color: #ddd;
+}
+
+.list-item__arrow-up_hidden,
+.list-item__arrow-down_hidden {
+    visibility: hidden;
 }
 
 .list-item__checkbox {
