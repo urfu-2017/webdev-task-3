@@ -83,11 +83,14 @@ async function onCreateElement() {
     }
 
     document.querySelector('.create-box__input').value = '';
-    const newItem = makeListItemElement({name:name, visited: false});
+    const newItem = makeListItemElement({ name:name, visited: false });
     list.wrapper.appendChild(newItem);
 
     const response = await requestCreate({ name });
     const place = await response.json();
+    if (!place) {
+        return;
+    }
 
     bindListItemControls(newItem);
 
@@ -122,10 +125,11 @@ function onDeleteItem({ wrapper, name }) {
 }
 
 function onConfirmEdit(item) {
-    let visit =  document.querySelector('.list-item__checkbox');
+    let visit = document.querySelector('.list-item__checkbox');
+
     return async () => {
         exitEditMode({ item, edited: true });
-        await requestEditName({ nameStart:item.name , name: item.input.value, visited: visit });
+        await requestEditName({ nameStart: item.name, name: item.input.value, visited: visit });
     };
 }
 
@@ -224,11 +228,9 @@ function filterList(query = '') {
 }
 
 const previousValues = {};
-let currName = '';
 
 function enterEditMode({ item }) {
     previousValues[item.name] = item.input.value;
-    currName = item.name;
     item.input.disabled = false;
     item.input.style.border = '1px solid #aaa';
     item.getConfirmEdit().style.display = 'block';
@@ -285,7 +287,7 @@ async function requestSwap({ name1, name2 }) {
     });
 }
 
-async function requestEdit({name, visited }) {
+async function requestEdit({ name, visited }) {
     return await fetch(`${NOW_SCRIPT_ADDRESS}/places/?name=${name}`, {
         mode: 'cors',
         method: 'PATCH',
@@ -294,7 +296,7 @@ async function requestEdit({name, visited }) {
     });
 }
 
-async function requestEditName({nameStart, name, visited }) {
+async function requestEditName({ nameStart, name, visited }) {
     return await fetch(`${NOW_SCRIPT_ADDRESS}/places/?name=${nameStart}`, {
         mode: 'cors',
         method: 'PATCH',
