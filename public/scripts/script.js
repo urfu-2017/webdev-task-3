@@ -83,7 +83,7 @@ async function onCreateElement() {
     }
 
     document.querySelector('.create-box__input').value = '';
-    const newItem = makeListItemElement({ name:name, visited: false });
+    const newItem = makeListItemElement({ name: name, visited: false });
     list.wrapper.appendChild(newItem);
 
     const response = await requestCreate({ name });
