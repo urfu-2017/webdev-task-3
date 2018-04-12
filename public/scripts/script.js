@@ -1,6 +1,6 @@
 'use strict';
 
-const NOW_SCRIPT_ADDRESS = 'https://webdev21-vrsepdvydd.now.sh';
+const NOW_SCRIPT_ADDRESS = 'https://webdev21-vagkxpyjgp.now.sh';
 
 const list = {
     wrapper: document.querySelector('.list'),
@@ -83,12 +83,11 @@ async function onCreateElement() {
     }
 
     document.querySelector('.create-box__input').value = '';
+    const newItem = makeListItemElement({name:name, visited: false});
+    list.wrapper.appendChild(newItem);
+
     const response = await requestCreate({ name });
     const place = await response.json();
-
-
-    const newItem = makeListItemElement(place);
-    list.wrapper.appendChild(newItem);
 
     bindListItemControls(newItem);
 
@@ -123,9 +122,10 @@ function onDeleteItem({ wrapper, name }) {
 }
 
 function onConfirmEdit(item) {
+    let visit =  document.querySelector('.list-item__checkbox');
     return async () => {
         exitEditMode({ item, edited: true });
-        await requestEdit({ item, name: item.input.value });
+        await requestEditName({ nameStart:item.name , name: item.input.value, visited: visit });
     };
 }
 
@@ -161,7 +161,6 @@ function onChangeVisited({ name, input, checkbox }) {
     return async () => {
         input.style.textDecoration = checkbox.checked ? 'underline' : 'none';
         filterList();
-
         await requestEdit({ name, visited: checkbox.checked });
     };
 }
@@ -174,7 +173,7 @@ function makeListItemElement({ name, visited }) {
         <i class="fas fa-edit fa-2x list-item__icon list-item__edit"></i>
         <i class="fas fa-trash fa-2x list-item__icon list-item__delete"></i>
         <input type="text" class="list-item__name" value="${name}"
-            style="text-decoration: ${visited ? 'line-through' : 'none'}" disabled>
+            style="text-decoration: ${visited ? 'underline' : 'none'}" disabled>
         <i class="fas fa-check fa-2x list-item__icon list-item__confirm-edit"></i>
         <i class="fas fa-times fa-2x list-item__icon list-item__cancel-edit"></i>
         <i class="fas fa-arrow-up fa-2x list-item__icon list-item__arrow-up"></i>
@@ -225,10 +224,11 @@ function filterList(query = '') {
 }
 
 const previousValues = {};
+let currName = '';
 
 function enterEditMode({ item }) {
     previousValues[item.name] = item.input.value;
-
+    currName = item.name;
     item.input.disabled = false;
     item.input.style.border = '1px solid #aaa';
     item.getConfirmEdit().style.display = 'block';
@@ -285,11 +285,20 @@ async function requestSwap({ name1, name2 }) {
     });
 }
 
-async function requestEdit({ item, name, visited }) {
-    return await fetch(`${NOW_SCRIPT_ADDRESS}/places/?name=${item.name}`, {
+async function requestEdit({name, visited }) {
+    return await fetch(`${NOW_SCRIPT_ADDRESS}/places/?name=${name}`, {
         mode: 'cors',
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, visited })
+    });
+}
+
+async function requestEditName({nameStart, name, visited }) {
+    return await fetch(`${NOW_SCRIPT_ADDRESS}/places/?name=${nameStart}`, {
+        mode: 'cors',
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, visited: visited.checked })
     });
 }
