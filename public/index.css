@@ -1,0 +1,243 @@
+@font-face {
+    font-family: 'icofont';
+    src: url('icofont.woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.hidden {
+    visibility: hidden !important;
+}
+
+.spots-container {
+    padding: 0;
+    padding-top: 20px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.spot-edit, .spot-remove {
+    visibility: hidden;
+}
+
+.spot-list-item:hover > .spot-edit, .spot-list-item:hover > .spot-remove {
+    visibility: visible;
+}
+
+.search-input-container {
+    position: relative;
+}
+
+.search-input-placeholder:before {
+    content: "\ed60";
+    margin-right: 3px;
+    margin-left: 1px;
+}
+
+.search-input:valid + .search-input-placeholder, .node-list {
+    display: none;
+}
+
+.search-input-placeholder, .new-spot-input::placeholder {
+    color: #777;
+    font-size: 16px;
+    
+}
+
+.search-input-placeholder {
+    position: absolute;
+    top: 4px;
+    left: 5px;
+}
+
+.new-spot-input, .search-input, .spot-desc-input-active, .spot-desc-input {
+    width: 100%;
+    border: thin solid #777;
+    box-sizing: border-box;
+    padding: 5px;
+}
+
+.new-spot-input:focus, .new-spot-input:hover, .search-input:focus, .search-input:hover, .spot-desc-input-active:hover,
+ .spot-desc-input-active:focus {
+    border: thin solid #000;
+}
+
+.new-spot-input {
+    width: 80%;
+}
+
+.new-spot-input-button.create-button {
+    background: #efed67;
+    border-radius: 5px;
+    border: thin solid #000;
+    font-weight: bold;
+    padding: 5px; 
+}
+
+.line-thru {
+    text-decoration: line-through;
+}
+
+.new-spot-input-button.create-button:hover {
+    background: #ffef68;
+}
+
+.new-spot-input-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0 10px 0;
+}
+
+.spots {
+    margin: 0 auto;
+    border: thin solid #000;
+    font-family: Arial, Helvetica, sans-serif;
+    display: grid;
+    width: 800px;
+}
+
+.spots-padding {
+    padding: 20px;
+}
+
+.footer {
+    border-top: thin solid #000;
+}
+
+.footer-left-text, .footer-right-text {
+    display: inline-block;
+    width: 49%;
+    box-sizing: content-box;
+}
+
+.footer-right-text {
+    text-align: right;
+}
+
+.spots-header {
+    border-bottom: 2px solid #777;
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.spots-header-text {
+    font-size: 200%;
+    margin-right: 5px;
+}
+
+.spots-pills {
+    margin-left: auto;
+}
+
+.pills {
+    display: inline-block;
+}
+
+.pill, .pill-active {
+    display: inline-block;
+    padding: 5px;
+    border: thin solid #000;
+    border-right: 80%;
+    font-weight: bold;
+}
+
+.spot-list-item-right {
+    float: right;
+}
+
+.pills {
+    cursor: pointer;
+}
+
+.pills :first-child {
+    border-radius: 5px 0 0 5px;
+}
+
+.pills :last-child {
+    border-radius: 0 5px 5px 0;
+    border-right: thin solid #000;
+}
+
+.pill-active {
+    cursor: default;
+    background: repeating-linear-gradient(
+        45deg,
+        #f77e7e,
+        #f77e7e 1px,
+        #fff 1px,
+        #fff 5px
+    );
+}
+
+.spot-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.spot-list-item {
+    margin-bottom: 5px;
+}
+
+.spot-desc-input-active, .spot-desc-input {
+    width: auto;
+}
+
+.spot-desc-input {
+    border: 0;
+}
+
+.create-button:before, .remove-button:before, .edit-button:before, .accept-button:before, 
+.decline-button:before, .search-input-placeholder:before, .up-button:before, .down-button:before {
+    font-family: 'IcoFont' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1;
+    vertical-align: top;
+}
+
+.up-button:before {
+    content: "\eb1c";
+}
+
+.down-button:before {
+    content: "\eb19";
+}
+
+.create-button, .remove-button, .edit-button, .accept-button, .decline-button, .up-button, .down-button {
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+}
+
+.create-button:before {
+    content: "\ed19";
+}
+
+.remove-button:before {
+    content: "\ed2f";
+}
+
+.edit-button:before {
+    content: "\ed31";
+}
+
+.accept-button:before {
+    content: "\ed27";
+}
+
+.decline-button:before {
+    content:  "\ed2b";
+}
