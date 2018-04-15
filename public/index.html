@@ -43,17 +43,20 @@
 		
 		<div class="node-list">
 			<p class="spot-list-empty">Список пуст</p>
-			<ul class="spot-list"></ul>
-			<button class="spot-edit edit-button" title="Изменить описание"></button>
-			<button class="spot-remove remove-button" title="Удалить место"></button>
-			<button class="spot-accept accept-button hidden" title="Сохранить изменения"></button>
-			<button class="spot-decline decline-button hidden" title="Отменить изменения"></button>
-			<button class="spot-up up-button"></button>
-			<button class="spot-down down-button"></button>
-			<input class="spot-desc-input" readonly>
-			<input type="checkbox" title="Пометить посещенным">
-			<li class="spot-list-item"></li>
-			<div class="spot-list-item-right"></div>
+			<ul class="spot-list">
+				  <li class="hidden spot-list-item spot-list-item-template">
+						<button class="spot-edit edit-button" title="Изменить описание"></button>
+						<button class="spot-remove remove-button" title="Удалить место"></button>
+						<input class="spot-desc-input" readonly="" value="foo">
+						<button class="spot-accept accept-button hidden" title="Сохранить изменения"></button>
+						<button class="spot-decline decline-button hidden" title="Отменить изменения"></button>
+						<div class="spot-list-item-right">
+							  <button class="spot-up up-button hidden"></button>
+							  <button class="spot-down down-button hidden"></button>
+							  <input type="checkbox" title="Пометить посещенным">
+						</div>
+				  </li>
+			</ul>
 		</div>
 
 		<script src="public/utils.js"></script>

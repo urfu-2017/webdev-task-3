@@ -1,22 +1,13 @@
 'use strict'
 
-const createElement = (selector, attrs = {}, children = []) => {
-    const node = document.querySelector(`.node-list > ${selector}`).cloneNode(true)
-    for (let [attrName, attrValue] of Object.entries(attrs))
-        if (attrValue !== false) {
-            node.setAttribute(attrName, attrValue)
-        }
-    children.forEach(child => node.appendChild(child))
-    return node
-}
-
-const createEmptyListNode = () => createElement('.spot-list-empty')
-const createSpotList = () => createElement('.spot-list')
+const emptyListNode = document.querySelector('.spot-list-empty').cloneNode(true)
+const createSpotList = () => document.querySelector('.spot-list').cloneNode()
+const itemTemplate = document.querySelector('.spot-list-item-template')
 
 const renderSpots = spots => {
     clearChildren(spotListContainer)
     if (!spots.length) {
-        spotListContainer.appendChild(createEmptyListNode())
+        spotListContainer.appendChild(emptyListNode)
         return
     }
     const spotList = createSpotList()
@@ -38,14 +29,17 @@ class SpotListItemBuilder {
         this.current = current
         this.prev = prev
         this.next = next
-        this.editButton = createElement('.spot-edit.edit-button')
-        this.removeButton = createElement('.spot-remove.remove-button')
-        this.input = createElement('.spot-desc-input', { value: this.current.desc })
-        this.accept = createElement('.spot-accept.accept-button')
-        this.decline = createElement('.spot-decline.decline-button')
-        this.up = createElement('.spot-up.up-button')
-        this.down = createElement('.spot-down.down-button')
-        this.checkbox = createElement('[type="checkbox"]', { checked: this.current.visited })
+        this.listItem = itemTemplate.cloneNode(true)
+        this.editButton = this.listItem.querySelector('.spot-edit')
+        this.removeButton = this.listItem.querySelector('.spot-remove.remove-button')
+        this.input = this.listItem.querySelector('.spot-desc-input')
+        this.input.value = this.current.desc
+        this.accept = this.listItem.querySelector('.spot-accept.accept-button')
+        this.decline = this.listItem.querySelector('.spot-decline.decline-button')
+        this.up = this.listItem.querySelector('.spot-up.up-button')
+        this.down = this.listItem.querySelector('.spot-down.down-button')
+        this.checkbox = this.listItem.querySelector('[type="checkbox"]')
+        this.checkbox.checked = this.current.visited
         this.beforeDesc = this.input.value
     }
 
@@ -64,10 +58,9 @@ class SpotListItemBuilder {
     }
 
     build() {
-        return createElement('.spot-list-item', {}, [
-            this.editButton, this.removeButton, this.input, this.accept, this.decline,
-            createElement('.spot-list-item-right', {}, [ this.up, this.down, this.checkbox ])
-        ])
+        this.listItem.classList.remove('hidden', 'spot-list-item-template')
+
+        return this.listItem
     }
 
     onInputClick() {
