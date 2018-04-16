@@ -3,6 +3,7 @@
 const NOW_SCRIPT_ADDRESS = 'https://webdev21-vagkxpyjgp.now.sh';
 
 const list = {
+    searchBox: document.querySelector('.search-box__input'),
     wrapper: document.querySelector('.list'),
     getClearIcon: () => document.querySelector('.list__clear'),
     tabs: document.querySelector('.list__tabs'),
@@ -12,6 +13,9 @@ const list = {
             .filter(element => element.style.display !== 'none');
     }
 };
+
+let listItem = document.createElement('div');
+    listItem.className = 'list-item';
 
 const getListItem = wrapper => {
     return {
@@ -41,7 +45,7 @@ function main() {
             bindListControls();
         });
 
-    document.querySelector('.search-box__input').addEventListener('input', onSearch);
+    list.searchBox.addEventListener('input', onSearch);
     document.querySelector('.create-box__button').addEventListener('click', onCreateElement);
 }
 
@@ -58,20 +62,18 @@ function bindListControls() {
 
 function bindListItemControls(wrapper) {
     const item = getListItem(wrapper);
-    setTimeout(() => {
-        item.getEditIcon().addEventListener('click', onEditItem(item));
-        item.getDeleteIcon().addEventListener('click', onDeleteItem(item));
-        item.getConfirmEdit().addEventListener('click', onConfirmEdit(item));
-        item.getCancelEdit().addEventListener('click', onCancelEdit(item));
-        item.getArrowDownIcon().addEventListener('click', onMoveDownItem(item));
-        item.getArrowUpIcon().addEventListener('click', onMoveUpItem(item));
-        item.checkbox.addEventListener('change', onChangeVisited(item));
-    }, 800);
+    item.getEditIcon().addEventListener('click', onEditItem(item));
+    item.getDeleteIcon().addEventListener('click', onDeleteItem(item));
+    item.getConfirmEdit().addEventListener('click', onConfirmEdit(item));
+    item.getCancelEdit().addEventListener('click', onCancelEdit(item));
+    item.getArrowDownIcon().addEventListener('click', onMoveDownItem(item));
+    item.getArrowUpIcon().addEventListener('click', onMoveUpItem(item));
+    item.checkbox.addEventListener('change', onChangeVisited(item));
 }
 
 
 function onSearch() {
-    filterList(document.querySelector('.search-box__input').value);
+    filterList(list.searchBox.value);
 
     refreshArrows();
 }
@@ -170,8 +172,7 @@ function onChangeVisited({ name, input, checkbox }) {
 }
 
 function makeListItemElement({ name, visited }) {
-    const element = document.createElement('div');
-    element.className = 'list-item';
+    let element = listItem;
     element.setAttribute('id', name);
     element.innerHTML = `
         <i class="fas fa-edit fa-2x list-item__icon list-item__edit"></i>
