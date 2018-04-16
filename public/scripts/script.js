@@ -15,7 +15,7 @@ const list = {
 };
 
 let listItem = document.createElement('div');
-    listItem.className = 'list-item';
+listItem.className = 'list-item';
 
 const getListItem = wrapper => {
     return {
