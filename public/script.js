@@ -4,7 +4,7 @@ const BASEURL = 'https://webdev-task-2-qejgtbwicx.now.sh';
 // Добро пожаловать в ад
 function createPlace() {
 
-    var description = document.getElementsByClassName('main-create-place__input')[0].value;
+    var description = document.querySelector('.main-create-place__input').value.trim();
     if (description) {
         fetch(BASEURL + '/place', {
             method: 'post',
@@ -26,16 +26,15 @@ function createPlace() {
                 var hiddenPlace = document.getElementsByClassName("place_hidden")[0];
                 var place = hiddenPlace.cloneNode(true);
                 place.setAttribute('id', data.id);
-                var placeChilds = place.children;
-                placeChilds[0].addEventListener("click", ()=>{removePlace(data.id)});
-                placeChilds[1].addEventListener("click", ()=>{change(data.id)});
-                placeChilds[2].innerHTML = data.description;
-                placeChilds[3].value = data.description;
-                placeChilds[4].addEventListener("click", ()=>{move(data.id,'down')});
-                placeChilds[5].addEventListener("click", ()=>{move(data.id,'up')});
-                placeChilds[6].addEventListener("click", ()=>{acceptChange(data.id)});
-                placeChilds[7].addEventListener("click", ()=>{undoChange(data.id)});
-                data.isVisited === 'checked'? placeChilds[8].checked =true: "";
+                place.querySelector('.place_remove').addEventListener("click", removePlace.bind(null, data.id));
+                place.querySelector('.place_change').addEventListener("click", change.bind(null, data.id));
+                place.querySelector('.place__p').innerHTML = data.description;
+                place.querySelector('.place__changeInput').value = data.description;
+                place.querySelector('.place_move_down').addEventListener("click", move.bind(null, data.id,'down'));
+                place.querySelector('.place_move_up').addEventListener("click", move.bind(null, data.id,'up'));
+                place.querySelector('.place__changeImg').addEventListener("click", acceptChange.bind(null, data.id));
+                place.querySelector('.place__undoImg').addEventListener("click", undoChange.bind(null, data.id));
+                data.isVisited === 'checked'? place.querySelector('.place__checkbox').checked =true: "";
                 place.className="place";
                 parent.appendChild(place);
             });
@@ -61,44 +60,52 @@ function removePlace(id) {
 
 function show(type) {
     var allPlaces = document.getElementsByClassName('place__checkbox');
+    var firstButton = document.querySelector('.button_first');
+    var secondButton = document.querySelector('.button_second');
+    var thirdButton = document.querySelector('.button_third');
     if (type === 'toVisit') {
-        document.getElementsByClassName('main-places-header__button')[1].style.backgroundColor =
-         'red';
-        document.getElementsByClassName('main-places-header__button')[0].style.backgroundColor =
-         'rgb(81, 112, 214)';
-        document.getElementsByClassName('main-places-header__button')[2].style.backgroundColor =
-         'rgb(81, 112, 214)';
+        secondButton.classList.add('button_red');
+        secondButton.classList.remove('button_blue');
+        firstButton.classList.add('button_blue');
+        firstButton.classList.remove('button_red');
+        thirdButton.classList.add('button_blue');
+        thirdButton.classList.remove('button_red');
         for (let i = 0; i < allPlaces.length; i++) {
             if (allPlaces[i].checked) {
-                allPlaces[i].parentElement.style.display = 'none';
+                allPlaces[i].parentElement.classList.add('display_none');
+                allPlaces[i].parentElement.classList.remove('display_block');
             } else {
-                allPlaces[i].parentElement.style.display = 'block';
+                allPlaces[i].parentElement.classList.add('display_block');
+                allPlaces[i].parentElement.classList.remove('display_none');
             }
         }
     }
     if (type === 'all') {
-        document.getElementsByClassName('main-places-header__button')[0].style.backgroundColor =
-         'red';
-        document.getElementsByClassName('main-places-header__button')[1].style.backgroundColor =
-         'rgb(81, 112, 214)';
-        document.getElementsByClassName('main-places-header__button')[2].style.backgroundColor =
-         'rgb(81, 112, 214)';
+        firstButton.classList.add('button_red');
+        firstButton.classList.remove('button_blue');
+        secondButton.classList.add('button_blue');
+        secondButton.classList.remove('button_red');
+        thirdButton.classList.add('button_blue');
+        thirdButton.classList.remove('button_red');
         for (let i = 0; i < allPlaces.length; i++) {
-            allPlaces[i].parentElement.style.display = 'block';
+            allPlaces[i].parentElement.classList.add('display_block');
+            allPlaces[i].parentElement.classList.remove('display_none');
         }
     }
     if (type === 'visited') {
-        document.getElementsByClassName('main-places-header__button')[2].style.backgroundColor =
-         'red';
-        document.getElementsByClassName('main-places-header__button')[1].style.backgroundColor =
-         'rgb(81, 112, 214)';
-        document.getElementsByClassName('main-places-header__button')[0].style.backgroundColor =
-         'rgb(81, 112, 214)';
+         thirdButton.classList.add('button_red');
+         thirdButton.classList.remove('button_blue');
+         firstButton.classList.add('button_blue');
+         firstButton.classList.remove('button_red');
+         secondButton.classList.add('button_blue');
+         secondButton.classList.remove('button_red');
         for (let i = 0; i < allPlaces.length; i++) {
             if (!allPlaces[i].checked) {
-                allPlaces[i].parentElement.style.display = 'none';
+                allPlaces[i].parentElement.classList.add('display_none');
+                allPlaces[i].parentElement.classList.remove('display_block');
             } else {
-                allPlaces[i].parentElement.style.display = 'block';
+                allPlaces[i].parentElement.classList.add('display_block');
+                allPlaces[i].parentElement.classList.remove('display_none');
             }
         }
     }
@@ -109,8 +116,8 @@ function search() {
     var places = document.getElementsByClassName('place');
     for (let i = 0; i < places.length; i++) {
         if (getComputedStyle(places[i]).display === 'block') {
-            if (places[i].children[2].innerHTML.indexOf(input) < 0) {
-                places[i].style.display = 'none';
+            if (places[i].querySelector('.place__p').innerHTML.indexOf(input) < 0) {
+                places[i].classList.add('display_none');
             }
         }
     }
@@ -154,19 +161,12 @@ function move(id, type) {
 function change(id) {
     var place = document.getElementById(id);
 
-    checkboxState.id = {
+    checkboxState[id] = {
         check: place.getElementsByClassName('place__checkbox')[0].checked,
         description: place.getElementsByClassName('place__changeInput')[0].value
     };
-
-
-    place.getElementsByClassName('place__p')[0].style.display = 'none';
-    place.getElementsByClassName('place__changeInput')[0].style.display = 'inline-block';
+    place.classList.add('place_mod_edit')
     place.getElementsByClassName('place__checkbox')[0].disabled = false;
-    place.getElementsByClassName('place__image')[0].style.display = 'none';
-    place.getElementsByClassName('place__image')[1].style.display = 'none';
-    place.getElementsByClassName('place__changeImg')[0].style.display = 'inline';
-    place.getElementsByClassName('place__undoImg')[0].style.display = 'inline';
 }
 
 function acceptChange(id) {
@@ -185,24 +185,17 @@ function acceptChange(id) {
         })
     });
     getNormalState(id);
-
-
 }
 
 function undoChange(id) {
     getNormalState(id);
     var place = document.getElementById(id);
-    place.getElementsByClassName('place__checkbox')[0].checked = checkboxState.id.check;
-    place.getElementsByClassName('place__changeInput')[0].value = checkboxState.id.description;
+    place.getElementsByClassName('place__checkbox')[0].checked = checkboxState[id].check;
+    place.getElementsByClassName('place__changeInput')[0].value = checkboxState[id].description;
 }
 
 function getNormalState(id) {
     var place = document.getElementById(id);
-    place.getElementsByClassName('place__p')[0].style.display = 'inline';
-    place.getElementsByClassName('place__changeInput')[0].style.display = 'none';
+    place.classList.remove('place_mod_edit')
     place.getElementsByClassName('place__checkbox')[0].disabled = true;
-    place.getElementsByClassName('place__image')[0].style.display = 'inline';
-    place.getElementsByClassName('place__image')[1].style.display = 'inline';
-    place.getElementsByClassName('place__changeImg')[0].style.display = 'none';
-    place.getElementsByClassName('place__undoImg')[0].style.display = 'none';
 }

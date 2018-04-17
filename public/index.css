@@ -62,18 +62,23 @@
 }
 
 .main-places-header__button {
-    background-color: rgb(81, 112, 214);
     padding: 4px;
     font-size: 12px;
     color: white;
     margin: 0px;
-    
+}
+
+.button_blue {
+    background-color: rgb(81, 112, 214);
+}
+
+.button_red{
+    background-color: red;
 }
 
 .button_left {
     border-radius: 20px 0 0 20px;
     margin-right: 2px;
-    background-color: red;
 }
 
 .button_right {
@@ -120,4 +125,44 @@
 .place__checkbox {
     position: absolute;
     right: 20px;
+}
+
+.display_block {
+    display: block;
+}
+
+.display_none {
+    display: none;
+}
+
+.display_inline {
+    display: inline;
+}
+
+.display_inline-block {
+    display: inline-block;
+}
+
+.place_mod_edit .place__p {
+    display: none;
+}
+
+.place_mod_edit .place__changeInput {
+    display: inline-block;
+}
+
+.place_mod_edit .place_move_down {
+    display: none;
+}
+
+.place_mod_edit .place_move_up {
+    display: none;
+}
+
+.place_mod_edit .place__changeImg {
+    display: inline;
+}
+
+.place_mod_edit .place__undoImg {
+    display: inline;
 }
