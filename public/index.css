@@ -1,0 +1,168 @@
+.main {
+    width: 350px;
+    height: 600px;
+    border: 2px solid rgb(53, 21, 194);
+    margin: 0px auto;
+}
+
+.main-header-search {
+    width: 90%;
+    height: 30px;
+    margin: 20px 15px;
+    border: 1px dashed blue;
+    display: flex;
+    align-items: center;
+}
+
+.main-header-search__input {
+    height: 28px;
+    border: none;
+    width: 284px;
+}
+
+.main-create-place__input {
+    height: 30px;
+    margin: 0px 5px 20px 15px;
+    border: 1px dashed blue;
+}
+
+.main-create-place__button {
+    border-radius: 20px;
+    background-color: rgb(81, 112, 214);
+    height: 30px;  
+    color: white;
+}s
+
+
+.main-create-place__button:active,
+.main-places-header__button:active,
+.main-create-place__button:focus,
+.main-places-header__button:focus {
+    outline: none;
+}
+
+.main-places-header {
+    margin: 0 15px;
+    border-bottom:2px solid navy;
+    display: flex; 
+    align-items: center;
+}
+
+.main-places-header__p {
+    font-size: 20px;
+    margin: 0px;
+}
+ 
+.main-places-header__img {
+    margin-right: 65px;
+}
+
+.main-places-header__radio {
+    display: none;
+}
+
+.main-places-header__button {
+    padding: 4px;
+    font-size: 12px;
+    color: white;
+    margin: 0px;
+}
+
+.button_blue {
+    background-color: rgb(81, 112, 214);
+}
+
+.button_red{
+    background-color: red;
+}
+
+.button_left {
+    border-radius: 20px 0 0 20px;
+    margin-right: 2px;
+}
+
+.button_right {
+    border-radius: 0 20px 20px 0;
+    margin-left: 2px;
+}
+
+
+.place {
+    margin: 15px 0px;
+    position: relative;
+}
+
+.place_hidden {
+    display: none !important;
+}
+
+.place:hover  .place__img{
+    visibility: visible;
+}
+.place__img {
+    position: relative;
+    left: 14px;
+   visibility: hidden;
+}
+.place__p {
+    margin: 0px 0px 0px 20px;
+    font-size: 20px;
+    display: inline;
+}
+
+.place__changeInput {
+    margin-left: 20px;
+    display: none; 
+}
+
+.place__changeImg,
+.place__undoImg {
+    display: none;
+    position: relative;
+    top: 4px;
+}
+
+.place__checkbox {
+    position: absolute;
+    right: 20px;
+}
+
+.display_block {
+    display: block;
+}
+
+.display_none {
+    display: none;
+}
+
+.display_inline {
+    display: inline;
+}
+
+.display_inline-block {
+    display: inline-block;
+}
+
+.place_mod_edit .place__p {
+    display: none;
+}
+
+.place_mod_edit .place__changeInput {
+    display: inline-block;
+}
+
+.place_mod_edit .place_move_down {
+    display: none;
+}
+
+.place_mod_edit .place_move_up {
+    display: none;
+}
+
+.place_mod_edit .place__changeImg {
+    display: inline;
+}
+
+.place_mod_edit .place__undoImg {
+    display: inline;
+}

@@ -1,0 +1,15 @@
+<div class="main-places-list">
+    {{#each places}}
+    <div class = "place" id = {{id}}>
+        <img onclick="removePlace({{id}})" class="place__img" src="http://www.iconsearch.ru/uploads/icons/futurosoft_icons/16x16/trashcan_full.png" alt="удалить">
+        <img onclick="change({{id}})" class="place__img" src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984696edit8.png" alt="изменить">
+        <p class="place__p" >{{description}}</p>
+        <input class="place__changeInput" type="text" value="{{description}}">
+        <img class="place__image place_move_down" onclick="move({{id}},'down')" src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984675down8.png" alt="вниз">
+        <img class="place__image place_move_up" onclick="move({{id}},'up')" src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984855up8.png" alt="вверх">
+        <img onclick="acceptChange({{id}})" class="place__changeImg" src="http://s1.iconbird.com/ico/2013/12/517/w16h161386955471success7.png" alt="галочка">
+        <img onclick="undoChange({{id}})" class="place__undoImg" src="http://s1.iconbird.com/ico/2013/9/448/w16h16138044427114Delete16x16.png" alt="крест">
+        <input class="place__checkbox" type="checkbox"  name=""  {{isVisited}} disabled>
+    </div>
+    {{/each}}
+</div>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Приложение</title>
+    <link rel="stylesheet" type="text/css"  href="/index.css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+<body>
+    <main class="main">
+        {{> header}}
+        {{> create}}
+        {{> placesHeader}}
+        {{> list}}
+        <div class = "place place_hidden">
+            <img class="place__img place_remove" src="http://www.iconsearch.ru/uploads/icons/futurosoft_icons/16x16/trashcan_full.png" alt="удалить">
+            <img class="place__img place_change" src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984696edit8.png" alt="изменить">
+            <p class="place__p" ></p>
+            <input class="place__changeInput" type="text">
+            <img class="place__image place_move_down" src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984675down8.png" alt="вниз">
+            <img class="place__image place_move_up" src="http://s1.iconbird.com/ico/2013/10/464/w16h161380984855up8.png" alt="вверх">
+            <img class="place__changeImg" src="http://s1.iconbird.com/ico/2013/12/517/w16h161386955471success7.png" alt="галочка">
+            <img class="place__undoImg" src="http://s1.iconbird.com/ico/2013/9/448/w16h16138044427114Delete16x16.png" alt="крест">
+            <input class="place__checkbox" type="checkbox"  name="" disabled>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
