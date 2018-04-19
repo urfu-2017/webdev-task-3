@@ -48,9 +48,10 @@ var onAddNewPlace = function () {
 };
 
 var onEditClick = function () {
-    var idx = this.parentNode.parentNode.dataset.idx;
-    this.parentNode.parentNode.parentNode.replaceChild(renderPlaceEdit(idx),
-        this.parentNode.parentNode);
+    var placeElement = this.parentNode.parentNode;
+    var idx = placeElement.dataset.idx;
+    document.querySelector('.places').replaceChild(renderPlaceEdit(idx),
+        placeElement);
 };
 
 var onEditCancel = function () {
