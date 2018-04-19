@@ -7,6 +7,18 @@ var filter = FILTER_ALL;
 var query = '';
 var apiUrl = 'https://webdev-task-2-htkkmevmbd.now.sh/api/v1/places';
 
+function request(method, onerror, onload, urlEnding) {
+	urlEnding = urlEnding || '';
+	var xhr = new XMLHttpRequest();
+    xhr.open(method, apiUrl + '/' + urlEnding, true);
+	if (method !== 'GET') {
+        xhr.setRequestHeader('Content-Type', 'application/json');
+	}
+    xhr.onerror = onerror;
+    xhr.onload = onload;
+	return xhr;
+}
+
 var onVisitedCheckboxClick = function () {
     var idx = this.parentNode.dataset.idx;
     markVisited(idx, this.checked);
@@ -48,17 +60,15 @@ var onEditCancel = function () {
 var onEditSave = function () {
     var idx = this.parentNode.dataset.idx;
     var newDescription = this.parentNode.getElementsByClassName('place__edit')[0].value;
-    var xhr = new XMLHttpRequest();
-    xhr.open('PATCH', apiUrl, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onerror = function () {
-        console.error('Error!');
-        renderList();
-    };
-    xhr.onload = function () {
-        places[idx].description = newDescription;
-        renderList();
-    };
+	var xhr = request('PATCH', function () {
+            console.error('Error!');
+            renderList();
+        },
+	    function () {
+            places[idx].description = newDescription;
+            renderList();
+        }
+	);
     var place = Object.assign(places[idx], { description: newDescription });
     xhr.send(JSON.stringify(place));
 };
@@ -86,19 +96,18 @@ for (var i = 0; i < visitedFilters.length; i += 1) {
 }
 
 function getAll(callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', apiUrl, true);
-    xhr.onerror = function () {
-        console.error('Error!');
+	var xhr = request('GET', function () {
+            console.error('Error!');
 
-        return [];
-    };
-    xhr.onload = function () {
-        places = JSON.parse(this.responseText);
-        if (callback) {
-            callback();
+            return [];
+        },
+	    function () {
+            places = JSON.parse(this.responseText);
+            if (callback) {
+                callback();
+            }
         }
-    };
+	);
     xhr.send();
 }
 
@@ -126,73 +135,66 @@ function renderList(newFilter, newQuery) {
 }
 
 function changeOrder(idx, order) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('PATCH', apiUrl + '/' + order, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onerror = function () {
-        console.error('Error!');
-    };
-    xhr.onload = function () {
-        getAll(renderList);
-    };
+	var xhr = request('PATCH', function () {
+            console.error('Error!');
+        },
+	    function () {
+            getAll(renderList);
+        }
+	);
     var place = Object.assign(places[idx]);
     xhr.send(JSON.stringify(place));
 }
 
 function markVisited(placeIdx, visited) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('PATCH', apiUrl, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onerror = function () {
-        console.error('Error!');
-    };
-    xhr.onload = function () {
-        places[placeIdx].visited = visited;
-        renderList();
-    };
+	var xhr = request('PATCH', function () {
+            console.error('Error!');
+        },
+	    function () {
+            places[placeIdx].visited = visited;
+            renderList();
+        }
+	);
     var place = Object.assign(places[placeIdx], { visited: visited });
     xhr.send(JSON.stringify(place));
 }
 
 function createPlace(description) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', apiUrl, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onerror = function () {
-        console.error('Error!');
-    };
-    var place = { description: description, visited: false, id: -1 };
-    xhr.onload = function () {
-        place.id = JSON.parse(this.responseText).id;
-        places.push(place);
-        renderList();
-    };
+	var place = { description: description, visited: false, id: -1 };
+	var xhr = request('POST', function () {
+            console.error('Error!');
+        },
+	    function () {
+            place.id = JSON.parse(this.responseText).id;
+            places.push(place);
+            renderList();
+        }
+	);
     xhr.send(JSON.stringify(place));
 }
 
 function deletePlace(placeIdx) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', apiUrl + '/' + places[placeIdx].id, true);
-    xhr.onerror = function () {
-        console.error('Error!');
-    };
-    xhr.onload = function () {
-        places.splice(placeIdx, 1);
-        renderList();
-    };
+	var xhr = request('DELETE', function () {
+            console.error('Error!');
+        },
+	    function () {
+            places.splice(placeIdx, 1);
+            renderList();
+        },
+		places[placeIdx].id
+	);
     xhr.send();
 }
 
 function deleteAll() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', apiUrl, true);
-    xhr.onerror = function () {
-        console.error('Error!');
-    };
-    xhr.onload = function () {
-        places = [];
-        renderList();
-    };
+	var xhr = request('DELETE', function () {
+            console.error('Error!');
+        },
+	    function () {
+            places = [];
+            renderList();
+        }
+	);
     xhr.send();
 }
 
