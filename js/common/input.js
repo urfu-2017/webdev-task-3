@@ -5,10 +5,11 @@ import Control from '../control';
 const ENTER_KEY_CODE = 13;
 
 export default class Input extends Control {
-    constructor({ className, enterHandler, maxLength }) {
+    constructor({ className, enterHandler, maxLength, inputHandler }) {
         super(className);
         this.enterHandler = enterHandler;
         this.maxLength = maxLength;
+        this.inputHandler = inputHandler;
     }
 
     setValue(value) {
@@ -28,6 +29,11 @@ export default class Input extends Control {
         input.onkeydown = async e => {
             if (this.enterHandler && e.keyCode === ENTER_KEY_CODE) {
                 await this.enterHandler();
+            }
+        };
+        input.oninput = async () => {
+            if (this.inputHandler) {
+                await this.inputHandler();
             }
         };
 

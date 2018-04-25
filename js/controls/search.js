@@ -10,12 +10,11 @@ export default class Search extends Control {
 
         this.input = new Input({
             className: 'search__input',
-            enterHandler: () => searchHandler(this.input.getValue())
+            inputHandler: () => searchHandler(this.input.getValue())
         });
         this.button = new Button({
-            className: 'search__button',
-            clickHandler: () => searchHandler(this.input.getValue()),
-            image: '/img/search-btn.svg'
+            className: 'search__button btn btn_search',
+            clickHandler: () => searchHandler(this.input.getValue())
         });
     }
 

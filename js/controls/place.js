@@ -6,30 +6,27 @@ import Title from '../common/title';
 import api from '../api';
 
 export default class Place extends Control {
-    constructor(place) {
+    constructor(place, loader) {
         super('place');
         this.place = place;
+        this.loader = loader;
 
         this.editButton = new Button({
-            className: 'place__btn',
-            clickHandler: () => this.edit(),
-            image: '/img/edit-btn.svg'
+            className: 'place__btn btn btn_edit',
+            clickHandler: () => this.edit()
         });
         this.deleteButton = new Button({
-            className: 'place__btn',
-            clickHandler: async () => await this.delete(),
-            image: '/img/delete-btn.svg'
+            className: 'place__btn btn btn_delete',
+            clickHandler: async () => await this.delete()
         });
 
         this.saveButton = new Button({
-            className: 'place__btn',
-            clickHandler: async () => await this.save(),
-            image: '/img/save-btn.svg'
+            className: 'place__btn btn btn_save',
+            clickHandler: async () => await this.save()
         });
         this.undoButton = new Button({
-            className: 'place__btn',
-            clickHandler: () => this.undo(),
-            image: '/img/undo-btn.svg'
+            className: 'place__btn btn btn_undo',
+            clickHandler: () => this.undo()
         });
         this.titleInput = new Input({
             className: 'place__input',
@@ -70,20 +67,23 @@ export default class Place extends Control {
     }
 
     async delete() {
+        this.loader.show();
+        await api.deletePlace(this.place);
         this.elem.outerHTML = '';
         if (this.ondelete) {
             this.ondelete();
         }
-        await api.deletePlace(this.place);
+        this.loader.hide();
     }
 
     async save() {
+        this.loader.show();
         const newTitle = this.titleInput.getValue();
-        this.title.setValue(newTitle);
         this.place.title = newTitle;
-        this.hover();
-
         await api.updatePlace(this.place);
+        this.title.setValue(newTitle);
+        this.hover();
+        this.loader.hide();
     }
 
     undo() {
@@ -91,9 +91,10 @@ export default class Place extends Control {
     }
 
     async toggleVisited() {
+        this.loader.show();
         this.place.visited = this.visitedCheckbox.checked;
-
         await api.updatePlace(this.place);
+        this.loader.hide();
     }
 
     hideAll() {

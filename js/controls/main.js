@@ -6,11 +6,13 @@ import Footer from './footer';
 import Search from './search';
 import Creator from './creator';
 import Selector from './selector';
+import Loader from './loader';
 
 export default class Main extends Control {
     constructor(places) {
         super('main');
 
+        this.loader = new Loader();
         this.search = new Search(text => this.filterSearch(text));
         this.creator = new Creator(async placeName => await this.addPlace(placeName));
         this.selector = new Selector([
@@ -25,7 +27,7 @@ export default class Main extends Control {
                 clickHandler: () => this.filter(p => !p.visited)
             }
         ]);
-        this.places = new PlaceContainer(places);
+        this.places = new PlaceContainer(places, this.loader);
         this.footer = new Footer();
     }
 
@@ -51,7 +53,9 @@ export default class Main extends Control {
         main.appendChild(this.selector.render());
         main.appendChild(this.places.render());
         main.appendChild(this.footer.render());
+        main.appendChild(this.loader.render());
         this.selector.items[0].click();
+        this.loader.hide();
 
         return main;
     }

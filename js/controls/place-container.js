@@ -5,9 +5,10 @@ import Place from './place';
 import api from '../api';
 
 export default class PlaceContainer extends Control {
-    constructor(places) {
+    constructor(places, loader) {
         super('place-container');
-        this.places = places.map(p => new Place(p));
+        this.loader = loader;
+        this.places = places.map(p => new Place(p, loader));
         this.draggedId = '';
     }
 
@@ -21,14 +22,16 @@ export default class PlaceContainer extends Control {
     }
 
     async addPlace(title) {
+        this.loader.show();
+        const place = await api.createPlace(title);
         const placeControl = new Place({
             title: title,
             visited: false
-        });
+        }, this.loader);
         this.renderToElement(placeControl, this.elem);
         this.places.push(placeControl);
-        const place = await api.createPlace(title);
         placeControl.place.id = place.id;
+        this.loader.hide();
     }
 
     renderToElement(placeControl, elem) {
@@ -56,11 +59,13 @@ export default class PlaceContainer extends Control {
             placeControl.elem.style.background = '#fff';
         };
         placeControl.elem.ondrop = async () => {
+            this.loader.show();
+            await api.reorder(this.draggedId, this.droppedId);
             placeControl.elem.style.background = '#fff';
             this.updateOrder(this.draggedId, this.droppedId);
             this.elem.innerHTML = '';
             this.places.forEach(p => this.elem.appendChild(p.elem));
-            await api.reorder(this.draggedId, this.droppedId);
+            this.loader.hide();
         };
     }
 

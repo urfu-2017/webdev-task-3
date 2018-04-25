@@ -12,9 +12,8 @@ export default class Creator extends Control {
             maxLength: 22
         });
         this.button = new Button({
-            className: 'creator__button',
-            clickHandler: async () => await createHandler(this.input.getValue()),
-            image: '/img/add-btn.svg'
+            className: 'creator__button btn btn_add',
+            clickHandler: async () => await createHandler(this.input.getValue())
         });
     }
 
