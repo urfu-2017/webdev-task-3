@@ -7,8 +7,8 @@ const htmlSearchButton = document.getElementsByClassName('search_button')[0];
 const htmlSearchInput = document.getElementsByClassName('search_input')[0];
 const htmlPlacesListItems = document.getElementsByClassName('places_list_item');
 const htmlPlacesClear = document.getElementsByClassName('places_clear')[0];
-const htmlToVisitButton = document.getElementsByClassName('places_novisit')[0];
-const htmlVisitedButton = document.getElementsByClassName('places_visit')[0];
+const htmlToVisitButton = document.getElementsByClassName('places_visit')[0];
+const htmlVisitedButton = document.getElementsByClassName('places_novisit')[0];
 const htmlPlacesList = document.getElementsByClassName('places_list')[0];
 
 function createPlace({ desc, id, isVisited }) {
@@ -17,16 +17,19 @@ function createPlace({ desc, id, isVisited }) {
     const delButton = createTag('places_list_item_delete', 'button');
     const editButton = createTag('places_list_item_edit', 'button');
     const shiftButton = createTag('places_list_item_shift', 'button');
-    const novisitButton = createTag('places_list_item_novisit', 'button');
     p.innerHTML = desc;
     li.id = id;
     li.desc = desc;
     li.isVisited = isVisited;
+    const switchVisitButton = createTag('places_list_item_novisit', 'button');
+    if (isVisited) {
+        switchVisitButton.className = 'places_list_item_visit';
+    }
     li.appendChild(delButton);
     li.appendChild(editButton);
     li.appendChild(p);
     li.appendChild(shiftButton);
-    li.appendChild(novisitButton);
+    li.appendChild(switchVisitButton);
     htmlPlacesList.appendChild(li);
     delButton.onclick = async function () {
         await placeApi.delete(li.id);
@@ -38,8 +41,16 @@ function createPlace({ desc, id, isVisited }) {
     shiftButton.onclick = async function () {
 
     };
-    novisitButton.onclick = async function () {
-
+    switchVisitButton.onclick = async function () {
+        if (switchVisitButton.className === 'places_list_item_novisit') {
+            switchVisitButton.className = 'places_list_item_visit';
+            await placeApi.edit(li.id, li.desc, true);
+            li.isVisited = true;
+        } else {
+            switchVisitButton.className = 'places_list_item_novisit';
+            await placeApi.edit(li.id, li.desc, false);
+            li.isVisited = false;
+        }
     };
 }
 

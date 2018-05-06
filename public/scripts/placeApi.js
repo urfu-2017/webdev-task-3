@@ -5,6 +5,7 @@ const baseUrl = 'http://localhost:8080/';
 class PlaceApi {
     async getAll() {
         const _places = await fetch(baseUrl, { method: 'GET' }).then(res => res.json());
+        console.info(_places);
 
         return _places;
     }
@@ -43,20 +44,20 @@ class PlaceApi {
             .then(res => res);
     }
 
-    edit({ id, desc, isVisited }) {
-        const data = 'id=' + id + 'desc=' + desc + 'isVisited' + isVisited;
+    edit(id, desc, isVisited) {
+        const data = { desc, isVisited };
         const options = {
-            method: 'patch',
+            method: 'post',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             },
-            body: data
+            body: JSON.stringify(data)
         };
-        fetch(baseUrl + 'places', options)
+        fetch(baseUrl + `places/${id}`, options)
             .then(res => res);
     }
 
-    insert({ id, indexTo }) {
+    insert(id, indexTo) {
         const data = 'id=' + id + 'indexTo' + indexTo;
         const options = {
             method: 'put',

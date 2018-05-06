@@ -22,7 +22,7 @@ htmlPlacesAll.onclick = async function () {
     }
 };
 
-htmlToVisitButton.onclick = async function () {
+htmlVisitedButton.onclick = async function () {
     const _places = await placeApi.getAll();
     places = [];
     for (let _place of _places) {
@@ -34,7 +34,7 @@ htmlToVisitButton.onclick = async function () {
     }
 };
 
-htmlVisitedButton.onclick = async function () {
+htmlToVisitButton.onclick = async function () {
     const _places = await placeApi.getAll();
     places = [];
     for (let _place of _places) {
