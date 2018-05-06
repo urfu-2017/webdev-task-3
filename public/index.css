@@ -14,7 +14,12 @@ body {
 }
 
 .places {
-    margin-right: 7%;
+    margin-right: 3%;
+    margin-left: 3%
+}
+
+.places_list_header {
+    display: inline;
 }
 
 .places_all {
@@ -22,12 +27,38 @@ body {
 }
 
 .places_list_item {
-    margin-top: 3%;
-    margin-left: 7%;
+    margin-top: 2%
+}
+
+.places_list_item_edit{
+    margin-left: 2%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/pencil.png");
+    background-size: cover; 
+    visibility: hidden;
+}
+
+.places_list_item_delete{
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/trash.png");
+    background-size: cover; 
+    visibility: hidden;
+}
+
+.places_list_item:hover > .places_list_item_edit,
+.places_list_item:hover > .places_list_item_delete{
+    visibility: visible;
+}
+
+.places_list_item_name{
+    display: inline;
+    margin-left: 2%;
 }
 
 .places_list_item_shift {
-    margin-left: 5%;
+    margin-left: 2%;
     width: 20px;
     height: 20px;
     background-image: url("/static/arrow-up.png");
@@ -35,7 +66,15 @@ body {
 }
 
 .places_list_item_visit {
-    margin-left: 5%;
+    margin-left: 2%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/visited.png");
+    background-size: cover; 
+}
+
+.places_list_item_novisit {
+    margin-left: 2%;
     width: 20px;
     height: 20px;
     background-image: url("/static/not-visited.png");
@@ -44,7 +83,7 @@ body {
 
 .footer {
     margin-top: 7%;
-    border: solid 1px;
+    border-top: solid 1px;
     padding-left: 5%;
     padding-right: 5%;
 }
