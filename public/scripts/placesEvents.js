@@ -2,60 +2,58 @@
 
 let places = [];
 
-htmlCreateButton.onclick = async function () {
-    if (places.length === 0) {
-        await placeApi.getAll();
-    }
-    placeApi.create(htmlCreateInput.value);
-    places.push({ desc: htmlCreateInput.value, id: places.length + 1, isVisited: false });
+createButton.onclick = async function () {
+    placeApi.create(createInput.value);
+    places.push({ desc: createInput.value, id: places.length + 1, isVisited: false });
 };
 
-htmlPlacesAll.onclick = async function () {
-    const _places = await placeApi.getAll();
-    places = [];
-    for (let _place of _places) {
-        places.push({ desc: _place.desc, id: _place.id, isVisited: _place.isVisited });
-    }
-    removeAllChild(htmlPlacesListItems);
+allPlaces.onclick = async function () {
+    searchState.switchState('all');
+    places = await placeApi.getAll();
+    removeAllChild(placesListItems);
     for (let place of places) {
         createPlace(place);
     }
 };
 
-htmlVisitedButton.onclick = async function () {
-    const _places = await placeApi.getAll();
-    places = [];
-    for (let _place of _places) {
-        places.push({ desc: _place.desc, id: _place.id, isVisited: _place.isVisited });
-    }
-    removeAllChild(htmlPlacesListItems);
+visitedPlaces.onclick = async function () {
+    searchState.switchState('visited');
+    places = await placeApi.getAll();
+    removeAllChild(placesListItems);
     for (let place of places.filter(place => place.isVisited === false)) {
         createPlace(place);
     }
 };
 
-htmlToVisitButton.onclick = async function () {
-    const _places = await placeApi.getAll();
-    places = [];
-    for (let _place of _places) {
-        places.push({ desc: _place.desc, id: _place.id, isVisited: _place.isVisited });
-    }
-    removeAllChild(htmlPlacesListItems);
+toVisitPlaces.onclick = async function () {
+    searchState.switchState('toVisit');
+    places = await placeApi.getAll();
+    removeAllChild(placesListItems);
     for (let place of places.filter(place => place.isVisited === true)) {
         createPlace(place);
     }
 };
 
-htmlSearchButton.onclick = function () {
-    removeAllChild(htmlPlacesListItems);
-    for (let place of places.filter(place => place.desc === htmlSearchInput.value)) {
+searchPlaces.onclick = function () {
+    removeAllChild(placesListItems);
+    let _places;
+    if (searchState.toVisit) {
+        _places = places.filter(place => place.isVisited === true);
+    }
+    if (searchState.visited) {
+        _places = places.filter(place => place.isVisited === false);
+    }
+    if (searchState.all) {
+        _places = places;
+    }
+    for (let place of _places.filter(place => place.desc === searchInput.value)) {
         createPlace(place);
     }
 };
 
-htmlPlacesClear.onclick = async function () {
+deleteAllPlaces.onclick = async function () {
     await placeApi.clear();
-    removeAllChild(htmlPlacesListItems);
+    removeAllChild(placesListItems);
     places = [];
 };
 
