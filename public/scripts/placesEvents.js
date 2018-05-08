@@ -12,7 +12,7 @@ allPlaces.onclick = async function () {
     places = await placeApi.getAll();
     removeAllChild(placesListItems);
     for (let place of places) {
-        createPlace(place);
+        new Place(place);
     }
 };
 
@@ -20,8 +20,8 @@ visitedPlaces.onclick = async function () {
     searchState.switchState('visited');
     places = await placeApi.getAll();
     removeAllChild(placesListItems);
-    for (let place of places.filter(place => place.isVisited === false)) {
-        createPlace(place);
+    for (let place of places.filter(elem => elem.isVisited === false)) {
+        new Place(place);
     }
 };
 
@@ -29,8 +29,8 @@ toVisitPlaces.onclick = async function () {
     searchState.switchState('toVisit');
     places = await placeApi.getAll();
     removeAllChild(placesListItems);
-    for (let place of places.filter(place => place.isVisited === true)) {
-        createPlace(place);
+    for (let place of places.filter(elem => elem.isVisited === true)) {
+        new Place(place);
     }
 };
 
@@ -46,8 +46,8 @@ searchPlaces.onclick = function () {
     if (searchState.all) {
         _places = places;
     }
-    for (let place of _places.filter(place => place.desc === searchInput.value)) {
-        createPlace(place);
+    for (let place of _places.filter(elem => elem.desc === searchInput.value)) {
+        new Place(place);
     }
 };
 

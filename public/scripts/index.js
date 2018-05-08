@@ -11,6 +11,9 @@ const deleteAllPlaces = document.getElementsByClassName('places_clear')[0];
 const toVisitPlaces = document.getElementsByClassName('places_visit')[0];
 const visitedPlaces = document.getElementsByClassName('places_novisit')[0];
 
-window.onload = () => {
-    allPlaces.onclick();
+window.onload = async () => {
+    places = await placeApi.getAll();
+    for (let place of places) {
+        new Place(place);
+    }
 };
