@@ -4,61 +4,45 @@ let places = [];
 
 createButton.onclick = async function () {
     placeApi.create(createInput.value);
-    places.push({ desc: createInput.value, id: places.length + 1, isVisited: false });
+    places.push(new Place({ desc: createInput.value, id: places.length + 1, isVisited: false }));
 };
 
 allPlaces.onclick = async function () {
-    searchState.switchState('all');
-    places = await placeApi.getAll();
-    removeAllChild(placesListItems);
     for (let place of places) {
-        new Place(place);
-    }
-};
-
-visitedPlaces.onclick = async function () {
-    searchState.switchState('visited');
-    places = await placeApi.getAll();
-    removeAllChild(placesListItems);
-    for (let place of places.filter(elem => elem.isVisited === false)) {
-        new Place(place);
+        place.tag.style.display = 'list-item';
     }
 };
 
 toVisitPlaces.onclick = async function () {
-    searchState.switchState('toVisit');
-    places = await placeApi.getAll();
-    removeAllChild(placesListItems);
-    for (let place of places.filter(elem => elem.isVisited === true)) {
-        new Place(place);
+    for (let place of places) {
+        place.tag.style.display = 'list-item';
+        if (place.isVisited === true) {
+            place.tag.style.display = 'none';
+        }
+    }
+};
+
+visitedPlaces.onclick = async function () {
+    for (let place of places) {
+        place.tag.style.display = 'list-item';
+        if (place.isVisited === false) {
+            place.tag.style.display = 'none';
+        }
     }
 };
 
 searchPlaces.onclick = function () {
-    removeAllChild(placesListItems);
-    let _places;
-    if (searchState.toVisit) {
-        _places = places.filter(place => place.isVisited === true);
-    }
-    if (searchState.visited) {
-        _places = places.filter(place => place.isVisited === false);
-    }
-    if (searchState.all) {
-        _places = places;
-    }
-    for (let place of _places.filter(elem => elem.desc === searchInput.value)) {
-        new Place(place);
+    for (let place of places) {
+        if (place.desc !== searchInput.value) {
+            place.tag.style.display = 'none';
+        }
     }
 };
 
 deleteAllPlaces.onclick = async function () {
     await placeApi.clear();
-    removeAllChild(placesListItems);
+    while (placesListItems.length > 0) {
+        placesListItems[0].remove();
+    }
     places = [];
 };
-
-function removeAllChild(parent) {
-    while (parent.length > 0) {
-        parent[0].remove();
-    }
-}

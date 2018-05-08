@@ -12,31 +12,6 @@ class Place {
         this.appendEvents(childs);
     }
 
-    async del() {
-        await placeApi.delete(this.id);
-        placesList.removeChild(this.tag);
-    }
-
-    async switchVisitButton(childs) {
-        if (childs.switchVisitButton.className === 'places_list_item_novisit') {
-            childs.switchVisitButton.className = 'places_list_item_visit';
-            await placeApi.edit(this.id, this.desc, true);
-            this.isVisited = true;
-        } else {
-            childs.switchVisitButton.className = 'places_list_item_novisit';
-            await placeApi.edit(this.id, this.desc, false);
-            this.isVisited = false;
-        }
-    }
-
-    async edit() {
-
-    }
-
-    async shift() {
-
-    }
-
     appendEvents(childs) {
         const context = this;
         childs.delButton.onclick = this.del.bind(context);
@@ -63,6 +38,31 @@ class Place {
         }
 
         return { delButton, editButton, p, shiftButton, switchVisitButton };
+    }
+
+    async del() {
+        await placeApi.delete(this.id);
+        placesList.removeChild(this.tag);
+    }
+
+    async switchVisitButton(childs) {
+        if (childs.switchVisitButton.className === 'places_list_item_novisit') {
+            childs.switchVisitButton.className = 'places_list_item_visit';
+            await placeApi.edit(this.id, this.desc, true);
+            this.isVisited = true;
+        } else {
+            childs.switchVisitButton.className = 'places_list_item_novisit';
+            await placeApi.edit(this.id, this.desc, false);
+            this.isVisited = false;
+        }
+    }
+
+    async edit() {
+
+    }
+
+    async shift() {
+
     }
 }
 
