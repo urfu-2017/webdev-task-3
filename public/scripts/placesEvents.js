@@ -16,7 +16,7 @@ allPlaces.onclick = async function () {
 toVisitPlaces.onclick = async function () {
     for (let place of places) {
         place.tag.style.display = 'list-item';
-        if (place.isVisited === true) {
+        if (place.tag.isVisited === true) {
             place.tag.style.display = 'none';
         }
     }
@@ -25,7 +25,7 @@ toVisitPlaces.onclick = async function () {
 visitedPlaces.onclick = async function () {
     for (let place of places) {
         place.tag.style.display = 'list-item';
-        if (place.isVisited === false) {
+        if (place.tag.isVisited === false) {
             place.tag.style.display = 'none';
         }
     }
@@ -33,7 +33,7 @@ visitedPlaces.onclick = async function () {
 
 searchPlaces.onclick = function () {
     for (let place of places) {
-        if (place.desc !== searchInput.value) {
+        if (place.tag.desc !== searchInput.value) {
             place.tag.style.display = 'none';
         }
     }

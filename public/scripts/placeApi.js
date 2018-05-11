@@ -4,10 +4,7 @@ const baseUrl = 'http://localhost:8080/';
 
 class PlaceApi {
     async getAll() {
-        const _places = await fetch(baseUrl, { method: 'GET' }).then(res => res.json());
-        console.info(_places);
-
-        return _places;
+        return (await fetch(baseUrl, { method: 'GET' })).json();
     }
 
     create(desc) {
@@ -19,16 +16,14 @@ class PlaceApi {
             },
             body: data
         };
-        fetch(baseUrl, options)
-            .then(res => res);
+        fetch(baseUrl, options);
     }
 
     clear() {
         const options = {
             method: 'delete'
         };
-        fetch(baseUrl, options)
-            .then(res => res);
+        fetch(baseUrl, options);
     }
 
     delete(id) {
@@ -40,8 +35,7 @@ class PlaceApi {
             },
             body: data
         };
-        fetch(baseUrl + 'places', options)
-            .then(res => res);
+        fetch(baseUrl + 'places', options);
     }
 
     edit(id, desc, isVisited) {
@@ -53,21 +47,19 @@ class PlaceApi {
             },
             body: JSON.stringify(data)
         };
-        fetch(baseUrl + `places/${id}`, options)
-            .then(res => res);
+        fetch(baseUrl + `places/${id}`, options);
     }
 
     insert(id, indexTo) {
-        const data = 'id=' + id + 'indexTo' + indexTo;
+        const data = { id, indexTo };
         const options = {
             method: 'put',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/json'
             },
-            body: data
+            body: JSON.stringify(data)
         };
-        fetch(baseUrl + 'places', options)
-            .then(res => res);
+        fetch(baseUrl + 'places', options);
     }
 }
 
