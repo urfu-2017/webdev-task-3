@@ -1,4 +1,5 @@
 'use strict';
+/* eslint-disable */
 
 class Place {
     constructor({ desc, id, isVisited }) {
@@ -27,7 +28,7 @@ class Place {
     appendEditEvents(childs, editChilds) {
         const context = this;
         editChilds.editCancel.onclick = this.cancel.bind(context, childs, editChilds);
-        editChilds.editOk.onclick = this.editOk.bind(context, childs.input.value, childs, editChilds);
+        editChilds.editOk.onclick = this.editOk.bind(context, childs, editChilds);
     }
 
     appendChilds(parent, childs) {
@@ -82,32 +83,27 @@ class Place {
 
     async edit(childs, editChilds) {
         childs.input.removeAttribute('disabled');
-        editChilds.editCancel.style.display = 'block';
-        editChilds.editOk.style.display = 'block';
+        editChilds.editCancel.style.display = 'inline-block';
+        editChilds.editOk.style.display = 'inline-block';
         childs.shiftButtonUp.style.display = 'none';
         childs.shiftButtonDown.style.display = 'none';
         childs.switchVisitButton.style.display = 'none';
     }
 
-    async editOk(desc, childs, editChilds) {
-        console.info(desc);
-        await placeApi.edit(this.tag.id, desc, this.tag.isVisited);
-        this.tag.desc = desc;
-        childs.input.value = desc;
-        childs.input.setAttribute('disabled', true);
-        editChilds.editCancel.style.display = 'none';
-        editChilds.editOk.style.display = 'none';
-        childs.shiftButtonUp.style.display = 'block';
-        childs.shiftButtonDown.style.display = 'block';
-        childs.switchVisitButton.style.display = 'block';
+    async editOk(childs, editChilds) {
+        console.info(childs.input.value);
+        await placeApi.edit(this.tag.id, childs.input.value, this.tag.isVisited);
+        this.tag.desc = childs.input.value;
+        this.cancel(childs, editChilds);
     }
 
     async cancel(childs, editChilds) {
+        childs.input.setAttribute('disabled', true);
         editChilds.editCancel.style.display = 'none';
         editChilds.editOk.style.display = 'none';
-        childs.shiftButtonUp.style.display = 'block';
-        childs.shiftButtonDown.style.display = 'block';
-        childs.switchVisitButton.style.display = 'block';
+        childs.shiftButtonUp.style.display = 'inline-block';
+        childs.shiftButtonDown.style.display = 'inline-block';
+        childs.switchVisitButton.style.display = 'inline-block';
     }
 
     async shift(up) {

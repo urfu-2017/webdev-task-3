@@ -1,4 +1,5 @@
 'use strict';
+/* eslint-disable */
 
 const placesList = document.getElementsByClassName('places_list')[0];
 const createButton = document.getElementsByClassName('create_button')[0];
