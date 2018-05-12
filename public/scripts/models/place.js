@@ -98,6 +98,7 @@ class Place {
     }
 
     async cancel(childs, editChilds) {
+        childs.input.value = this.tag.desc;
         childs.input.setAttribute('disabled', true);
         editChilds.editCancel.style.display = 'none';
         editChilds.editOk.style.display = 'none';
