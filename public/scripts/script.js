@@ -20,7 +20,7 @@ listItem.className = 'list-item';
 const getListItem = wrapper => {
     return {
         name: wrapper.getAttribute('id'),
-        wrapper,
+        wrapper: wrapper,
         getEditIcon: () => wrapper.querySelector('.list-item__edit'),
         getDeleteIcon: () => wrapper.querySelector('.list-item__delete'),
         input: wrapper.querySelector('.list-item__name'),
@@ -87,8 +87,8 @@ async function onCreateElement() {
     document.querySelector('.create-box__input').value = '';
     const newItem = makeListItemElement({ name: name, visited: false });
     list.wrapper.appendChild(newItem);
-
     const response = await requestCreate({ name });
+
     const place = await response.json();
     if (!place) {
         return;
@@ -143,23 +143,23 @@ function onCancelEdit(item) {
 
 function onMoveUpItem({ wrapper, name }) {
     return async () => {
-        const neigbour = getListItem(wrapper.previousElementSibling);
-        wrapper.parentNode.insertBefore(wrapper, neigbour.wrapper);
+        const neighbour = getListItem(wrapper.previousElementSibling);
+        wrapper.parentNode.insertBefore(wrapper, neighbour.wrapper);
 
         refreshArrows();
 
-        await requestSwap({ name1: name, name2: neigbour.name });
+        await requestSwap({ name1: name, name2: neighbour.name });
     };
 }
 
 function onMoveDownItem({ wrapper, name }) {
     return async () => {
-        const neigbour = getListItem(wrapper.nextElementSibling);
-        wrapper.parentNode.insertBefore(neigbour.wrapper, wrapper);
+        const neighbour = getListItem(wrapper.nextElementSibling);
+        wrapper.parentNode.insertBefore(neighbour.wrapper, wrapper);
 
         refreshArrows();
 
-        await requestSwap({ name1: name, name2: neigbour.name });
+        await requestSwap({ name1: name, name2: neighbour.name });
     };
 }
 
@@ -172,7 +172,7 @@ function onChangeVisited({ name, input, checkbox }) {
 }
 
 function makeListItemElement({ name, visited }) {
-    let element = listItem;
+    let element = listItem.cloneNode(true);
     element.setAttribute('id', name);
     element.innerHTML = `
         <i class="fas fa-edit fa-2x list-item__icon list-item__edit"></i>
@@ -192,7 +192,8 @@ function makeListItemElement({ name, visited }) {
 
 function fillList(places) {
     places.forEach(place => {
-        list.wrapper.appendChild(makeListItemElement(place));
+        let elem = makeListItemElement(place);
+        list.wrapper.appendChild(elem);
     });
 }
 
@@ -259,6 +260,7 @@ async function requestFetch() {
 }
 
 async function requestCreate({ name }) {
+
     return await fetch(`${NOW_SCRIPT_ADDRESS}/places`, {
         mode: 'cors',
         method: 'POST',
