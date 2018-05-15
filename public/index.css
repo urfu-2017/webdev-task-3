@@ -1,0 +1,127 @@
+body {
+    margin-top: 3%;
+    border: solid 1px;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.search {
+    margin: 3%;
+}
+
+.create_place {
+    margin: 3%;
+}
+
+.places {
+    margin-right: 3%;
+    margin-left: 3%
+}
+
+.places_list_header {
+    display: inline;
+}
+
+.places_all {
+    margin-left: 5%;
+}
+
+.places_list_item {
+    margin-top: 2%
+}
+
+.places_list_item_edit {
+    margin-left: 2%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/pencil.png");
+    background-size: cover; 
+    visibility: hidden;
+}
+
+.places_list_item_delete {
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/trash.png");
+    background-size: cover; 
+    visibility: hidden;
+}
+
+.places_list_item:hover > .places_list_item_edit,
+.places_list_item:hover > .places_list_item_delete {
+    visibility: visible;
+}
+
+.places_list_item_name {
+    display: inline;
+    margin-left: 2%;
+}
+
+.places_list_item_shift_up {
+    margin-left: 2%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/arrow-up.png");
+    background-size: cover; 
+}
+
+.places_list_item_shift_down {
+    margin-left: 2%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/arrow-down.png");
+    background-size: cover; 
+}
+
+.places_list_item_visit {
+    margin-left: 2%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/visited.png");
+    background-size: cover; 
+}
+
+.places_list_item_novisit {
+    margin-left: 2%;
+    width: 20px;
+    height: 20px;
+    background-image: url("/static/not-visited.png");
+    background-size: cover; 
+}
+
+.places_list_item_edit_input {
+    visibility: visible;
+    width: 100px;
+}
+
+.places_list_item_edit_cancel {
+    margin-left: 2%;
+    background-size: cover;
+    visibility: visible;
+}
+
+.places_list_item_edit_ok {
+    margin-left: 2%;
+    background-size: cover;
+    visibility: visible;
+}
+
+.footer {
+    margin-top: 7%;
+    border-top: solid 1px;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.footer__origin {
+    font-size: 1.5em;
+    float: right;
+}
+
+.footer__copy {
+    font-size: 1.5em;
+}
+
+img {
+    width: 20px;
+}
