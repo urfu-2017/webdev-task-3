@@ -3,6 +3,7 @@
 const NOW_SCRIPT_ADDRESS = 'https://webdev21-vagkxpyjgp.now.sh';
 
 const list = {
+    inputBox: document.querySelector('.create-box__input'),
     searchBox: document.querySelector('.search-box__input'),
     wrapper: document.querySelector('.list'),
     getClearIcon: () => document.querySelector('.list__clear'),
@@ -79,12 +80,12 @@ function onSearch() {
 }
 
 async function onCreateElement() {
-    const name = document.querySelector('.create-box__input').value;
+    const name = list.inputBox.value;
     if (name === '') {
         return;
     }
 
-    document.querySelector('.create-box__input').value = '';
+    list.inputBox.value = '';
     const newItem = makeListItemElement({ name: name, visited: false });
     list.wrapper.appendChild(newItem);
     const response = await requestCreate({ name });
