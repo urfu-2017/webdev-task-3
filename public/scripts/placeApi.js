@@ -1,7 +1,7 @@
 'use strict';
 /* eslint-disable */
 
-const baseUrl = 'http://localhost:8080/';
+const baseUrl = 'https://webdev-task-2-ghkkffuhfq.now.sh';
 
 class PlaceApi {
     async getAll() {
@@ -36,7 +36,7 @@ class PlaceApi {
             },
             body: data
         };
-        fetch(baseUrl + 'places', options);
+        fetch(baseUrl + '/places', options);
     }
 
     edit(id, desc, isVisited) {
@@ -48,7 +48,7 @@ class PlaceApi {
             },
             body: JSON.stringify(data)
         };
-        fetch(baseUrl + `places/${id}`, options);
+        fetch(baseUrl + `/places/${id}`, options);
     }
 
     insert(id, indexTo) {
@@ -60,7 +60,7 @@ class PlaceApi {
             },
             body: JSON.stringify(data)
         };
-        fetch(baseUrl + 'places', options);
+        fetch(baseUrl + '/places', options);
     }
 }
 
