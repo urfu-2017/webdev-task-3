@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Места</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css"
+          integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css"
+          integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="index.css">
+    <script type="text/javascript" src="index.js"></script>
+</head>
+<body>
+<article class="page">
+    <main class="main">
+        <div class="search">
+            <input class="search__field" placeholder="Поиск">
+        </div>
+        <div class="create-place">
+            <input class="create-place__name" placeholder="Название места">
+            <button class="create-place__btn-create">Создать</button>
+        </div>
+        <div class="places">
+            <div class="places__header">
+                <div class="places__heading">
+                    <h3 class="places__heading-text">Места</h3>
+                    <button class="places__btn-delete-all btn-float"><i class="fas fa-trash-alt"></i></button>
+                </div>
+                <div class="places__filter">
+                    <button class="places__btn-all btn-filter-selected" data-filter-state="all">Все
+                    </button>
+                    <button class="places__btn-not-visited" data-filter-state="notVisited">Посетить
+                    </button>
+                    <button class="places__btn-visited" data-filter-state="visited">Посещённые</button>
+                </div>
+            </div>
+            <div class="places__list">
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer__year">2018</div>
+        <div class="footer__copyright">© kvas</div>
+    </footer>
+</article>
+</body>
+</html>
