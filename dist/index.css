@@ -1,0 +1,209 @@
+html,
+body
+{
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.wrapper
+{
+    width: 800px;
+    border: 1px solid #000;
+    margin: 10px auto;
+    height: 100%;
+    padding: 30px;
+    font-family: sans-serif;
+}
+
+.header__search-field
+{
+    height: 30px;
+    font-size: 24px;
+    margin: 20px auto;
+    box-sizing: padding-box;
+    padding-left: 35px;
+    flex-grow: 1;
+}
+
+.header__search
+{
+    display: flex;
+    position: relative;
+}
+
+.header__search-magnifier
+{
+    font-size: 20px;
+    position: absolute;
+    top: 23px;
+    left: 5px;
+}
+
+.create
+{
+    display: flex;
+    align-items: center;
+}
+
+.create__button,
+.create__input
+{
+    box-sizing: content-box;
+    height: 25px;
+    font-size: 22px;
+}
+
+.create__input
+{
+    flex-grow: 1;
+}
+
+.content__header
+{
+    display: flex;
+    margin-top: 30px;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid #000;
+}
+
+.content__name
+{
+    margin: 0;
+}
+
+.content__name-block
+{
+    font-size: 20px;
+    display: flex;
+}
+
+.content__delete-button
+{
+    margin-left: 10px;
+}
+
+.content__items
+{
+    margin-top: 20px;
+}
+
+.content__filter-label
+{
+    padding: 8px;
+    background: #eee;
+    border: 1px solid #ccc;
+}
+
+.content__filter-label:first-of-type
+{
+    border-radius: 8px 0 0 8px;
+}
+
+.content__filter-label:last-of-type
+{
+    border-radius: 0 8px 8px 0;
+}
+
+input[name='filter']:checked + .content__filter-label
+{
+    background: #81e1ff;
+}
+
+.item
+{
+    font-size: 18px;
+    padding: 5px 10px;
+    margin: auto 10px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.item:hover
+{
+    background: #eee;
+}
+
+.item:first-child .item__move-up
+{
+    visibility: hidden;
+}
+
+.item:last-child .item__move-down
+{
+    visibility: hidden;
+}
+
+.item__controls
+{
+    display: flex;
+    visibility: hidden;
+}
+
+.item__controls,
+.item__move
+{
+    display: flex;
+}
+
+.item__edit-button,
+.item__delete-button,
+.item__move-down,
+.item__move-up,
+.content__delete-button,
+.create__button
+{
+    cursor: pointer;
+    margin-right: 2px;
+}
+
+.item:hover .item__controls
+{
+    visibility: visible;
+}
+
+.item__update-description
+{
+    height: 30px;
+    font-size: 24px;
+    display: none;
+}
+
+.item__edit-checkbox:checked ~ .item__update-description
+{
+    display: block;
+}
+
+.item__edit-checkbox:checked ~ .item__description,
+input[name='filter'],
+.item__edit-checkbox
+{
+    display: none;
+}
+
+.item__info
+{
+    margin-left: 10px;
+    display: flex;
+    align-content: center;
+    flex-grow: 2;
+}
+
+.item__update-description
+{
+    width: 90%;
+}
+
+.item__description_visited
+{
+    text-decoration: line-through;
+}
+
+.item__checkbox
+{
+    transform: scale(1.8);
+    margin-left: 10px;
+}
