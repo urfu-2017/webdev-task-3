@@ -8,14 +8,12 @@ const appendChildrenTo = (parent, children) => {
         parent.appendChild(child);
     }
 };
-
 const buttons = allOfClass('visibility-selectors__button');
 // eslint-disable-next-line no-return-assign
 buttons.forEach(b => b.onclick = selectVisitingState);
 
 const searchField = ofClass('search__field');
 const placesContainer = ofClass('places__container');
-
 let places = [];
 updatePlaces();
 
@@ -193,7 +191,7 @@ function createEditBlock(place, nameBlock) {
 
 function createDeletePlaceIcon(place) {
     const icon = createIcon('fas fa-trash-alt place__delete icon_hidden');
-    icon.onClick = () => sendRequest(`/sites/${place.id}`, 'DELETE');
+    icon.onclick = () => sendRequest(`/sites/${place.id}`, 'DELETE');
 
     return icon;
 }
