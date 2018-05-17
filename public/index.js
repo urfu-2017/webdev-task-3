@@ -2,7 +2,14 @@
 
 const API_URL = 'https://webdev-task-2-xdmhfckqxs.now.sh/places';
 
-let visitedFilterState = 'all';
+const VisitedFilterState = {
+    all: 'all',
+    notVisited: 'notVisited',
+    visited: 'visited'
+};
+Object.freeze(VisitedFilterState);
+
+let visitedFilterState = VisitedFilterState.all;
 
 class ElementWrapper {
     _find(selector) {
@@ -68,16 +75,16 @@ class EditableField extends ElementWrapper {
     _createElement() {
         this.element = document.createElement('div');
         this.element.classList.add('edit-field');
-        this.element.innerHTML = '' +
-            '<input class="edit-field__field">\n' +
-            '<div class="edit-field__buttons">\n' +
-            '    <button class="edit-field__btn-cancel btn-float">' +
-            '        <i class="fas fa-times"></i>\n' +
-            '    </button>\n' +
-            '    <button class="edit-field__btn-save btn-float">' +
-            '        <i class="fas fa-check"></i>\n' +
-            '    </button>\n' +
-            '</div>\n';
+        this.element.innerHTML = `
+            <input class="edit-field__field">
+            <div class="edit-field__buttons">
+                <button class="edit-field__btn-cancel btn-float">
+                    <i class="fas fa-times"></i>
+                </button>
+                <button class="edit-field__btn-save btn-float">
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>`;
         this.element.hidden = true;
         this._sourceElement.parentNode.insertBefore(
             this.element, this._sourceElement.nextSibling);
@@ -120,25 +127,25 @@ class Place extends ElementWrapper {
     _createElement() {
         this.element = document.createElement('div');
         this.element.classList.add('places__place');
-        this.element.innerHTML = '' +
-            '<div class="places__edit-buttons">\n' +
-            '    <button class="places__btn-edit btn-float">' +
-            '        <i class="fas fa-pencil-alt"></i>' +
-            '    </button>\n' +
-            '    <button class="places__btn-delete btn-float">' +
-            '        <i class="fas fa-trash-alt"></i>' +
-            '    </button>\n' +
-            '</div>\n' +
-            '<div class="places__place-name"></div>\n' +
-            '<div class="places__move-buttons">\n' +
-            '    <button class="places__btn-move-up btn-float">' +
-            '        <i class="fas fa-arrow-up"></i>' +
-            '    </button>\n' +
-            '    <button class="places__btn-move-down btn-float">' +
-            '        <i class="fas fa-arrow-down"></i>' +
-            '    </button>\n' +
-            '</div>\n' +
-            '<input class="places__is-visited" type="checkbox">';
+        this.element.innerHTML = `
+            <div class="places__edit-buttons">
+                <button class="places__btn-edit btn-float">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+                <button class="places__btn-delete btn-float">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+            <div class="places__place-name"></div>
+            <div class="places__move-buttons">
+                <button class="places__btn-move-up btn-float">
+                    <i class="fas fa-arrow-up"></i>
+                </button>
+                <button class="places__btn-move-down btn-float">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+            </div>
+            <input class="places__is-visited" type="checkbox">`;
     }
 
     _findComponents() {
@@ -190,7 +197,7 @@ class PlacesList extends ElementWrapper {
                 this.element.appendChild(place.element);
             }
         }
-        const moveAllowed = !searchQuery && visitedFilterState === 'all';
+        const moveAllowed = !searchQuery && visitedFilterState === VisitedFilterState.all;
         this._forAll('.places__btn-move-up, .places__btn-move-down', btn => {
             btn.hidden = !moveAllowed;
         });
@@ -321,12 +328,12 @@ async function createPlace() {
         throw new Error('Cannot create place.');
     }
 
-    const placeId = response.url.split('/').slice(-1)[0];
+    const [placeId] = response.url.split('/').slice(-1);
     placesList.createPlace(placeId, placeName);
 }
 
 function matchesVisitedFilter(place) {
-    return visitedFilterState === 'all' ||
-        (visitedFilterState === 'notVisited' && !place.visited) ||
-        (visitedFilterState === 'visited' && place.visited);
+    return visitedFilterState === VisitedFilterState.all ||
+        (visitedFilterState === VisitedFilterState.notVisited && !place.visited) ||
+        (visitedFilterState === VisitedFilterState.visited && place.visited);
 }
