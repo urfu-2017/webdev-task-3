@@ -200,7 +200,7 @@ function createDeletePlaceIcon(place) {
 
 function createEditIcon(place, nameBlock, editBlock) {
     const icon = createIcon('fas fa-pencil-alt place__edit icon_hidden');
-    icon.onClick = () => {
+    icon.onclick = () => {
         nameBlock.classList.add('place__name_hidden');
         editBlock.classList.remove('place-edit_hidden');
     };
