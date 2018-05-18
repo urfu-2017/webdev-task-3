@@ -2,20 +2,23 @@
 
 const apiUrl = 'https://webdev-task-2-qtummrsjii.now.sh/places/';
 
+const createrInput = document.querySelector('.creater__input');
+const searchBar = document.querySelector('.search');
+const placesList = document.querySelector('.places__list');
+const filterInputs = document.querySelectorAll('.places__filter input');
 let places = [];
 
 async function createPlace() {
-    const input = document.querySelector('.creater__input');
-    const description = input.value;
-    input.value = '';
-    await fetch(apiUrl + 'add/', {
+    const description = createrInput.value;
+    createrInput.value = '';
+    fetch(apiUrl + 'add/', {
         body: 'description=' + description,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         method: 'post'
     });
-    await updatePlaceList();
+    updatePlaceList();
 }
 
 async function updatePlaceList() {
@@ -26,9 +29,9 @@ async function updatePlaceList() {
 function createButton(content, func, className = null) {
     const button = document.createElement('button');
     button.innerHTML = content;
-    button.onclick = func;
+    button.addEventListener('click', func);
     if (className) {
-        button.className = className;
+        button.classList.add(className);
     }
 
     return button;
@@ -38,7 +41,7 @@ function createVisitCheckbox(place) {
     const checkbox = document.createElement('input', { 'type': 'checkbox' });
     checkbox.type = 'checkbox';
     checkbox.checked = place.visit;
-    checkbox.onclick = visit(place);
+    checkbox.addEventListener('click', visit(place));
 
     return checkbox;
 }
@@ -47,15 +50,15 @@ function createLabel(place) {
     const label = document.createElement('label');
     const textNode = document.createTextNode(place.description);
     const visitMark = document.createElement('i');
-    visitMark.className = 'visitmark ';
-    label.className += 'place__name';
+    visitMark.classList.add('visitmark');
+    label.classList.add('place__name');
     if (place.visit) {
-        visitMark.className += 'far fa-check-circle';
+        visitMark.className = 'far fa-check-circle';
     } else {
-        visitMark.className += 'far fa-circle';
+        visitMark.className = 'far fa-circle';
     }
     const checkbox = createVisitCheckbox(place);
-    checkbox.className += 'hidden';
+    checkbox.classList.add('hidden');
     label.appendChild(checkbox);
     label.appendChild(textNode);
     label.appendChild(visitMark);
@@ -63,7 +66,7 @@ function createLabel(place) {
     return label;
 }
 
-function createLINode(place, site, minSite, maxSite) {
+function createDivNode(place, site, minSite, maxSite) {
     const node = document.createElement('div');
     const label = createLabel(place);
     if (site !== maxSite) {
@@ -96,10 +99,10 @@ async function rearrange(site, direction) {
     let secondId;
     let firstId;
     let flag = true;
+    places.sort((first, second) => {
+        return first.site - second.site;
+    });
     if (direction) {
-        places.sort((first, second) => {
-            return first.site - second.site;
-        });
         places.forEach(place => {
             if (place.site === site) {
                 firstId = place._id;
@@ -109,9 +112,6 @@ async function rearrange(site, direction) {
             }
         });
     } else {
-        places.sort((first, second) => {
-            return first.site - second.site;
-        });
         places.reverse();
         places.forEach(place => {
             if (place.site === site) {
@@ -134,7 +134,7 @@ async function rearrange(site, direction) {
 }
 
 async function deletePlace(id) {
-    await fetch(apiUrl + 'delete/' + id, { method: 'DELETE' }).then(() => {
+    fetch(apiUrl + 'delete/' + id, { method: 'DELETE' }).then(() => {
         places = places.filter(p => p._id !== id);
         setPlacesList(places);
     })
@@ -149,9 +149,9 @@ function editPlaceMode(place) {
     const input = document.createElement('input');
     input.value = place.description;
     var ok = createButton('<i class="fas fa-check"></i>',
-        async () => await editDescription(place), 'ok');
+        async () => editDescription(place), 'ok');
     var cancel = createButton('<i class="fas fa-times"></i>', filterPlaces, 'cancel');
-    input.className = 'edit__text';
+    input.classList.add('edit__text');
     node.appendChild(input);
     node.appendChild(ok);
     node.appendChild(cancel);
@@ -170,11 +170,10 @@ async function editDescription(place) {
         });
     }
 
-    await updatePlaceList();
+    updatePlaceList();
 }
 
 function setPlacesList(newPlaces) {
-    const placesList = document.querySelector('.places__list');
     placesList.innerHTML = '';
     let maxSite = 0;
     let minSite = 0;
@@ -186,10 +185,10 @@ function setPlacesList(newPlaces) {
         }
     });
     newPlaces.forEach((place) => {
-        const node = createLINode(place, place.site, minSite, maxSite);
+        const node = createDivNode(place, place.site, minSite, maxSite);
         placesList.appendChild(node);
     });
-    if (placesList.innerHTML === '') {
+    if (!newPlaces.length) {
         placesList.innerHTML = 'мест нет';
     }
 }
@@ -211,19 +210,17 @@ async function setVisitValue(id, visited) {
         }
     });
 
-    await updatePlaceList();
+    updatePlaceList();
 }
 
 function filterPlaces() {
-    const description = document.querySelector('.search').value;
-
-    let res = places.filter(place => place.description.includes(description));
+    let res = places.filter(place => place.description.includes(searchBar.value));
 
     res.sort((first, second) => {
         return first.site - second.site;
     });
 
-    document.querySelectorAll('.places__filter input').forEach(input => {
+    filterInputs.forEach(input => {
         if (input.checked) {
             if (input.value === 'visit') {
                 res = res.filter(place => !place.visit);
@@ -238,7 +235,7 @@ function filterPlaces() {
 }
 
 async function loadPlaces() {
-    const description = document.querySelector('.search').value;
+    const description = searchBar.value;
 
     places = await fetch(`${apiUrl}description?description=${description}`)
         .then(res => res.json());
@@ -253,18 +250,17 @@ async function clearList() {
 window.onload = async function () {
     await updatePlaceList();
 
-    document.querySelector('.search')
-        .addEventListener('keypress', async e => {
-            if (e.keyCode === 13) {
-                await updatePlaceList();
-            }
-        });
-
-    document.querySelector('.creater__button').onclick = createPlace;
-
-    document.querySelectorAll('.places__filter input').forEach(input => {
-        input.onclick = updatePlaceList;
+    searchBar.addEventListener('keypress', async e => {
+        if (e.keyCode === 13) {
+            await updatePlaceList();
+        }
     });
 
-    document.querySelector('.place__remover__button').onclick = clearList;
+    document.querySelector('.creater__button').addEventListener('click', createPlace);
+
+    filterInputs.forEach(input => {
+        input.addEventListener('click', updatePlaceList);
+    });
+
+    document.querySelector('.place__remover__button').addEventListener('click', clearList);
 };
