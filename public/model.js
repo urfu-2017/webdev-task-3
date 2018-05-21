@@ -72,13 +72,13 @@ function createDivNode(place, site, minSite, maxSite) {
     if (site !== maxSite) {
         const downButton =
         createButton('<i class="fas fa-arrow-down"></i>',
-            () => rearrange(site, true), 'down-btn');
+            () => rearrange(site, 1), 'down-btn');
         node.appendChild(downButton);
     }
     if (site !== minSite) {
         const upButton =
         createButton('<i class="fas fa-arrow-up"></i>',
-            () => rearrange(site, false), 'up-btn');
+            () => rearrange(site, -1), 'up-btn');
         node.appendChild(upButton);
     }
     const deleteButton =
@@ -100,47 +100,43 @@ async function rearrange(site, direction) {
     let firstId;
     let flag = true;
     places.sort((first, second) => {
-        return first.site - second.site;
+        return direction * (first.site - second.site);
     });
-    if (direction) {
-        places.forEach(place => {
-            if (place.site === site) {
-                firstId = place._id;
-            } else if (place.site > site && flag) {
-                secondId = place._id;
-                flag = !flag;
-            }
-        });
-    } else {
-        places.reverse();
-        places.forEach(place => {
-            if (place.site === site) {
-                firstId = place._id;
-            } else if (place.site < site && flag) {
-                secondId = place._id;
-                flag = !flag;
-            }
-        });
-        places.reverse();
-    }
+    places.forEach(place => {
+        if (place.site === site) {
+            firstId = place._id;
+        } else if (((direction > 0 && place.site > site) ||
+            (direction < 0 && place.site < site)) && flag) {
+            secondId = place._id;
+            flag = !flag;
+        }
+    });
 
-    await fetch(apiUrl + 'site/update?first=' + firstId + '&second=' + secondId, {
+    fetch(apiUrl + 'site/update?first=' + firstId + '&second=' + secondId, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
     });
-    updatePlaceList();
+
+    const temp = places.find(p => p._id === firstId).site;
+    places.find(p => p._id === firstId).site = places.find(p => p._id === secondId).site;
+    places.find(p => p._id === secondId).site = temp;
+
+    places.sort((first, second) => {
+        return first.site - second.site;
+    });
+    setPlacesList(places);
 }
 
 async function deletePlace(id) {
-    fetch(apiUrl + 'delete/' + id, { method: 'DELETE' }).then(() => {
-        places = places.filter(p => p._id !== id);
-        setPlacesList(places);
-    })
+    fetch(apiUrl + 'delete/' + id, { method: 'DELETE' })
         .catch(() => {
             throw new Error(`fail to delete place: id=${id}`);
         });
+
+    places = places.filter(p => p._id !== id);
+    setPlacesList(places);
 }
 
 function editPlaceMode(place) {
@@ -161,7 +157,7 @@ async function editDescription(place) {
     const input = document.querySelector(`.place${place._id} input`);
     const description = input.value;
     if (description) {
-        await fetch(apiUrl + 'update/' + place._id, {
+        fetch(apiUrl + 'update/' + place._id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -170,7 +166,9 @@ async function editDescription(place) {
         });
     }
 
-    updatePlaceList();
+    places.find(p => p._id === place._id).description = description;
+
+    setPlacesList(places);
 }
 
 function setPlacesList(newPlaces) {
@@ -203,14 +201,14 @@ async function setVisitValue(id, visited) {
         targetPlace.visit = visited;
     }
 
-    await fetch(apiUrl + 'update/' + id + `?visit=${visited}`, {
+    fetch(apiUrl + 'update/' + id + `?visit=${visited}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         }
     });
 
-    updatePlaceList();
+    setPlacesList(places);
 }
 
 function filterPlaces() {
@@ -244,7 +242,7 @@ async function loadPlaces() {
 async function clearList() {
     places = [];
     setPlacesList(places);
-    await fetch(apiUrl + 'deleteall', { method: 'DELETE' });
+    fetch(apiUrl + 'deleteall', { method: 'DELETE' });
 }
 
 window.onload = async function () {
